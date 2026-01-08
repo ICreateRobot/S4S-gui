@@ -1,0 +1,86 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--editor-bg);
+    overflow: hidden;
+    border: 0px solid #e0e3eb;
+}
+
+.output {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+}
+
+.placeholder {
+    color: #999;
+    text-align: center;
+    margin-top: 40px;
+}
+
+
+.rx {
+    color: var(--ui-text-primary-transparent);
+    margin-bottom: 4px;
+    white-space: pre-wrap;
+}
+
+.tx {
+    color: #1976d2;
+    margin-bottom: 4px;
+}
+
+
+
+.inputBar {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    background: var(--ui-tertiary);
+    border-top: 1px solid #a0a1a5;
+}
+
+.input {
+    flex: 1;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #d0d5dd;
+    padding: 0 10px;
+    font-size: 14px;
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--ic-main-light);
+}
+
+.sendBtn {
+    padding: 0 14px;
+    border-radius: 8px;
+    border: none;
+    background:  var(--ic-main);
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.clearBtn {
+    width: 35px;
+    height: 35px;
+    background-image: url('./cleare.svg'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-color: transparent;
+    border: none; 
+    cursor: pointer; 
+    transition: opacity 0.2s; 
+    margin-left: 10px;
+}
+.clearBtn:hover {
+    opacity: 0.9; 
+    transform: scale(1.1);
+}

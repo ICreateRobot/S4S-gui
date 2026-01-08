@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="300 0 500 755">
+  <path fill="none" stroke="#6f6c6c" stroke-width="40" d="M854,404V65c0-24.75-20.25-45-45-45H280c-24.75,0-45,20.25-45,45v625c0,24.75,20.25,45,45,45h307"/>
+  <rect fill="#6f6c6c" y="32" width="3" height="1"/>
+  <ellipse fill="none" stroke="#6f6c6c" stroke-width="40" cx="854.217" cy="406" rx=".217" ry="2"/>
+  <circle fill="#6f6c6c" cx="587" cy="735" r="20.043"/>
+  <rect fill="#6f6c6c" x="744.609" y="421.826" width="41.087" height="333.217" rx="20.543" ry="20.543"/>
+  <rect fill="#6f6c6c" x="598.544" y="567.892" width="333.217" height="41.087" rx="20.543" ry="20.543"/>
+  <rect fill="#6f6c6c" x="353.782" y="289.761" width="381.435" height="41.087" rx="20.543" ry="20.543"/>
+  <rect fill="#6f6c6c" x="353.782" y="145.37" width="381.435" height="41.087" rx="20.543" ry="20.543"/>
+  <rect fill="#6f6c6c" x="598.544" y="567.892" width="333.217" height="41.087" rx="20.543" ry="20.543"/>
+  <rect fill="#6f6c6c" x="353.783" y="441.109" width="333.217" height="41.087" rx="20.543" ry="20.543"/>
+</svg>

@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 9px;
+}
+
+.microbitImage {
+    height: 150px;
+    position: relative;
+    top: 8px;
+    right: 30px;
+}
+
+.buttonContainer {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--ic-main-light-pluse);
+    height: 100%;
+    width: 70px;
+    border-radius: 0px 9px 9px 0px;
+    align-items: center;
+}
+
+.downloadButton {
+    width: 60px;
+    height: 60px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    background: transparent;
+}

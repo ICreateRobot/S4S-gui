@@ -1,0 +1,431 @@
+/* python-install.css */
+
+.packageManager {
+    width: 100%;
+    height: 100%;
+    background: var(--ui-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== 标签页头部样式 ===== */
+.tabHeader {
+    background: var(--ui-tertiary);
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 20px;
+}
+
+.tabList {
+    display: flex;
+    gap: 0;
+}
+
+.tab {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab:hover {
+    color: var(--ic-main);
+    background: rgba(211, 47, 47, 0.05);
+}
+
+.tab.active {
+    color: var(--ic-main);
+    border-bottom-color: var(--ic-main);
+    /* #d32f2f */
+    background: var(--ic-main-light-pluse);
+}
+
+/* ===== 推荐页样式 ===== */
+
+/* 分类区域 */
+.categorySection {
+    padding: 10px 0px;
+    /* border-bottom: 1px solid #e0e0e0; */
+    overflow-x: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.categoryList {
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+    flex: 1;
+}
+
+.categoryTab {
+    padding: 6px 16px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    color: #666;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.categoryTab:hover {
+    background: #eeeeee;
+    border-color: var(--ic-main);
+    color: var(--ic-main);
+}
+
+.categoryTab.active {
+    background: var(--ic-main);
+    border-color: var(--ic-main);
+    color: white;
+}
+
+.categoryCount {
+    margin-left: 4px;
+    opacity: 0.7;
+}
+
+/* 搜索框 */
+.searchInput {
+    width: 200px;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: var(--ic-main);
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1);
+}
+
+/* 包网格布局 */
+.packageGrid {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    align-content: start;
+}
+
+/* ===== 已安装列表页样式 ===== */
+.installedList {
+    flex: 1;
+    padding: 20px 50px;
+    overflow-y: auto;
+}
+
+.installedPackages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.installedItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--ui-white);
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.installedItem:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: #d32f2f;
+}
+
+.installedName {
+    font-weight: 600;
+    color: var(--python-packageName);
+    font-size: 14px;
+    flex: 1;
+}
+
+.installedVersion {
+    color: #666;
+    font-size: 12px;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin: 0 10px;
+}
+
+.deleteButton {
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.deleteButton:hover {
+    background: #d32f2f;
+}
+
+/* ===== 安装器页样式 ===== */
+.installerSection {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.installerBox {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.installerTitle {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.installerDescription {
+    margin: 0 0 20px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.installerInputGroup {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.installerInput {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.installerInput:focus {
+    outline: none;
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1);
+}
+
+.installerButton {
+    padding: 10px 20px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.installerButton:hover:not(:disabled) {
+    background: #b71c1c;
+}
+
+.installerButton:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.installResult {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.successMessage {
+    color: #2e7d32;
+    background: #e8f5e8;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.errorMessage {
+    color: #c62828;
+    background: #ffebee;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* ===== 包卡片组件样式 ===== */
+.packageCard {
+    background: var(--ui-white);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.packageCard:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.packageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.packageName {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--python-packageName);
+}
+
+.packageVersion {
+    font-size: 12px;
+    color: #666;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.packageDescription {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #666;
+    min-height: 40px;
+}
+
+.packageActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.installButton {
+    padding: 6px 16px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.installButton:hover {
+    background: #b71c1c;
+}
+
+.uninstallButton {
+    padding: 6px 16px;
+    background: #757575;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.uninstallButton:hover:not(:disabled) {
+    background: #616161;
+}
+
+.uninstallButton:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+}
+
+/* ===== 通用状态样式 ===== */
+.loading, .emptyState {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* ===== 滚动条样式 ===== */
+.packageGrid::-webkit-scrollbar,
+.installedList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.packageGrid::-webkit-scrollbar-track,
+.installedList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.packageGrid::-webkit-scrollbar-thumb,
+.installedList::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.packageGrid::-webkit-scrollbar-thumb:hover,
+.installedList::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+    .packageGrid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+    
+    .categorySection {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .categoryList {
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+    
+    .searchInput {
+        width: 100%;
+    }
+    
+    .tab {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+

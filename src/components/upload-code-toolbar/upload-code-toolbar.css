@@ -1,0 +1,81 @@
+.toolbar {
+    width: 100%;
+    box-sizing: border-box;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.iconButton {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    background-color: transparent; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconButton:hover {
+    background: var(--looks-light-transparent);
+}
+
+.iconImage {
+    width: 20px;
+    height: 20px;
+    object-fit: contain; /* 保持图片比例 */
+}
+
+
+.rightButtons {
+    display: flex;
+    margin-left: auto;  
+}
+
+
+.iconButton1 {
+    width: calc(2rem + 2px);
+    height: calc(2rem + 2px);
+
+    border: 1px solid var(--ui-black-transparent);
+    
+
+    background: var(--ui-white);
+    padding: 0.375rem;
+
+    cursor: pointer;
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 选中态 */
+.iconButton1[data-active="true"] {
+    background: var(--looks-light-transparent);
+}
+
+.bt1{
+    border-radius: calc(0.5rem / 2) 0  0  calc(0.5rem / 2);
+}
+.bt2{
+    border-radius: 0 calc(0.5rem / 2) calc(0.5rem / 2) 0;
+}
+
+.stageIcon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* 仅未选中态 */
+.iconGray {
+    filter: var(--filter-icon-gray);
+}

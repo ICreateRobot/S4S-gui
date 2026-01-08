@@ -1,0 +1,40 @@
+.container {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    max-height: 40vh;           /* 设置最大高度 */
+    overflow-y: auto;           /* 超出时出现滚动条 */
+    box-sizing: border-box;     /* 让 padding 不额外撑高度 */
+    padding-top: 10px;
+    height: 40vh;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    padding: 10px 20px;
+    background-color: var(--ui-white);
+    cursor: pointer;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-right: 2px;
+    color:var(--ui-black-transparent);
+    border: 1px solid var(--ui-black-transparent);
+}
+
+.tabActive {
+    /* background-color: var(--ic-main-light); */
+    color: var(--looks-secondary);
+    /* border: 1px solid var(--ic-main); */
+}
+
+.content {
+    background-color: var(--ui-white);
+    border-radius: 0 8px 8px 8px;
+    border: 1px solid var(--ui-black-transparent); 
+    height: 28vh;
+}
