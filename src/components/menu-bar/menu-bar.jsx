@@ -1320,26 +1320,6 @@ class MenuBar extends React.Component {
                             this.props.onClickDesktopSettings &&
                             this.handleClickDesktopSettings
                         }
-                        clickSerialConnect={
-                            this.props.clickSerialConnect &&
-                            this.handleClickSerialConnect
-                        }
-                        clickBleConnect={
-                            this.props.clickBleConnect &&
-                            this.handleClickBleConnect
-                        }
-                        clickDownloadCode={
-                            this.props.clickDownloadCode &&
-                            this.handleClickDownloadCode
-                        }
-                        clickEspSend={
-                            this.props.clickEspSend &&
-                            this.handleClickEspSend
-                        }
-                        clickSendWifi={
-                            this.props.clickSendWifi &&
-                            this.handleClickSendWifi
-                        }
                         // eslint-disable-next-line react/jsx-no-bind
                         onOpenCustomSettings={this.props.onClickAddonSettings.bind(null, 'editor-theme3')}
                         onRequestClose={this.props.onRequestCloseSettings}

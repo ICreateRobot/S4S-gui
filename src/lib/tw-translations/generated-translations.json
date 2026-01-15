@@ -4506,6 +4506,8 @@
         "tw.accent.purple": "紫色",
         "tw.accent.rainbow": "彩虹色",
         "tw.accent.red": "红色",
+        "tw.accent.darkBlue":"深蓝色",
+        "tw.accent.lightBlue":"浅蓝色",
         "tw.accent.default":"默认",
         "tw.alerts.creatingRestorePoint": "新建还原点中...",
         "tw.alerts.lostPeripheralConnection": "与 {extensionName} 的连接中断了。",

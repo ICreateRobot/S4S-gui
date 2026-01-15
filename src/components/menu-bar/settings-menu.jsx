@@ -12,7 +12,6 @@ import TWGuiThemeMenu from './tw-theme-gui.jsx';
 import menuBarStyles from './menu-bar.css';
 import styles from './settings-menu.css';
 
-import dropdownCaret from './dropdown-caret.svg';
 // import settingsIcon from './icon--settings.svg';
 import settingsIcon from './images/setting.svg';
 
@@ -20,8 +19,6 @@ const SettingsMenu = ({
     canChangeLanguage,
     canChangeTheme,
     isRtl,
-    onClickDesktopSettings,
-    onOpenCustomSettings,
     onRequestClose,
     onRequestOpen,
     settingsMenuOpen
@@ -66,8 +63,6 @@ SettingsMenu.propTypes = {
     canChangeLanguage: PropTypes.bool,
     canChangeTheme: PropTypes.bool,
     isRtl: PropTypes.bool,
-    onClickDesktopSettings: PropTypes.func,
-    onOpenCustomSettings: PropTypes.func,
     onRequestClose: PropTypes.func,
     onRequestOpen: PropTypes.func,
     settingsMenuOpen: PropTypes.bool

@@ -1,10 +1,10 @@
 import defaultsDeep from 'lodash.defaultsdeep';
 
-import * as accentPurple from './accent/purple';
-import * as accentBlue from './accent/blue';
-import * as accentRed from './accent/red';
-import * as accentRainbow from './accent/rainbow';
-import * as accentGreen from './accent/green';
+//tk定制样式
+import * as accentDarkBlue from './accent/darkBlue';
+import * as accentLightBlue from './accent/lightBlue';
+import * as accentLightPurple from './accent/lightPurple';
+import * as accentMix from './accent/mix';
 
 import * as guiLight from './gui/light';
 import * as guiDark from './gui/dark';
@@ -16,16 +16,22 @@ import * as blocksDark from './blocks/dark';
 const ACCENT_PURPLE = 'purple';
 const ACCENT_BLUE = 'blue';
 const ACCENT_RED = 'red';
-const ACCENT_GREEN = 'green';//新配色
 const ACCENT_RAINBOW = 'rainbow';
+const ACCENT_GREEN = 'green';//icreatRobot使用的绿色
+
+const ACCENT_DarkBlue = 'darkBlue';//TK-深蓝
+const ACCENT_LightBlue = 'lightBlue';//TK-浅蓝
+const ACCENT_LightPurple = 'lightPurple';//TK-浅紫
+const ACCENT_Mix = 'mix';//TK-混合
+
 const ACCENT_MAP = {
-    [ACCENT_PURPLE]: accentPurple,
-    [ACCENT_BLUE]: accentBlue,
-    [ACCENT_RED]: accentRed,
-    [ACCENT_RAINBOW]: accentRainbow
+    [ACCENT_DarkBlue]: accentDarkBlue,
+    [ACCENT_LightBlue]: accentLightBlue,
+    [ACCENT_LightPurple]: accentLightPurple,
+    [ACCENT_Mix]: accentMix
 };
-ACCENT_MAP[ACCENT_GREEN] = accentGreen;
-const ACCENT_DEFAULT = ACCENT_GREEN;
+
+const ACCENT_DEFAULT = ACCENT_Mix;
 
 const GUI_LIGHT = 'light';
 const GUI_DARK = 'dark';
@@ -154,6 +160,11 @@ export {
     ACCENT_BLUE,
     ACCENT_RAINBOW,
     ACCENT_GREEN,
+
+    ACCENT_DarkBlue,
+    ACCENT_LightBlue,
+    ACCENT_LightPurple,
+    ACCENT_Mix,
     ACCENT_MAP,
 
     GUI_LIGHT,
