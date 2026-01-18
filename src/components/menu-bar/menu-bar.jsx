@@ -115,24 +115,13 @@ import prehistoricLogo from './prehistoric-logo.svg';
 import oldtimeyLogo from './oldtimey-logo.svg';
 
 
-
-import icrobotLogo from './icon_s4sLogo.svg'
+import S4SLogo from './icon_s4sLogo_new.svg';//logo
 
 import sharedMessages from '../../lib/shared-messages';
 
 import SeeInsideButton from './tw-see-inside.jsx';
 import {notScratchDesktop} from '../../lib/isScratchDesktop.js';
 
-
-
-
-const ariaMessages = defineMessages({
-    tutorials: {
-        id: 'gui.menuBar.tutorialsLibrary',
-        defaultMessage: 'Tutorials',
-        description: 'accessibility text for the tutorials button'
-    }
-});
 
 const twMessages = defineMessages({
     compileError: {
@@ -724,7 +713,7 @@ class MenuBar extends React.Component {
 
                         {"\u00A0"}{"\u00A0"}  
                         {/* 公司 Logo */}
-                        <img src={icrobotLogo} draggable={false} width={120} height={30} />
+                        <img src={S4SLogo} draggable={false} width={120} height={30} />
 
                         {/* 分隔 div */}
                         <div style={{ margin: '0 5px' }} />
