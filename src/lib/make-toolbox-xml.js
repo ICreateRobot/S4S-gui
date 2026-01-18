@@ -933,7 +933,8 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
             xmlOpen,
             controlXML, gap,
             operatorsXML, gap,
-            variablesXML, gap
+            variablesXML, gap,
+            myBlocksXML
         ]
     }
 

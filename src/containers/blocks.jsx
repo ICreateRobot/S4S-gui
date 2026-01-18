@@ -56,13 +56,7 @@ import {gentlyRequestPersistentStorage} from '../lib/tw-persistent-storage.js';
 
 import { createBlocksLogic} from './hooks/blocks-logic.js';
 
-
-
 import { setGeneratedCode } from '../reducers/sun';//设置生成的code
-
-
-
-
 
 
 // 旧机制，根据设备加载扩展
@@ -914,7 +908,8 @@ class Blocks extends React.Component {
                     }
                     code = this.ScratchBlocks[generatorName].workspaceToCode(this.workspace);
                     console.log(code)
-                    this.props.setGeneratedCode(this.unindentCode(code));  
+                    // this.props.setGeneratedCode(this.unindentCode(code));  
+                    this.props.setGeneratedCode( code );  
                 } catch (e) {
                     code = e.message;
                     console.log(e.message)

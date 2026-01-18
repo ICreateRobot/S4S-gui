@@ -1,53 +1,10 @@
 // 包管理页面
 import React, { useState, useEffect,useRef } from 'react';
 import styles from './python-install.css';
+import samplePackages from './packages.js';//库清单
+import infoIcon from './infoIcon.png';//help图标
+import {FormattedMessage, injectIntl} from 'react-intl';
 
-
-// 推荐包数据
-const samplePackages = [
-    {
-        id: 1,
-        name: 'uJson',
-        pkg:"ujson",//真正的包名
-        description: '438274893274893274893274892847389.',
-        category: 'data',
-        installed: false,
-        version: ''
-    },
-    {
-        id: 2,
-        name: 'NumPy',
-        pkg:"",
-        description: '11111111111111111111111111111111.',
-        category: 'data',
-        installed: false,
-        version: ''
-    },
-    {
-        id: 3,
-        name: 'Pandas',
-        description: 'Powerful data manipulation and analysis library. Provides data structures and operations for manipulating numerical tables and time series.',
-        category: 'data',
-        installed: false,
-        version: ''
-    },
-    {
-        id: 4,
-        name: 'Matplotlib',
-        description: 'Comprehensive library for creating static, animated, and interactive visualizations in Python.',
-        category: 'chart',
-        installed: false,
-        version: ''
-    },
-    {
-        id: 5,
-        name: 'Requests',
-        description: 'Elegant and simple HTTP library for Python, built for human beings.',
-        category: 'web',
-        installed: false,
-        version: ''
-    }
-];
 
 // 分类列表
 const categories = [
@@ -58,7 +15,7 @@ const categories = [
     { id: 'chart', name: 'Chart', count: 4 }
 ];
 
-const PythonInstall = () => {
+const PythonInstall = ({intl}) => {
     const [activeTab, setActiveTab] = useState('Recommended'); // recommended, installed, installer
     const [activeCategory, setActiveCategory] = useState('all'); // 包分类
     const [searchTerm, setSearchTerm] = useState('');
@@ -105,7 +62,7 @@ const PythonInstall = () => {
         }
     };
 
-    // 加载系统重安装的库
+    // 加载系统安装的库
     const loadInstalledPackages = async () => {
         try {
             const result  = await window.EditorPreload.pipPython("list","");
@@ -227,14 +184,35 @@ const PythonInstall = () => {
                             className={`${styles.categoryTab} ${activeTab === "Recommended" ? styles.active : ''}`}
                             onClick={() => setActiveTab('Recommended')}
                         >
-                            Recommended
+                            {/* 推荐 */}
+                            <FormattedMessage
+                                defaultMessage="Recommended"
+                                id="python.install.Recommended"
+                            />
                         </button>
                         <button
                             key={"Installed"}
                             className={`${styles.categoryTab} ${activeTab === "Installed" ? styles.active : ''}`}
                             onClick={() => setActiveTab('Installed')}
                         >
-                            Installed
+                            
+                            {/* 已安装 */}
+                            <FormattedMessage
+                                defaultMessage="Installed"
+                                id="python.install.Installed"
+                            />
+                        </button>
+                        <button
+                            key={"Installer"}
+                            className={`${styles.categoryTab} ${activeTab === "Installer" ? styles.active : ''}`}
+                            onClick={() => setActiveTab('Installer')}
+                        >
+                            
+                            {/* 安装 */}
+                            <FormattedMessage
+                                defaultMessage="Installer"
+                                id="python.install.Installer"
+                            />
                         </button>
                         {/* 下面这些后续需求应该会用的到，非切换页面时 */}
                         {/* {categories.map(category => (
@@ -262,26 +240,31 @@ const PythonInstall = () => {
     
             {/* 推荐页 */}
             {activeTab === 'Recommended' && (
-                <>
-                    <div className={styles.packageGrid}>
-                        {isLoading ? (
-                            <div className={styles.loading}>loading...</div>
-                        ) : filteredPackages.length > 0 ? (
-                            filteredPackages.map(pkg => (
-                                <PackageCard
-                                    key={pkg.id}
-                                    pkg={pkg}
-                                    onInstall={handleInstall}
-                                    onUninstall={handleUninstall}
-                                    isInstalled={pkg.installed}
-                                />
-                            ))
-                        ) : (
-                            <div className={styles.emptyState}>No matching package was found</div>
-                            // 未找到匹配的包
-                        )}
-                    </div>
-                </>
+                <div className={styles.recommendedPage}>
+                <div className={styles.packageGrid}>
+                    {isLoading ? (
+                        <div className={styles.loading}>loading...</div>
+                    ) : filteredPackages.length > 0 ? (
+                        filteredPackages.map(pkg => (
+                            <PackageCard
+                                key={pkg.id}
+                                pkg={pkg}
+                                onInstall={handleInstall}
+                                onUninstall={handleUninstall}
+                                isInstalled={pkg.installed}
+                            />
+                        ))
+                    ) : (
+                        <div className={styles.emptyState}>
+                            <FormattedMessage
+                                defaultMessage="No matching package was found"
+                                id="python.install.NoPackage"
+                            />
+                        </div>
+                        // 未找到匹配的包
+                    )}
+                </div>
+                </div>
             )}
     
             {/* 已安装列表页 */}
@@ -306,7 +289,13 @@ const PythonInstall = () => {
                             ))}
                         </div>
                     ) : (
-                        <div className={styles.emptyState}>暂无已安装的包</div>
+                        <div className={styles.emptyState}>
+                            {/* 暂无已安装的包 */}
+                            <FormattedMessage
+                                defaultMessage="No packages installed"
+                                id="python.install.NoInstalled"
+                            />
+                        </div>
                     )}
                 </div>
             )}
@@ -318,7 +307,10 @@ const PythonInstall = () => {
                         <div className={styles.installerInputGroup}>
                             <input
                                 type="text"
-                                placeholder="package name"
+                                placeholder= {intl.formatMessage({
+                                    id: 'python.install.packageName',
+                                    defaultMessage: "package name"
+                                })}
                                 value={installPackageName}
                                 onChange={(e) => setInstallPackageName(e.target.value)}
                                 className={styles.installerInput}
@@ -332,7 +324,41 @@ const PythonInstall = () => {
                             </button>
                         </div>
                     </div>
-                   
+
+                    {/* 提示信息 */}
+                    <div className={styles.installerHint}>
+                        <div className={styles.hintIcon}>
+                            <img src={infoIcon} />
+                        </div>
+                        <div className={styles.hintText}>
+                            <span>
+                                <FormattedMessage
+                                    defaultMessage="Enter the Python library name only (for example: pygame)."
+                                    id="python.install.help.example"
+                                />
+                            </span>
+                            <br/>
+                            <span>
+                                <FormattedMessage
+                                    defaultMessage="Do not type pip."
+                                    id="python.install.help.not"
+                                />
+                            </span>
+                            <br/>
+                            <span>
+                                <FormattedMessage
+                                    defaultMessage="You can search for libraries on the official PyPI repository:"
+                                    id="python.install.help.can"
+                                />
+                                
+                                <br/>
+                                <a href="https://pypi.org" target="_blank" rel="noreferrer">
+                                    https://pypi.org
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
             )}
             <InstallOverlay
@@ -356,7 +382,10 @@ const PackageCard = ({ pkg, onInstall, onUninstall, isInstalled }) => {
                 <h3 className={styles.packageName}>{pkg.name}</h3>
                 {/* <span className={styles.packageVersion}>v{pkg.version}</span> */}
             </div>
-            <p className={styles.packageDescription}>{pkg.description}</p>
+            <p className={styles.packageDescription}>
+                {/* {pkg.description} */}
+                <FormattedMessage id={pkg.descriptionId} />
+            </p>
             <div className={styles.packageActions}>
                 {isInstalled ? (
                     <button
@@ -466,4 +495,4 @@ const InstallOverlay = ({ visible, onClose, log }) => {
 };
 
 
-export default PythonInstall;
+export default injectIntl(PythonInstall);
