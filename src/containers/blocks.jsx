@@ -899,14 +899,14 @@ class Blocks extends React.Component {
                     }else if(this.props.extensionName == "Arduino"){
                         generatorName = "Arduino";
                     }else{//否则不显示代码
-                        //return
+                        return
                     }
+                    
                     // 检查生成器是否存在
-                    if (!this.ScratchBlocks[generatorName]) {
-                        console.error(`代码生成器 ${generatorName} 未找到`);
-                        return '';
-                    }
-                    code = this.ScratchBlocks[generatorName].workspaceToCode(this.workspace);
+                    const generator = this.ScratchBlocks[generatorName];
+                    if (!generator) return;
+
+                    code = generator.workspaceToCode(this.workspace);
                     console.log(code)
                     // this.props.setGeneratedCode(this.unindentCode(code));  
                     this.props.setGeneratedCode( code );  
@@ -921,29 +921,54 @@ class Blocks extends React.Component {
     }
 
 
-    //格式处理（没细看）
-    unindentCode(code) {
-        // 将代码按行分割
-        let lines = code.split('\n');
-        // 使用map遍历每一行，先取消四个空格缩进，再检查并取消恰好两个空格的缩进
-        const unindentedLines = lines.map(line => {
-            // 记录原始行
-            let originalLine = line;
-            
-            // 尝试取消四个空格的缩进
-            let newLine = line.replace(/^\s{4}/, '');
-            
-            // 如果四个空格缩进已经被取消，检查是否有恰好两个空格的缩进
-            if (newLine !== originalLine) {
-            // 只有在四个空格缩进被取消后，才检查恰好两个空格的缩进
-            newLine = newLine.replace(/^\s{2}(?! )/, '');
+    //格式处理（修改为代码整合）暂时不用了
+    unindentCode(generator) {
+        let functionCodes = [];
+        let eventWhenCodes = [];
+
+        //顶层块
+        const topBlocks = this.workspace.getTopBlocks(true); // true = 按位置排序
+        topBlocks.forEach(block => {
+            const opcode = block.type;
+
+            // 先收集函数
+            if (opcode === 'procedures_definition') {
+                const code = generator.blockToCode(block);
+                if (code) functionCodes.push(code);
             }
-            
-            return newLine;
+
+            // 再收集 event_when
+            if (opcode === 'event_when') {
+                const code = generator.blockToCode(block);
+                if (code) eventWhenCodes.push(code);
+            }
         });
+
+        return [
+            ...functionCodes,
+            ...eventWhenCodes
+        ].join('\n\n');
+        // // 将代码按行分割
+        // let lines = code.split('\n');
+        // // 使用map遍历每一行，先取消四个空格缩进，再检查并取消恰好两个空格的缩进
+        // const unindentedLines = lines.map(line => {
+        //     // 记录原始行
+        //     let originalLine = line;
+            
+        //     // 尝试取消四个空格的缩进
+        //     let newLine = line.replace(/^\s{4}/, '');
+            
+        //     // 如果四个空格缩进已经被取消，检查是否有恰好两个空格的缩进
+        //     if (newLine !== originalLine) {
+        //     // 只有在四个空格缩进被取消后，才检查恰好两个空格的缩进
+        //     newLine = newLine.replace(/^\s{2}(?! )/, '');
+        //     }
+            
+        //     return newLine;
+        // });
     
-        // 将处理后的行重新组合成一个字符串
-        return unindentedLines.join('\n');
+        // // 将处理后的行重新组合成一个字符串
+        // return unindentedLines.join('\n');
     }
 
     //格式处理（没细看）
