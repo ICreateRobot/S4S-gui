@@ -192,7 +192,7 @@ class ExtensionLibrary extends React.PureComponent {
         }
     }
 
-    // 移除扩展（逻辑与gui中批量移除一致，但未来需要升级为直接移除，不再取巧）（已经更新写法，但是依然不妙，旧版本不要去除）
+    // 移除扩展（逻辑与gui中批量移除一致，但未来需要升级为直接移除，不再取巧）（已经更新写法，但是依然不妙，旧版本要去除）(终版大妙)
     async removeExtension(id){
         // const keepExts = this.loadedExts.filter(extId => extId !== id);
     
@@ -209,9 +209,20 @@ class ExtensionLibrary extends React.PureComponent {
         //     }
         // }
 
-        this.props.vm.runtime._blockInfo = this.props.vm.runtime._blockInfo.filter(block => block.id !== id);
-        this.props.vm.extensionManager._loadedExtensions.delete(id);
+        // this.props.vm.runtime._blockInfo = this.props.vm.runtime._blockInfo.filter(block => block.id !== id);
+        // this.props.vm.extensionManager._loadedExtensions.delete(id);
 
+        const runtime = this.props.vm.runtime;
+        const extensionManager = this.props.vm.extensionManager;
+        if (id === 'LinkBot') {
+            LINKBOT_EXTENSIONS.forEach(extId => {
+                runtime._blockInfo = runtime._blockInfo.filter( block => block.id !== extId );
+                extensionManager._loadedExtensions.delete(extId);
+            });
+        }else{
+            runtime._blockInfo.filter(block => block.id !== id);
+            extensionManager._loadedExtensions.delete(id);
+        }
         window.vm.emit('workspaceUpdate');//直接通知刷新
     }
 
