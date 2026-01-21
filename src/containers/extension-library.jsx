@@ -27,6 +27,14 @@ const messages = defineMessages({
     }
 });
 
+const LINKBOT_EXTENSIONS = [
+    'LinkBot',                // 主扩展
+    'LinkBotActuators',
+    'LinkBotSensors',
+    'LinkBotPower',
+];
+
+
 const toLibraryItem = extension => {
     if (typeof extension === 'object') {
         return ({
@@ -150,12 +158,28 @@ class ExtensionLibrary extends React.PureComponent {
             return;
         }
 
+        const extensionManager = this.props.vm.extensionManager;
+        //LinkBot单独的逻辑
+        if (extensionId === 'LinkBot') {
+            const loadTasks = LINKBOT_EXTENSIONS .filter(id => !extensionManager.isExtensionLoaded(id))
+                .map(id => extensionManager.loadExtensionURL(id));
+
+            Promise.all(loadTasks).then(() => {
+                this.props.onCategorySelected('LinkBot');
+            }).catch(err => {
+                log.error(err);
+                alert(err);
+            });
+
+            return;
+        }
+
         const url = item.extensionURL ? item.extensionURL : extensionId;
         if (!item.disabled) {//检查是否已加载
-            if (this.props.vm.extensionManager.isExtensionLoaded(extensionId)) {
+            if (extensionManager.isExtensionLoaded(extensionId)) {
                 this.props.onCategorySelected(extensionId);//直接切换到该扩展对应的积木分类
             } else {// 加载新扩展
-                this.props.vm.extensionManager.loadExtensionURL(url)
+                extensionManager.loadExtensionURL(url)
                     .then(() => {
                         this.props.onCategorySelected(extensionId);
                     })
