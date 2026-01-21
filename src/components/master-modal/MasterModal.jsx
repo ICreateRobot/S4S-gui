@@ -107,6 +107,21 @@ class MasterModal extends React.Component {
             console.warn('扩展加载失败：', id, e);
         }
     }
+
+    //调整顺序，让扩展永远在最前
+    const blockInfo = vm.runtime._blockInfo;
+
+    // 找出要置顶的模块
+    const pinned = blockInfo.filter(b => Exts.includes(b.id));
+    const rest = blockInfo.filter(b => !Exts.includes(b.id));
+
+    // 重新排列--置顶
+    vm.runtime._blockInfo = [
+        ...pinned,
+        ...rest
+    ];
+
+    vm.emit('workspaceUpdate');
   }
 
   //移除扩展（根据设备）

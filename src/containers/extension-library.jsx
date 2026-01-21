@@ -34,6 +34,9 @@ const LINKBOT_EXTENSIONS = [
     'LinkBotPower',
 ];
 
+const pinned = ['MicrobitIcreate','ArduinoS4S']   // 永远置顶
+const deviceExts = ['LinkBot', 'LinkBotActuators','LinkBotSensors','LinkBotPower', "ICreateK210"  ] // 设备
+
 
 const toLibraryItem = extension => {
     if (typeof extension === 'object') {
@@ -102,7 +105,8 @@ class ExtensionLibrary extends React.PureComponent {
         super(props);
         bindAll(this, [
             'handleItemSelect',
-            'removeExtension'
+            'removeExtension',
+            'sortExtensions'
         ]);
         this.state = {
             // gallery: cachedGallery,
@@ -170,26 +174,27 @@ class ExtensionLibrary extends React.PureComponent {
                 log.error(err);
                 alert(err);
             });
-
-            return;
-        }
-
-        const url = item.extensionURL ? item.extensionURL : extensionId;
-        if (!item.disabled) {//检查是否已加载
-            if (extensionManager.isExtensionLoaded(extensionId)) {
-                this.props.onCategorySelected(extensionId);//直接切换到该扩展对应的积木分类
-            } else {// 加载新扩展
-                extensionManager.loadExtensionURL(url)
-                    .then(() => {
-                        this.props.onCategorySelected(extensionId);
-                    })
-                    .catch(err => {
-                        log.error(err);
-                        // eslint-disable-next-line no-alert
-                        alert(err);
-                    });
+           
+        }else{
+            const url = item.extensionURL ? item.extensionURL : extensionId;
+            if (!item.disabled) {//检查是否已加载
+                if (extensionManager.isExtensionLoaded(extensionId)) {
+                    this.props.onCategorySelected(extensionId);//直接切换到该扩展对应的积木分类
+                } else {// 加载新扩展
+                    extensionManager.loadExtensionURL(url)
+                        .then(() => {
+                            this.props.onCategorySelected(extensionId);
+                        })
+                        .catch(err => {
+                            log.error(err);
+                            // eslint-disable-next-line no-alert
+                            alert(err);
+                        });
+                }
             }
         }
+
+        this.sortExtensions()//重新排序
     }
 
     // 移除扩展（逻辑与gui中批量移除一致，但未来需要升级为直接移除，不再取巧）（已经更新写法，但是依然不妙，旧版本要去除）(终版大妙)
@@ -225,6 +230,37 @@ class ExtensionLibrary extends React.PureComponent {
         }
         window.vm.emit('workspaceUpdate');//直接通知刷新
     }
+
+    // 排序
+    sortExtensions() {
+        const info = this.props.vm.runtime._blockInfo;
+    
+        const pinnedBlocks = [];
+        const deviceBlocks = [];
+        const otherBlocks = [];
+
+        const pinnedSet = new Set(pinned);
+        const deviceSet = new Set(deviceExts);
+    
+        for (const block of info) {
+            if (pinnedSet.has(block.id)) {
+                pinnedBlocks.push(block);
+            } else if (deviceSet.has(block.id)) {
+                deviceBlocks.push(block);
+            } else {
+                otherBlocks.push(block);
+            }
+        }
+    
+        this.props.vm.runtime._blockInfo = [
+            ...pinnedBlocks,
+            ...deviceBlocks,
+            ...otherBlocks
+        ];
+    
+        this.props.vm.emit('workspaceUpdate');
+    }
+    
 
     render () {
         let library = null;
