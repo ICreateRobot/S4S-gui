@@ -70,8 +70,10 @@ import ConnectTabs from '../connect-modal/connectModal.jsx';//连接
 import FirmwareModal from '../firmware-modal/FirmwareModal.jsx'//固件
 
 
-import PythonEditor from '../python-editor/pythonEditor.jsx';
-import PythonInstall from '../python-install/pythonInstall.jsx';
+import PythonEditor from '../python-editor/pythonEditor.jsx';//python编辑器
+import PythonInstall from '../python-install/pythonInstall.jsx';//python库管理器
+
+import UiEditor from '../ui-editor/uiEditor.jsx';//ui编辑器
 
 import UploadCodeToolbar from '../upload-code-toolbar/upload-code-toolbar.jsx';
 
@@ -764,7 +766,7 @@ const GUIComponent = props => {
                                     </TabPanel>
                                     {/* {extensionName === 'ESP32' && ( */}
                                         <TabPanel className={tabClassNames.tabPanel}>
-                                            <div >UI</div>
+                                            <UiEditor />
                                         </TabPanel>
                                     {/* )} */}
 
