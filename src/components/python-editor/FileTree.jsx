@@ -82,7 +82,7 @@ const FileTree = ({
                                                 <>
                                                     <div onClick={() => handleNewFile(fullPath)}> <FormattedMessage defaultMessage="New File" id="python.editor.Tree.createFile" /> </div>
                                                     <div onClick={() => handleNewFolder(fullPath)}><FormattedMessage defaultMessage="New Folder" id="python.editor.Tree.createFolder" /></div>
-                                                    <div onClick={() => handleUpload(fullPath)}><FormattedMessage defaultMessage="Upload" id="python.editor.Tree.upload" /></div>
+                                                    <div onClick={(e) => {e.stopPropagation();setOpenMenuPath(null);setTimeout(() => handleUpload(fullPath), 0);}}><FormattedMessage defaultMessage="Upload" id="python.editor.Tree.upload" /></div>
                                                     <div onClick={() => handleRename(fullPath, "folder")}><FormattedMessage defaultMessage="Rename" id="python.editor.Tree.rename" /></div>
                                                     <div onClick={() => handleDelete(fullPath, "folder")}><FormattedMessage defaultMessage="Delete" id="python.editor.Tree.delete" /></div>
                                                 </>
