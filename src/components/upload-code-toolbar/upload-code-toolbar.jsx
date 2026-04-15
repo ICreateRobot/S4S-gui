@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './upload-code-toolbar.css';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 import runIcon from './run-icon.svg'; // 引入图片
 
 import codeModule from '../../../../../utils/global.js'
@@ -10,14 +11,19 @@ import fullStageIcon from '!../../lib/tw-recolor/build!./icon--full-stage.svg';
 import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg';
 
 
-const UploadCodeToolbar = ({ device,layout, onChangeLayout }) => {
+const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
 
     //下载
     const handleDownload = async () => {
         if(device == "Microbit"){
-            let import_code='from microbit import *\nfrom s4s import *\n';
-            //console.log(import_code+codeModule.getCode())
-            const result = await window.EditorPreload.usbdownloadCode(import_code+codeModule.getCode());
+            let import_code = 'from microbit import *\nfrom s4s import *\n';
+            let finalCode = import_code+generatedCode;
+
+            //let packageList = parsePythonImports(finalCode)
+            
+            //console.log(packageList)
+
+            const result = await window.EditorPreload.usbdownloadCode( finalCode);
             console.log(result) 
         }else if(device == "ESP32"){
          
@@ -30,8 +36,35 @@ const UploadCodeToolbar = ({ device,layout, onChangeLayout }) => {
         }
     };
 
+    //运行(不持久化)
+    const handleRun = async () => {
+        if(device == "Microbit"){
+            let import_code='from microbit import *\nfrom s4s import *\n';
+            const result = await window.EditorPreload.mBUsbRunCode(import_code+generatedCode);
+            console.log(result) 
+        }else if(device == "ESP32"){
+         
+        }else if(device == "Arduino"){
+           
+        }else{
+  
+        }
+    };
+
+    
+
     return (
         <div className={styles.toolbar}>
+            <button
+                className={styles.iconButton}
+                onClick={handleRun}
+            >
+                <img 
+                    src={runIcon} 
+                    className={styles.iconImage}
+                />
+            </button>
+
             <button
                 className={styles.iconButton}
                 onClick={handleDownload}
@@ -71,4 +104,11 @@ const UploadCodeToolbar = ({ device,layout, onChangeLayout }) => {
     );
 };
 
-export default UploadCodeToolbar;
+
+const mapStateToProps = state => ({
+    generatedCode: state.scratchGui.sun.generatedCode
+});
+export default connect(
+    mapStateToProps
+)(UploadCodeToolbar);
+//export default UploadCodeToolbar;

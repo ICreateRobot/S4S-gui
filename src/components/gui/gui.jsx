@@ -780,7 +780,7 @@ const GUIComponent = props => {
                             <Box className={classNames(styles.stageAndTargetWrapper, styles.uploadStageColumn, uploadLayout === 'full' && styles.fullWidth)}  >
                                 
                                 <UploadCodeToolbar device={extensionName} layout={uploadLayout} onChangeLayout={setUploadLayout} />
-                                <CodeMirrorComponent code={pythonCode} theme = { theme }/>
+                                <CodeMirrorComponent  theme = { theme }/>
                                 {/* 监视器 */}
                                 <TabSwitcher serialData={data} device={extensionName}/>
                             </Box>

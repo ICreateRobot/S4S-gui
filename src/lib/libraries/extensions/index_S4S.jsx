@@ -42,7 +42,7 @@ export default [
         iconURL: LinkbotIconURL,
         description: (
             <FormattedMessage
-                defaultMessage="Link Bot."
+                defaultMessage="Bring your Linkbot to life with movement, sensors, and actions."
                 id="gui.extension.linkBot.description"
             />
         ),
@@ -61,7 +61,7 @@ export default [
         iconURL: AIVisionIconURL,
         description: (
             <FormattedMessage
-                defaultMessage="AI Vision."
+                defaultMessage="Use AI vision to recognize colors, lines, AprilTags, QR codes, faces, objects, roadsides, and run deeplearning mode."
                 id="gui.extension.k210.description"
             />
         ),
