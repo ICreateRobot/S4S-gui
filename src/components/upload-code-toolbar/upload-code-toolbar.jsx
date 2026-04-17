@@ -2,13 +2,14 @@ import React from 'react';
 import styles from './upload-code-toolbar.css';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import runIcon from './run-icon.svg'; // 引入图片
-
+import runIcon from './run-icon.svg'; // 运行图片
+import downIcon from './down-icon.svg'; // 下载图片
 import codeModule from '../../../../../utils/global.js'
 
 
 import fullStageIcon from '!../../lib/tw-recolor/build!./icon--full-stage.svg';
 import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg';
+import modelFullStageIcon from '!../../lib/tw-recolor/build!./icon--model-stage.svg';
 
 
 const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
@@ -17,7 +18,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
     const handleDownload = async () => {
         if(device == "Microbit"){
             let import_code = 'from microbit import *\nfrom s4s import *\n';
-            let finalCode = import_code+generatedCode;
+            let finalCode = import_code + generatedCode;
 
             //let packageList = parsePythonImports(finalCode)
             
@@ -40,7 +41,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
     const handleRun = async () => {
         if(device == "Microbit"){
             let import_code='from microbit import *\nfrom s4s import *\n';
-            const result = await window.EditorPreload.mBUsbRunCode(import_code+generatedCode);
+            const result = await window.EditorPreload.mBUsbRunCode(import_code + generatedCode);
             console.log(result) 
         }else if(device == "ESP32"){
          
@@ -55,30 +56,55 @@ const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
 
     return (
         <div className={styles.toolbar}>
-            <button
-                className={styles.iconButton}
-                onClick={handleRun}
-            >
-                <img 
-                    src={runIcon} 
-                    className={styles.iconImage}
-                />
-            </button>
+            {device && device !== "Arduino" && (
+                <button
+                    className={styles.iconButton}
+                    onClick={handleRun}
+                >
+                    <img 
+                        src={runIcon} 
+                        className={styles.iconImage}
+                    />
+                </button>
+            )}
 
-            <button
-                className={styles.iconButton}
-                onClick={handleDownload}
-            >
-                <img 
-                    src={runIcon} 
-                    className={styles.iconImage}
-                />
-            </button>
+            {device && (
+                <button
+                    className={styles.iconButton}
+                    onClick={handleDownload}
+                >
+                    <img 
+                        src={downIcon} 
+                        className={styles.iconImage}
+                    />
+                </button>
+            )}
 
             <div className={styles.rightButtons}>
                 <button
+                    className={classNames(styles.iconButton1, styles.bt0)}
+                    onClick={() => {
+                        onChangeLayout('model');
+                        setTimeout(() => {
+                            window.dispatchEvent(new Event('resize'));
+                        }, 0);
+                    }}
+                    data-active={layout === 'model'}
+                >
+                    <img
+                        className={classNames(styles.stageIcon, layout !== 'model' && styles.iconGray)}
+                        src={modelFullStageIcon()}
+                        draggable={false}
+                    />
+                </button>
+                <button
                     className={classNames(styles.iconButton1, styles.bt1)}
-                    onClick={() => onChangeLayout('split')}
+                    onClick={() => {
+                        onChangeLayout('split');
+                        setTimeout(() => {
+                            window.dispatchEvent(new Event('resize'));
+                        }, 0);
+                    }}
                     data-active={layout === 'split'}
                 >
                     <img

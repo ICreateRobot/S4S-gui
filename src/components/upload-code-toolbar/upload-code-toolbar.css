@@ -1,11 +1,19 @@
 .toolbar {
-    width: 100%;
+    position: absolute;   
+    top: 0px;
+    right: 0px;
+    padding-right:7px;
+    padding-left:2px;
+
+    width: 450px;
     box-sizing: border-box;
     height: 44px;
     display: flex;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
+    z-index: 102; /* 确保工具栏在其他元素之上 */
+
 }
 
 .iconButton {
@@ -62,8 +70,11 @@
     background: var(--looks-light-transparent);
 }
 
-.bt1{
+.bt0{
     border-radius: calc(0.5rem / 2) 0  0  calc(0.5rem / 2);
+}
+.bt1{
+    border-radius: 0;
 }
 .bt2{
     border-radius: 0 calc(0.5rem / 2) calc(0.5rem / 2) 0;
