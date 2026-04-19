@@ -260,7 +260,8 @@ const GUIComponent = props => {
     );
 
 
-    const [uploadLayout, setUploadLayout] = useState('split');//下载模式用（占比）
+    const [uploadLayout, setUploadLayout] = useState('split');//下载模式用（不同编辑模式，改变区域占比）
+    const [isLocked, setIsLocked] = useState(false);//下载模式用，锁定代码
 
 
     // 监听设备变化
@@ -726,6 +727,7 @@ const GUIComponent = props => {
                                                 extensionName={extensionName}
                                                 isActive = {isSearchActive}
                                                 setisSearchActive = {setisSearchActive}
+                                                isLocked = {isLocked}
                                             />
 
                                             {/* <BlocksDownload
@@ -777,14 +779,14 @@ const GUIComponent = props => {
                                     )}
                                 </Tabs>
                             </Box>
-                            <UploadCodeToolbar device={extensionName} layout={uploadLayout} onChangeLayout={setUploadLayout} />
+                            <UploadCodeToolbar device={extensionName} layout={uploadLayout} onChangeLayout={setUploadLayout} isLocked={isLocked} onToggleLock={() => setIsLocked(prev => !prev)} vm={vm}/>
                             <Box className={classNames(styles.stageAndTargetWrapper, 
                                     styles.uploadStageColumn, 
                                     uploadLayout === 'full' && styles.fullWidth,
                                     uploadLayout === 'model' && styles.modelWidth )} 
                                 style={{ paddingTop: '44px' }}>
 
-                                <CodeMirrorComponent  theme = { theme }/>
+                                <CodeMirrorComponent  theme = { theme } device={extensionName}/>
                                 {/* 监视器 */}
                                 <TabSwitcher serialData={data} device={extensionName}/>
                             </Box>

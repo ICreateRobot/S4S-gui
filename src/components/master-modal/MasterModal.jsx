@@ -58,6 +58,7 @@ class MasterModal extends React.Component {
 
     vm.runtime.currentDevice = deviceName; // 通知扩展
     //vm.runtime.emit('DEVICE_CHANGED', deviceName);
+    window.forceGenerateCode?.();//模拟一次事件，强制更新代码
 
     this.props.onRequestClose();//关闭当前窗口
     //打开新窗口(功能待定)

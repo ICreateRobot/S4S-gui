@@ -4,6 +4,15 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import runIcon from './run-icon.svg'; // 运行图片
 import downIcon from './down-icon.svg'; // 下载图片
+
+import lockIcon from './padlock.svg'; // 锁定图片
+import unlockIcon from './padlock-unlock.svg'; // 解锁图片
+
+import exportIcon from './export.svg'; // 导出图片
+
+import formatMessage  from 'format-message';
+
+
 import codeModule from '../../../../../utils/global.js'
 
 
@@ -12,19 +21,15 @@ import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg'
 import modelFullStageIcon from '!../../lib/tw-recolor/build!./icon--model-stage.svg';
 
 
-const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
+const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked,onToggleLock,vm }) => {
 
     //下载
     const handleDownload = async () => {
         if(device == "Microbit"){
-            let import_code = 'from microbit import *\nfrom s4s import *\n';
-            let finalCode = import_code + generatedCode;
-
             //let packageList = parsePythonImports(finalCode)
-            
             //console.log(packageList)
 
-            const result = await window.EditorPreload.usbdownloadCode( finalCode);
+            const result = await window.EditorPreload.usbdownloadCode( generatedCode);
             console.log(result) 
         }else if(device == "ESP32"){
          
@@ -40,8 +45,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
     //运行(不持久化)
     const handleRun = async () => {
         if(device == "Microbit"){
-            let import_code='from microbit import *\nfrom s4s import *\n';
-            const result = await window.EditorPreload.mBUsbRunCode(import_code + generatedCode);
+            const result = await window.EditorPreload.mBUsbRunCode( generatedCode);
             console.log(result) 
         }else if(device == "ESP32"){
          
@@ -52,10 +56,89 @@ const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
         }
     };
 
+    //锁定/解锁
+    const handleLock = async () => {
+        if(isLocked && device){
+            const result = confirm(formatMessage({
+                id: 'gui.alert.confirmUnlock',
+                defaultMessage: 'Unlocking will discard unsaved code. Continue?',//"解除锁定将丢失未保存代码，是否继续？"
+            }));
+
+            if (!result) return;
+
+            //模拟一次事件，强制更新代码
+            window.forceGenerateCode?.();
+
+            // 用户确认后再提示是否保存
+            // const needSave = confirm("是否需要先导出代码？");
+
+            // if (needSave) {
+            //     handleExport();
+            // }
+        }
+        onToggleLock();
+    };
+
+    //导出
+    const handleExport = async () => {
+        if (!device)  return; // 没有选中设备时不导出
+
+        let code = generatedCode || "";
+        let fileName = "";
+
+        // 根据设备处理代码
+        if (device === "Microbit" || device === "ESP32") {
+            const import_code = 'from microbit import *\nfrom s4s import *\n';
+            code = import_code + code;
+            fileName = device+".py";
+        } else if (device === "Arduino") {
+            const import_code = '#include "Arduino.h"\n';
+            code = import_code + code;
+            fileName = device+".ino";
+        }
+
+        // 创建文件
+        const blob = new Blob([code], { type: "text/plain;charset=utf-8;" });
+
+        // 创建下载链接
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+
+        //showToast("导出成功:"+fileName);//突然不想加这个提示功能了，麻烦
+    };
+
+
+    // 警告窗口（未来有时间统一）
+    const showToast = (msg) => {
+        const t = document.createElement("div");
+        Object.assign(t.style, {
+        position: "fixed",
+        top: "20px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        backgroundColor: "#333",
+        color: "#fff",
+        padding: "8px 14px",
+        borderRadius: "6px",
+        zIndex: 9999,
+        });
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
+    };
     
 
     return (
         <div className={styles.toolbar}>
+
+            {/* 运行与下载 */}
             {device && device !== "Arduino" && (
                 <button
                     className={styles.iconButton}
@@ -79,8 +162,35 @@ const UploadCodeToolbar = ({ generatedCode,device,layout, onChangeLayout }) => {
                     />
                 </button>
             )}
-
+            
             <div className={styles.rightButtons}>
+
+                {/* 锁定按钮 */}
+                <button
+                    className={classNames(styles.iconButton1, styles.lockBtn)}
+                    onClick={handleLock}
+                    data-active={isLocked}
+                >
+                    <img
+                        className={styles.stageIcon_lock}
+                        src={isLocked ? lockIcon : unlockIcon}
+                        draggable={false}
+                    />
+                </button>
+
+                {/* 导出按钮 */}
+                <button
+                    className={classNames(styles.iconButton1, styles.lockBtn)}
+                    onClick={handleExport}
+                >
+                    <img
+                        className={styles.stageIcon_export}
+                        src={exportIcon}
+                        draggable={false}
+                    />
+                </button>
+
+                {/* 布局模式按钮 */}
                 <button
                     className={classNames(styles.iconButton1, styles.bt0)}
                     onClick={() => {

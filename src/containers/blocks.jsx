@@ -344,6 +344,11 @@ class Blocks extends React.Component {
             else if(type == 'search'){ this.searchBlock(value);}
         };
         if (this.props.isActive) { this.hideSearchFlyout(); }//初始化时强行关闭搜索框
+
+        //全局强制生成代码方法（致命，未来优化）
+        if (!window.forceGenerateCode) {
+            window.forceGenerateCode = () => { this.workspaceToCode({ type: 'change' })};
+        }
     }
     
 
@@ -435,6 +440,7 @@ class Blocks extends React.Component {
 
         // 清理全局用法
         delete window.BlocksSearch;
+        delete window.forceGenerateCode;
     }
     requestToolboxUpdate () {
         clearTimeout(this.toolboxUpdateTimeout);
@@ -700,7 +706,6 @@ class Blocks extends React.Component {
             let existedEventBlock = blocks.find(b => b.type === 'event_when');// 查找 event_when 模块
             if (existedEventBlock) {//存在
                 existedEventBlock.setDeletable(false);//设置为不可删除
-                this.workspaceToCode({type: 'endDrag'})
             } else {// 不存在
                 const block = this.workspace.newBlock('event_when');
                 block.initSvg();
@@ -708,6 +713,7 @@ class Blocks extends React.Component {
                 block.moveBy(200, 100);
                 block.setDeletable(false);
             }
+            this.workspaceToCode({type: 'change'});//强制生成代码
             // const block = this.workspace.newBlock('event_when');
             // block.initSvg();
             // block.render();
@@ -882,10 +888,15 @@ class Blocks extends React.Component {
     }
 
 
+
     //* 新增的 */
     //大大的有用（事件检测，生成代码相关）
     workspaceToCode (event) {
         console.log(event.type)
+        const importCode = {"Microbit": "from microbit import *\nfrom s4s import *\n",
+            "Arduino": '\n',
+            "Esp32": '\n'
+        };
         if(event.type == 'endDrag' || event.type == 'change'){//拖拽结束或内容变化
             let code;
             //防抖，避免卡顿
@@ -906,7 +917,13 @@ class Blocks extends React.Component {
                     const generator = this.ScratchBlocks[generatorName];
                     if (!generator) return;
 
+                    if  (this.props.isLocked) return;//如果锁定了就不生成代码
+
                     code = generator.workspaceToCode(this.workspace);
+
+                    let importStr = importCode[this.props.extensionName] || '';
+                    code = importStr + code;
+
                     console.log(code)
                     // this.props.setGeneratedCode(this.unindentCode(code));  
                     this.props.setGeneratedCode( code );  

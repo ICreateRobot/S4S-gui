@@ -1,4 +1,4 @@
-// 代码编辑器（互动模式）
+// 代码编辑器（下载模式）
 import React, { useRef } from 'react';
 
 import CodeMirror from '@uiw/react-codemirror';
@@ -9,9 +9,11 @@ import { oneDark } from '@codemirror/theme-one-dark';
 
 import { connect } from 'react-redux';
 import { setGeneratedCode } from 'scratch-gui/src/reducers/sun';
+import { FormattedMessage } from "react-intl";
 
 
-const CodeMirrorComponent = ({ generatedCode,onCodeChange ,theme }) => {
+
+const CodeMirrorComponent = ({ generatedCode,onCodeChange ,theme,device }) => {
     const codeMirrorRef = useRef(null);
     
     // 是否暗色
@@ -38,6 +40,7 @@ const CodeMirrorComponent = ({ generatedCode,onCodeChange ,theme }) => {
 
     return (
         <div style={{ 
+             position: 'relative', 
             border: '1px solid var(--ui-black-transparent)', 
             backgroundColor: 'var(--editor-bg)', 
             padding: '10px',
@@ -72,6 +75,31 @@ const CodeMirrorComponent = ({ generatedCode,onCodeChange ,theme }) => {
                     border: 'none'
                 }}
             />
+
+            {!device && (
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'var(--editor-bg)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 10,
+                    borderRadius: '10px',
+                    fontSize: '16px',
+                    color: '#666',
+                    fontWeight: 'bold'
+                }}>
+
+                    <FormattedMessage
+                        defaultMessage="Please select a device."
+                        id="gui.codeEditor.selectDevice"/>
+                    
+                </div>
+            )}
         </div>  
     );
 };

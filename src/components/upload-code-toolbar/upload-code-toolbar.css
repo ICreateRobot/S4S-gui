@@ -86,7 +86,27 @@
     object-fit: contain;
 }
 
+.stageIcon_lock{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+.stageIcon_export{
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+
 /* 仅未选中态 */
 .iconGray {
     filter: var(--filter-icon-gray);
+}
+
+
+
+/* 锁 */
+.lockBtn {
+    margin-right: 6px;   /* 👈 和模式按钮拉开 */
+    border-radius: calc(0.5rem / 2);
 }
