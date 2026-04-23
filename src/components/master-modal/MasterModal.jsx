@@ -46,10 +46,10 @@ class MasterModal extends React.Component {
   // 选择设备
   async selectDevice(index) {
     const deviceName = devices[index].name;
-    if (deviceName == 'ESP32'){
-      alert("暂不支持")
-      return
-    }
+    // if (deviceName == 'ESP32'){
+    //   alert("暂不支持")
+    //   return
+    // }
     if(this.props.selectedDevice === deviceName) return
     console.log("当前",this.props.selectedDevice,"点击",deviceName)
 
