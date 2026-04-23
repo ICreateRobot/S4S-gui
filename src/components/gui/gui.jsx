@@ -679,7 +679,7 @@ const GUIComponent = props => {
                                                 id="gui.gui.codeTab"
                                             />
                                         </Tab>
-                                        {/* {extensionName === 'ESP32' && ( */}
+                                        {extensionName === 'ESP32' && (
                                             <Tab  className={tabClassNames.tab}>
                                                 <img
                                                     draggable={false}
@@ -691,8 +691,8 @@ const GUIComponent = props => {
                                                     id="gui.gui.uieditorTab"
                                                 />
                                             </Tab>
-                                        {/* )} */}
-                                        {(extensionName === 'ESP32' || extensionName === 'Arduino') && (
+                                        )} 
+                                        {(extensionName === 'ESP32') && (
                                             <Tab className={tabClassNames.tab} >
                                                 <img
                                                     draggable={false}

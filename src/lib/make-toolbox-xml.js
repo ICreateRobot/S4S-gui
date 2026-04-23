@@ -519,7 +519,14 @@ const control = function (isInitialSetup, isStage, targetId, colors,mode) {
             }
             ${categorySeparator}
 
-            <block type="control_for_loop">
+            
+        </category>
+        `;
+    }
+    
+};
+
+{/* <block type="control_for_loop">
                 <value name="FROM">
                     <shadow type="math_number">
                         <field name="NUM">1</field>
@@ -535,12 +542,7 @@ const control = function (isInitialSetup, isStage, targetId, colors,mode) {
                         <field name="NUM">1</field>
                     </shadow>
                 </value>
-            </block>
-        </category>
-        `;
-    }
-    
-};
+            </block> */}
 
 const sensing = function (isInitialSetup, isStage, targetId, colors) {
     const name = translate('SENSING_ASK_TEXT', 'What\'s your name?');

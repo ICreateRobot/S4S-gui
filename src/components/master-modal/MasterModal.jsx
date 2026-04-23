@@ -34,30 +34,38 @@ const categoryMap = {
 
 class MasterModal extends React.Component {
   constructor(props) {
-    super(props);
-    //指向组件实例
-    this.selectDevice = this.selectDevice.bind(this);
-    this.deselectDevice = this.deselectDevice.bind(this);
-    this.handledata = this.handledata.bind(this);
-    this.addExtensions = this.addExtensions.bind(this);
-    this.removeExtensions = this.removeExtensions.bind(this);
+      super(props);
+      //指向组件实例
+      this.selectDevice = this.selectDevice.bind(this);
+      this.deselectDevice = this.deselectDevice.bind(this);
+      this.handledata = this.handledata.bind(this);
+      this.addExtensions = this.addExtensions.bind(this);
+      this.removeExtensions = this.removeExtensions.bind(this);
   }
 
   // 选择设备
   async selectDevice(index) {
     const deviceName = devices[index].name;
-    // if (deviceName == 'ESP32'){
-    //   alert("暂不支持")
-    //   return
-    // }
+    if (deviceName == 'ESP32'){
+      alert("暂不支持")
+      return
+    }
     if(this.props.selectedDevice === deviceName) return
     console.log("当前",this.props.selectedDevice,"点击",deviceName)
 
+    if(this.props.selectedDevice){//如果已经有设备了，需要进行提示
+        const result = confirm("切换设备将丢失未保存的项目，是否继续？");
+        if (!result) return;
+    }
+    //
+
+    //执行切换
     await this.handledata('open', deviceName);
     this.props.setSelectedDevice(deviceName)
 
     vm.runtime.currentDevice = deviceName; // 通知扩展
     //vm.runtime.emit('DEVICE_CHANGED', deviceName);
+    
     window.forceGenerateCode?.();//模拟一次事件，强制更新代码
 
     this.props.onRequestClose();//关闭当前窗口

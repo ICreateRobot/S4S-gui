@@ -88,12 +88,8 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
 
         // 根据设备处理代码
         if (device === "Microbit" || device === "ESP32") {
-            const import_code = 'from microbit import *\nfrom s4s import *\n';
-            code = import_code + code;
             fileName = device+".py";
         } else if (device === "Arduino") {
-            const import_code = '#include "Arduino.h"\n';
-            code = import_code + code;
             fileName = device+".ino";
         }
 
