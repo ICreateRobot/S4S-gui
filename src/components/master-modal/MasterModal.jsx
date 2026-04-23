@@ -24,7 +24,7 @@ const categoryMap = {
       'ArduinoS4S'
   ],
   ESP32: [
-      'robotmove'
+      'Esp32S4S'
   ],
   Microbit: [
       'MicrobitIcreate'
