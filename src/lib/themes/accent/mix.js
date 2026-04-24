@@ -15,7 +15,7 @@ const guiColors = {
 
 
     // 'menu-bar-background-image': 'linear-gradient(90deg, #70ded9, #ab75ed, #418dea)',//顶部
-    'menu-bar-background-image': 'linear-gradient(90deg, #70ded9 0%, #ab75ed 45%, #418dea 100%)',
+    'menu-bar-background-image': 'linear-gradient(90deg, #317EDB 0%, #A764E8 45%, #55DAD1 100%)',
     'ic-main': '#418dea',//当前项目主颜色
     'ic-main-light': '#76aeff',//当前项目主颜色--浅色
     'ic-main-light-very': '#d2e2ff',//当前项目主颜色--更浅色
