@@ -679,7 +679,7 @@ const GUIComponent = props => {
                                                 id="gui.gui.codeTab"
                                             />
                                         </Tab>
-                                        {extensionName === 'ESP32' && (
+                                        {/* {extensionName === 'ESP32' && ( */}
                                             <Tab  className={tabClassNames.tab}>
                                                 <img
                                                     draggable={false}
@@ -691,8 +691,8 @@ const GUIComponent = props => {
                                                     id="gui.gui.uieditorTab"
                                                 />
                                             </Tab>
-                                        )} 
-                                        {(extensionName === 'ESP32') && (
+                                        {/* )}  */}
+                                        {/* {(extensionName === 'ESP32') && (
                                             <Tab className={tabClassNames.tab} >
                                                 <img
                                                     draggable={false}
@@ -704,7 +704,7 @@ const GUIComponent = props => {
                                                     id="gui.gui.iotTab"
                                                 />
                                             </Tab>
-                                        )}
+                                        )} */}
                                         
                                     </TabList>
 
@@ -772,11 +772,11 @@ const GUIComponent = props => {
                                         </TabPanel>
                                     {/* )} */}
 
-                                    {(extensionName === 'ESP32' || extensionName === 'Arduino') && (
+                                    {/* {(extensionName === 'ESP32' || extensionName === 'Arduino') && (
                                         <TabPanel className={tabClassNames.tabPanel}>
                                             <div >IOT</div>
                                         </TabPanel>
-                                    )}
+                                    )} */}
                                 </Tabs>
                             </Box>
                             <UploadCodeToolbar device={extensionName} layout={uploadLayout} onChangeLayout={setUploadLayout} isLocked={isLocked} onToggleLock={() => setIsLocked(prev => !prev)} vm={vm}/>

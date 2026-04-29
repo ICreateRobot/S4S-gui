@@ -1,0 +1,72 @@
+.componentPanelContainer {
+    width: 50px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-right: 1px solid #ffe4e6;
+}
+
+.componentLibrary {
+    /* height: 100vh; */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.componentList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+    min-height: 0;
+    overflow-y: auto;
+
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE/Edge 旧版 */
+    -ms-overflow-style: none;
+}
+
+/* Webkit 浏览器（Chrome/Safari/Edge）- 使用 :global() 绕过 CSS Modules 作用域 */
+.componentList :global(::-webkit-scrollbar) {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+}
+
+
+
+
+
+.componentItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 5px;
+    background-color: #fdfdfd;
+    border-radius: 4px;
+    cursor: grab;
+    transition: background-color 0.2s;
+}
+
+.componentItem:hover {
+    background-color: #ffe4e6;
+}
+
+.componentItem:active {
+    cursor: grabbing;
+}
+
+.componentSvgIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.componentName {
+    font-size: 10px;
+    color: #8A8888;
+}

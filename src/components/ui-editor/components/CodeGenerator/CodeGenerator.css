@@ -1,0 +1,48 @@
+.code-generator {
+    background-color: #1e272e;
+    border-top: 1px solid #34495e;
+    flex-shrink: 0;
+    max-height: 300px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    /* user-select: text !important; */
+}
+
+.code-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #1e272e;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.python-code {
+    margin: 0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 10px;
+    line-height: 1.2;
+    color: #dcdde1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.python-code code {
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+
+}
+

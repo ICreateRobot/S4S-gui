@@ -61,17 +61,13 @@ import { setGeneratedCode } from '../reducers/sun';//设置生成的code
 
 // 旧机制，根据设备加载扩展
 const categoryMap = {
-    Arduino: [
-        'ArduinoS4S'
-    ],
-    ESP32: [
-        'Esp32S4S'
-    ],
+    Arduino: [ 'ArduinoS4S' ],
+    ESP32: [  'Esp32S4S',"UIEditor"  ],
     Microbit: [ 'MicrobitIcreate' ]
 };
 
 //可以一直存在的扩展
-const keepList = ['MicrobitIcreate', 'ArduinoS4S', 'ICreateK210','LinkBot','LinkBotActuators','LinkBotSensors','LinkBotPower','Esp32S4S'];
+const keepList = ['MicrobitIcreate', 'ArduinoS4S', 'ICreateK210','LinkBot','LinkBotActuators','LinkBotSensors','LinkBotPower','Esp32S4S',"UIEditor"];
 
 
 // TW: Strings we add to scratch-blocks are localized here

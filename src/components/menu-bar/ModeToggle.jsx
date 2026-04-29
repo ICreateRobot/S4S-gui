@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-// import {FormattedMessage} from 'react-intl';
 import formatMessage  from 'format-message';
+import React, { useEffect } from 'react';
 
 import { connect} from 'react-redux';
 import { setSelectedMode } from '../../reducers/sun';
@@ -19,6 +18,12 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
         { id: 'upload', icon: uploadImg,label:'下载'},
         { id: 'python', icon: pythonImg,label:'Python'}
     ];
+
+    useEffect(() => {
+        if (value) {
+            vm.runtime.runMode = value;
+        }
+    }, []);
 
     const getLeftPosition = () => {
         if (value === 'interactive') return '3px';
@@ -76,6 +81,8 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
         setIsLoading(false);
             
         if (newMode === 'python') return//下面的与python无关了
+
+        vm.runtime.runMode = newMode; // 通知扩展
 
         if (newMode === 'interactive'){//切换到互动模式
             if(device === 'Microbit'){//应该还会判断是否连接，但是不管了,放主进程了

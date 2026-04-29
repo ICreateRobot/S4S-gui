@@ -24,7 +24,7 @@ const categoryMap = {
       'ArduinoS4S'
   ],
   ESP32: [
-      'Esp32S4S'
+      'Esp32S4S',"UIEditor"
   ],
   Microbit: [
       'MicrobitIcreate'

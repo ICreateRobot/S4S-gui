@@ -1,0 +1,534 @@
+.editor {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    background-color: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+    padding: 10px;
+    padding-left: 0;
+    padding-top: 2px;
+    padding-right: 0;
+     
+}
+
+.editorRightPanel {
+    min-width: 480px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.editorContent {
+    height: 550px;
+    padding: 20px;
+    overflow: hidden;
+    border: dashed #f3d0d0;
+    border-radius: 15px;
+    background-color: #FDF1F1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editorToolbar1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.editorToolbar1 img {
+    -webkit-user-drag: none;
+}
+
+.editorToolbar {
+    display: flex;
+    gap: 8px;
+    padding: 13px;
+padding-left: 0;
+    padding-right: 0;
+    background-color: #FDFDFD;
+    border-radius: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+    min-height: 60px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.alignmentButtons,
+.guideControls,
+.clearButton1 {
+    display: flex;
+    gap: 4px;
+    /* margin-left: 8px; */
+    background-color: #FDFDFD;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px dashed #F17E87;
+}
+
+.runBox .toolbarBtn1 {
+    /* width: 82px; */
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.runButton1 {
+    width: 50px;
+    height: 46px;
+}
+
+.toolbarBtn {
+    width: 30px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.toolbarIcon {
+    width: 25px;
+    height: 30px;
+    object-fit: contain;
+    transition: all 0.2s ease;
+}
+
+.toolbarBtn:hover:not(:disabled) {
+    background-color: #FFE4E6;
+    border-color: #F8AFAF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.toolbarBtn:hover:not(:disabled) .toolbarIcon {
+    filter: brightness(0) saturate(100%) invert(30%) sepia(90%) saturate(1352%) hue-rotate(336deg) brightness(90%) contrast(90%);
+    transform: scale(1.1);
+}
+
+.toolbarBtn:active:not(:disabled) {
+    transform: translateY(0);
+    background-color: #F8AFAF;
+    transition: all 0.1s ease;
+}
+
+.toolbarBtn:active:not(:disabled) .toolbarIcon {
+    transform: scale(0.95);
+}
+
+.toolbarBtn:disabled {
+    background-color: #F8F8F8;
+    border-color: #E8E8E8;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.toolbarBtn:disabled .toolbarIcon {
+    filter: brightness(0) saturate(100%) invert(80%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(80%);
+}
+
+.phoneContainer {
+    position: relative;
+    width: 467px;
+    height: 440px;
+}
+
+.phoneImage {
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/editor-bg.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.phoneScreen {
+    position: absolute;
+    top: 63px;
+    left: 75px;
+    width: 320px;
+    height: 240px;
+    background-color: black;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.phoneScreen * {
+    caret-color: transparent !important;
+    user-select: none !important;
+}
+
+.phoneScreen.showGrid {
+    background-image:
+        linear-gradient(rgba(52, 152, 219, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 152, 219, 0.2) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.phoneScreen.selected {
+    box-shadow: 0 0 0 2px #3498db,
+        0 0 20px rgba(52, 152, 219, 0.5);
+    border-radius: 8px;
+}
+
+/* 关键：确保react-grid-layout相关类名在全局作用域 */
+:global(.react-grid-layout) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+:global(.react-grid-item) {
+    transition: all 0.2s ease;
+    pointer-events: auto !important;
+    touch-action: none;
+}
+
+:global(.react-grid-item.cssTransforms) {
+    transition-property: transform;
+}
+
+:global(.react-grid-item.resizing) {
+    z-index: 1000 !important;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+:global(.react-grid-item.react-draggable-dragging) {
+    transition: none;
+    z-index: 1000 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    cursor: grabbing !important;
+}
+
+/* 关键：grid-item 需要在全局作用域 */
+:global(.grid-item) {
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    pointer-events: auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    transition: all 0.2s ease;
+}
+
+/* 这里使用模块化的样式增强grid-item */
+.gridItem {
+    composes: global(grid-item);
+}
+
+:global(.grid-item:hover) {
+    border: 1px dashed rgba(52, 152, 219, 0.5);
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.gridItem.selected {
+    border: 1px solid #3498db !important;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+    background-color: rgba(52, 152, 219, 0.1);
+    z-index: 10 !important;
+}
+
+/* 特殊组件样式 */
+.titleStatic {
+    composes: global(grid-item);
+    cursor: default !important;
+}
+
+:global(.title-static .react-resizable-handle) {
+    display: none !important;
+}
+
+.lineComponent {
+    border: none !important;
+    background-color: transparent !important;
+    /* transition: all 0.1s ease !important; */
+}
+
+.lineComponent:hover {
+    border: 2px dashed rgba(52, 152, 219, 0.5) !important;
+    background-color: transparent !important;
+}
+
+.lineComponent.selected {
+    border: 2px solid #3498db !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 注意这里有空格 */
+:global(.react-grid-item.lineComponent .react-resizable-handle),
+:global(.react-grid-item.lineComponent.selected .react-resizable-handle),
+:global(.react-grid-item.lineComponent:hover .react-resizable-handle),
+:global(.react-grid-item.lineComponent.selected:hover .react-resizable-handle) {
+    display: none !important;
+    opacity: 0 !important;
+}
+/* 组件渲染器容器 */
+.componentRenderer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.componentTitle,
+.componentLabel,
+.componentText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    text-align: center;
+    word-break: break-word;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.componentButton {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    pointer-events: none;
+}
+
+.componentButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.componentButton.pressed {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.componentSwitch {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.componentSlider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.componentSlider input {
+    width: 100%;
+    pointer-events: none;
+}
+
+.componentRectangle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.componentLineContainer {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.componentLineContainer svg {
+    pointer-events: none;
+    transition: transform 0.1s ease;
+}
+
+/* 调整大小手柄 */
+:global(.react-resizable-handle) {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    bottom: 0;
+    right: 0;
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2IDYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iNnB4Ij48cGF0aCBkPSJNIDYgNiBMIDAgNiBMIDAgNC4yIEwgNCA0LjIgTCA0LjIgNC4yIEwgNC4yIDAgTCA2IDAgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPjwvc3ZnPg==') no-repeat;
+    background-position: bottom right;
+    padding: 0;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    box-sizing: border-box;
+    cursor: se-resize;
+    z-index: 10;
+    pointer-events: auto;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+:global(.react-grid-item.selected .react-resizable-handle),
+:global(.react-grid-item:hover .react-resizable-handle) {
+    opacity: 1;
+}
+
+:global(.react-grid-item.resizing .react-resizable-handle),
+:global(.react-grid-item.react-draggable-dragging .react-resizable-handle) {
+    opacity: 1;
+}
+
+/* 辅助线样式 */
+.guide {
+    position: absolute;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+.guide.vertical {
+    width: 1px;
+    height: 100%;
+    background-color: #ff0000;
+    border-left: 1px dashed #ff0000;
+    cursor: move;
+}
+
+.guide.horizontal {
+    height: 1px;
+    width: 100%;
+    background-color: #ff0000;
+    border-top: 1px dashed #ff0000;
+    cursor: move;
+}
+
+.guide.active {
+    background-color: #ff6b6b;
+}
+
+.guide.vertical.active {
+    border-left: 2px solid #ff6b6b;
+}
+
+.guide.horizontal.active {
+    border-top: 2px solid #ff6b6b;
+}
+
+.guide.fixed {
+    background-color: #ff9999;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.guide.fixed.vertical {
+    border-left: 2px solid #ff9999;
+}
+
+.guide.fixed.horizontal {
+    border-top: 2px solid #ff9999;
+}
+
+.guideLabel {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 102;
+}
+
+.guide.vertical .guideLabel {
+    top: 5px;
+    left: 5px;
+}
+
+.guide.horizontal .guideLabel {
+    left: 5px;
+    top: 5px;
+}
+
+.guidePositionDisplay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.allGuidesFixed .guide {
+    cursor: not-allowed !important;
+}
+
+.allGuidesFixed .guide:not(.fixed) {
+    opacity: 0.6;
+}
+
+/* 其他样式保持不变 */
+.gridItem.lineComponent.react-draggable-dragging,
+.react-grid-item.lineComponent.react-draggable-dragging {
+    transition: none !important;
+}
+
+.gridItem.lineComponent.react-draggable-dragging .componentLineContainer svg {
+    transition: none !important;
+}
+@media (max-width:1300px) {
+    .editorContent{
+        height: 490px;
+    }
+
+    
+}

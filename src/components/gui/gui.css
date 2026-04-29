@@ -179,6 +179,7 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 .tab-panel {
@@ -189,6 +190,8 @@
 
 .tab-panel.is-selected {
     display: flex;
+    flex:1;
+    min-height: 0;
 }
 
 .blocks-wrapper {

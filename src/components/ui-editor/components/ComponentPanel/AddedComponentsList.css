@@ -1,0 +1,120 @@
+.addedComponentsList {
+   height: 100%;
+    width: 130px;
+    background-color: #FDFDFD;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.componentsContainer {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.componentItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 6px;
+    padding-right: 3px;
+    margin-bottom: 6px;
+    background-color: #FDFDFD;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.componentItem:hover {
+    background: #ffe4e6;
+}
+
+.componentItemSelected {
+    background: #ffe4e6;
+    border-color: #FFE4E6;
+}
+
+.componentInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.componentDetails {
+    flex: 1;
+    min-width: 0;
+}
+
+.componentName {
+    font-size: 12px;
+    color: #8A8888;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.componentSvgIcon {
+    width: 20px;
+    height: 20px;
+}
+
+/* 滚动条 */
+.componentsContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.componentsContainer::-webkit-scrollbar-track {
+    background: #FDFDFD;
+    border-radius: 4px;
+}
+
+.componentsContainer::-webkit-scrollbar-thumb {
+    background: #FDF1F1;
+    border-radius: 4px;
+    border: 2px solid #FDFDFD;
+}
+
+.componentsContainer::-webkit-scrollbar-thumb:hover {
+    background: #FFE4E6;
+}
+
+/* screen 组件 */
+.screenComponent {
+    border-left: 3px solid #FFE4E6 !important;
+}
+
+.screenComponentSelected {
+    border-color: #FFE4E6 !important;
+    background: #ffe4e6;
+}
+
+/* 删除按钮 */
+.deleteBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 3px;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.deleteIcon {
+    width: 16px;
+    height: 16px;
+    display: block;
+    transition: all 0.2s ease;
+}
+
+.deleteBtn:hover .deleteIcon {
+    filter: brightness(0) saturate(100%) invert(30%) sepia(90%) saturate(1352%) hue-rotate(336deg) brightness(90%) contrast(90%);
+    transform: scale(1.2);
+}
