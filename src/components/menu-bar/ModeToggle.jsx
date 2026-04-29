@@ -22,6 +22,7 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
     useEffect(() => {
         if (value) {
             vm.runtime.runMode = value;
+            vm.runtime.emit('VM_UPDATE_MODE', value);//通知扩展当前模式(主要控制模块的显示)
         }
     }, []);
 
@@ -83,7 +84,7 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
         if (newMode === 'python') return//下面的与python无关了
 
         vm.runtime.runMode = newMode; // 通知扩展
-
+        vm.runtime.emit('VM_UPDATE_MODE', newMode);//通知扩展当前模式(主要控制模块的显示)
         if (newMode === 'interactive'){//切换到互动模式
             if(device === 'Microbit'){//应该还会判断是否连接，但是不管了,放主进程了
                 window.EditorPreload.enterReplMode();//进入repl
