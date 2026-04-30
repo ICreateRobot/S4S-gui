@@ -314,7 +314,7 @@ const PropertyPanel = () => {
             { key: 'min', label: 'Min', type: 'number', min: 0 },
             { key: 'max', label: 'Max', type: 'number' },
             { key: 'value', label: 'Current Value', type: 'number', min: 0 },
-            { key: 'fillColor', label: 'Fill Color', type: 'color' }
+            { key: 'fillColor', label: 'Color', type: 'color' }
         ]
     };
 

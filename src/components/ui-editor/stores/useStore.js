@@ -65,14 +65,14 @@ const useStore = create((set, get) => ({
 
         // 设置所有组件的默认大小
         const defaultSizes = {
-            rectangle: { w: 50, h: 50 },
-            label: { w: 70, h: 30 },
+            rectangle: { w: 40, h: 40 },
+            label: { w: 80, h: 40 },
             text: { w: 80, h: 40 },
-            button: { w: 90, h: 40 },
+            button: { w: 80, h: 40 },
             switch: { w: 80, h: 40 },
             slider: { w: 100, h: 40 },
-            circle: { w: 60, h: 60 }, // 直径60（半径30）
-            triangle: { w: 80, h: 80 }, // 边长80
+            circle: { w: 40, h: 40 }, // 直径40（半径20）
+            triangle: { w: 40, h: 40 }, // 边长40
             image: { w: 70, h: 70 },
             line: { w: 100, h: 100 }
         };
@@ -930,14 +930,14 @@ const getDefaultProps = (type) => {
             index: 0
         },
         circle: {
-            radius: 30,
+            radius: 20,
             backgroundColor: '#d607fc',
             borderColor: '#990fc5',
             backgroundColorTransparent: false,
             borderColorTransparent: false,
             index: 0,
-            w: 60,
-            h: 60
+            w: 40,
+            h: 40
         },
         line: {
             x1: 100,
@@ -1009,7 +1009,7 @@ const getDefaultProps = (type) => {
             min: 0,
             max: 100,
             value: 50,
-            fillColor: '#3498db',
+            fillColor: '#ff0000',
             fillColorTransparent: false,
             index: 0
         }

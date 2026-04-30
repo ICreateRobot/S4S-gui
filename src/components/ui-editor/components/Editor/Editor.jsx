@@ -83,14 +83,14 @@ const Editor = () => {
         if (type) {
             const defaultSizes = {
                 title: { w: SCREEN_WIDTH, h: 30, x: 0, y: 0 },
-                label: { w: 70, h: 30, x: 10, y: 50 },
+                label: { w: 80, h: 40, x: 10, y: 50 },
                 text: { w: 80, h: 40, x: 10, y: 90 },
-                button: { w: 90, h: 40, x: 10, y: 160 },
+                button: { w: 80, h: 40, x: 10, y: 160 },
                 switch: { w: 80, h: 40, x: 10, y: 210 },
                 slider: { w: 100, h: 40, x: 10, y: 260 },
-                rectangle: { w: 50, h: 50, x: 10, y: 320 },
-                circle: { w: 60, h: 60, x: 10, y: 410 },
-                triangle: { w: 80, h: 80, x: 10, y: 480, points: "50,10 90,90 10,90" },
+                rectangle: { w: 40, h: 40, x: 10, y: 320 },
+                circle: { w: 40, h: 40, x: 10, y: 410 },
+                triangle: { w: 40, h: 40, x: 10, y: 480, points: "50,10 90,90 10,90" },
                 line: {
                     w: 100,
                     h: 100,
