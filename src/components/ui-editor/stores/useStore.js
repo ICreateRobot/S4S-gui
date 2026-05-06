@@ -33,7 +33,7 @@ const useStore = create((set, get) => ({
         if (type === 'title') {
             const existingTitle = components.find(comp => comp.type === 'title');
             if (existingTitle) {
-                alert('只能添加一个 Title 组件');
+                //alert('只能添加一个 Title 组件');
                 return existingTitle;
             }
 
@@ -160,6 +160,8 @@ const useStore = create((set, get) => ({
             get().notifyVM_UpdateUI(id,updates.name);//vm通知更新组件名称
         }
 
+        console.log(updates);
+
         set(state => {
             const updatedComponents = state.components.map(comp => {
                 if (comp.id === id) {
@@ -221,6 +223,11 @@ const useStore = create((set, get) => ({
                         newComp.h = side;
                         newComp.sideLength = side;
                     }
+
+                    // // 如果是图片地址改变，则不更新
+                    // if (newComp.type === 'image' || updates.src !== undefined) {
+                         
+                    // }
 
                     return newComp;
                 }
@@ -890,7 +897,7 @@ function getComponentPythonCode(component) {
             return `Screen.Slider(${x}, ${y}, ${width}, ${height}, ${index}, ${sliderMin}, ${sliderMax}, ${sliderValue}, ${convertColor(sliderFillColor)}, ${convertBool(isTransparent('fillColor'))})`;
 
         case 'image':
-            const imageSrc = component.src || '';
+            const imageSrc = '';
             return `Screen.Image(${x}, ${y}, ${width}, ${height}, ${index}, "${imageSrc}")`;
 
         default:

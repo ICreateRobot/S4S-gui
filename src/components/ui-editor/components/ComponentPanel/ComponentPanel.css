@@ -3,8 +3,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: white;
-    border-right: 1px solid #ffe4e6;
+    background-color: var(--editor-bg);
+    border-right: 1px solid var(--ui-black-transparent);
 }
 
 .componentLibrary {
@@ -47,14 +47,14 @@
     align-items: center;
     gap: 3px;
     padding: 5px;
-    background-color: #fdfdfd;
+    background-color: var(--editor-bg);
     border-radius: 4px;
     cursor: grab;
     transition: background-color 0.2s;
 }
 
 .componentItem:hover {
-    background-color: #ffe4e6;
+    background-color: var(--ic-main-light-very);
 }
 
 .componentItem:active {

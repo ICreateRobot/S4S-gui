@@ -22,7 +22,7 @@ const componentTypes = [
     { type: 'circle', name: 'circle', icon: circleIcon },
     { type: 'line', name: 'line', icon: lineIcon },
     { type: 'image', name: 'image', icon: imageIcon },
-    { type: 'text', name: 'text', icon: textIcon },
+    // { type: 'text', name: 'text', icon: textIcon },
     { type: 'button', name: 'button', icon: buttonIcon },
     { type: 'switch', name: 'switch', icon: switchIcon },
     { type: 'slider', name: 'slider', icon: sliderIcon },

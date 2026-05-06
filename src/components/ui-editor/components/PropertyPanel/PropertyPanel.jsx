@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../../stores/useStore.js';
-import CodeGenerator from '../CodeGenerator/CodeGenerator.jsx';
+//import CodeGenerator from '../CodeGenerator/CodeGenerator.jsx';
 import styles from './PropertyPanel.css';
 
 const PropertyPanel = () => {
@@ -160,19 +160,17 @@ const PropertyPanel = () => {
     const renderScreenBackgroundSettings = () => {
         return (
             <div className={styles.propertyPanel}>
-                <h3>Property</h3>
+                <div className={styles.header}>Property</div>
+
                 <div className={styles.propertyContent}>
-                    <div className={styles.screenBackgroundSection}>
-                        {/* <h4>Screen Background</h4> */}
-                        <div className={styles.propertyField}>
-                            <label>Background Color:</label>
-                            <div className={styles.colorInputWrapper}>
-                                <input
-                                    type="color"
-                                    value={screenBackgroundColor || '#000000'}
-                                    onChange={(e) => handleScreenBackgroundChange(e.target.value)}
-                                />
-                            </div>
+                    <div className={styles.propertyField}>
+                        <label>Background:</label>
+                        <div className={styles.colorInputWrapper}>
+                            <input
+                                type="color"
+                                value={screenBackgroundColor || '#000000'}
+                                onChange={(e) => handleScreenBackgroundChange(e.target.value)}
+                            />
                         </div>
                     </div>
                 </div>
@@ -230,7 +228,7 @@ const PropertyPanel = () => {
         title: [
             { key: 'text', label: 'Text', type: 'text' },
             { key: 'color', label: 'Color', type: 'color' },
-            { key: 'backgroundColor', label: 'Background Color', type: 'color' },
+            { key: 'backgroundColor', label: 'Background', type: 'color' },
             {
                 key: 'fontSize', label: 'Font Size', type: 'select', options: [
                     { value: 12, label: 'Small' },
@@ -242,7 +240,7 @@ const PropertyPanel = () => {
         label: [
             { key: 'text', label: 'Text', type: 'text' },
             { key: 'color', label: 'Color', type: 'color' },
-            { key: 'backgroundColor', label: 'Background Color', type: 'color' },
+            { key: 'backgroundColor', label: 'Background', type: 'color' },
             {
                 key: 'fontSize', label: 'Font Size', type: 'select', options: [
                     { value: 12, label: 'Small' },
@@ -252,20 +250,20 @@ const PropertyPanel = () => {
             },
         ],
         rectangle: [
-            { key: 'backgroundColor', label: 'Background Color', type: 'color' },
-            { key: 'borderColor', label: 'Border Color', type: 'color' }
+            { key: 'backgroundColor', label: 'Background', type: 'color' },
+            { key: 'borderColor', label: 'Border', type: 'color' }
         ],
         circle: [
             { key: 'radius', label: 'Radius', type: 'number', min: 10, max: 120, step: 1 },
-            { key: 'backgroundColor', label: 'Background Color', type: 'color' },
-            { key: 'borderColor', label: 'Border Color', type: 'color' },
+            { key: 'backgroundColor', label: 'Background', type: 'color' },
+            { key: 'borderColor', label: 'Border', type: 'color' },
         ],
         line: [
             { key: 'x2', label: 'x1', type: 'number', min: 0, max: 320, step: 1 },
             { key: 'y2', label: 'y1', type: 'number', min: 0, max: 240, step: 1 },
             { key: 'x1', label: 'x2', type: 'number', min: 0, max: 320, step: 1 },
             { key: 'y1', label: 'y2', type: 'number', min: 0, max: 240, step: 1 },
-            { key: 'strokeColor', label: 'Line Color', type: 'color' },
+            { key: 'strokeColor', label: 'Color', type: 'color' },
         ],
         triangle: [
             { key: 'sideLength', label: 'Side Length', type: 'number', min: 20, max: 300, step: 1 },
@@ -280,22 +278,22 @@ const PropertyPanel = () => {
             { key: 'borderWidth', label: 'Border Width', type: 'number', min: 0, max: 20 }
         ],
         image: [
-            { key: 'src', label: 'Image Path', type: 'text' }
+            { key: 'src', label: 'Path', type: 'text' }
         ],
-        text: [
-            { key: 'text', label: 'Text Content', type: 'text' },
-            {
-                key: 'fontSize', label: 'Font Size', type: 'select', options: [
-                    { value: 12, label: 'Small' },
-                    { value: 14, label: 'Medium' },
-                    { value: 16, label: 'Large' }
-                ], defaultValue: 14
-            },
-            { key: 'color', label: 'Text Color', type: 'color' },
-            { key: 'backgroundColor', label: 'Background Color', type: 'color' },
-        ],
+        // text: [
+        //     { key: 'text', label: 'Text Content', type: 'text' },
+        //     {
+        //         key: 'fontSize', label: 'FontSize', type: 'select', options: [
+        //             { value: 12, label: 'Small' },
+        //             { value: 14, label: 'Medium' },
+        //             { value: 16, label: 'Large' }
+        //         ], defaultValue: 14
+        //     },
+        //     { key: 'color', label: 'Color', type: 'color' },
+        //     { key: 'backgroundColor', label: 'Background', type: 'color' },
+        // ],
         button: [
-            { key: 'text', label: 'Button Text', type: 'text' },
+            { key: 'text', label: 'Text', type: 'text' },
             {
                 key: 'fontSize', label: 'Font Size', type: 'select', options: [
                     { value: 12, label: 'Small' },
@@ -303,17 +301,17 @@ const PropertyPanel = () => {
                     { value: 16, label: 'Large' }
                 ], defaultValue: 14
             },
-            { key: 'color', label: 'Text Color', type: 'color' },
-            { key: 'backgroundColor', label: 'Background Color', type: 'color' }
+            { key: 'color', label: 'Color', type: 'color' },
+            { key: 'backgroundColor', label: 'Background', type: 'color' }
         ],
         switch: [
-            { key: 'backgroundColor', label: 'Background Color', type: 'color' },
+            { key: 'backgroundColor', label: 'Background', type: 'color' },
             { key: 'onColor', label: 'On Color', type: 'color' }
         ],
         slider: [
             { key: 'min', label: 'Min', type: 'number', min: 0 },
             { key: 'max', label: 'Max', type: 'number' },
-            { key: 'value', label: 'Current Value', type: 'number', min: 0 },
+            { key: 'value', label: 'Value', type: 'number', min: 0 },
             { key: 'fillColor', label: 'Color', type: 'color' }
         ]
     };
@@ -381,7 +379,8 @@ const PropertyPanel = () => {
             return (
                 <div key={field.key} className={styles.propertyField}>
                     <label>{field.label}:</label>
-                    <div className={`${styles.inputGroup} ${field.key === 'index' ? styles.indexInputGroup : ''}`}>
+                    {/* <div className={`${styles.inputGroup} ${field.key === 'index' ? styles.indexInputGroup : ''}`}> */}
+                    <div className={styles.inputGroup}>
                         {field.type === 'text' && (
                             <input
                                 type="text"
@@ -416,21 +415,22 @@ const PropertyPanel = () => {
 
     return (
         <div className={styles.propertyPanel}>
-            <h3>Property</h3>
+            <div className={styles.header}>Property</div>
+            
             <div className={styles.propertyContent}>
-                <div className={styles.componentInfo}>
+                {/* <div className={styles.componentInfo}>
                     <strong>Type:</strong> {selectedComponent.type}
-                    {/* {selectedComponent.type === 'title' && (
+                    {selectedComponent.type === 'title' && (
                         <div style={{ fontSize: '12px', color: '#7f8c8d', marginTop: '5px' }}>
                             (This component is fixed and cannot be moved)
                         </div>
-                    )} */}
+                    )}
                     {selectedComponent.type === 'line' && (
                         <div style={{ fontSize: '12px', color: '#7f8c8d', marginTop: '5px' }}>
                             (x1,y1: right/bottom border, x2,y2: left/top border)
                         </div>
                     )}
-                </div>
+                </div> */}
 
                 {renderPropertyFields()}
             </div>

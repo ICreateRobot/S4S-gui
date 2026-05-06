@@ -1,69 +1,105 @@
-.property-panel {
-    width: 130px;
-    background-color: white;
-    border-left: 1px solid #fdf1f1;
+.propertyPanel {
+    width: 150px;
+    background-color: var(--editor-bg);
+    border-left: 1px solid var(--ui-black-transparent);
     display: flex;
     flex-direction: column;
     height: 100%;
     overflow-y: auto;
-    padding: 4px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
-.property-panel h3 {
-    padding: 12px;
-    margin: 0;
-    background-color: #fdfdfd;
-    border-bottom: 1px solid#fdf1f1;
-    font-size: 14px;
-    font-weight: 600;
-    color: #595959;
+/* 顶部标题 */
+.header {
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    color: #8A8888;
+    border-bottom: 1px solid var(--ui-black-transparent);
+    background: var(--editor-bg);
+    margin-bottom: 18px;
 }
 
-.property-panel h4 {
-    margin: 15px 0 10px 0;
-    font-size: 14px;
-    color: #ecf0f1;
-}
-
-.property-content {
+/* 内容区域 */
+.propertyContent {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 3px;
 }
 
-.component-info {
-    padding: 10px;
-    background-color: #fdfdfd;
-    color: #595959;
-    border-radius: 4px;
-    font-size: 12px;
-}
-
-.property-field {
+/* 每一项属性：一行 */
+.propertyField {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
     gap: 5px;
     margin-bottom: 1px;
 }
 
-.property-field label {
+/* 标题 */
+.propertyField label {
     font-size: 12px;
-    color: #595959;
-    font-weight: 500;
+    color: #8A8888;
+    /* flex: 1; */
+    flex: 0 0 60px;
 }
 
-.input-group {
+/* 输入区域 */
+.propertyField input,
+.propertyField select {
+    flex: 1;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    color: #595959;
+    font-size: 12px;
+    height: 24px;
+    min-width: 0;
+}
+
+.propertyField input:focus,
+.propertyField select:focus {
+    outline: none;
+    border-color: #666666;
+}
+
+/* 颜色选择器 */
+.colorInputWrapper {
     display: flex;
     gap: 8px;
     align-items: center;
 }
 
-.index-input-group {
-    display: flex;
-    gap: 8px;
+.colorInputWrapper input[type="color"] {
+    height: 24px;
+    padding: 0;
+    border: 1px solid #ececec;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #F0F0F0;
 }
 
-.bring-to-front-btn {
+
+.inputGroup {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+/* .index-input-group {
+    display: flex;
+    gap: 8px;
+} */
+
+/* .bring-to-front-btn {
     padding: 8px 12px;
     background-color: white;
     color: #595959;
@@ -79,53 +115,18 @@
     background-color: #FFE4E6;
     border-color: #FF0554;
     color: #FF0554;
-}
+} */
 
-.property-field input,
-.property-field select {
-    padding: 8px;
-    border: 1px solid #d0d0d0;
-    border-radius: 4px;
-    background-color: #fdfdfd;
-    color: #595959;
-    font-size: 14px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.property-field input:focus,
-.property-field select:focus {
-    outline: none;
-    border-color: #FF0554;
-
-
-}
-
-.property-field input[type="color"] {
+/* .propertyField input[type="color"] {
     height: 40px;
     padding: 2px;
     width: 50px;
-}
+} */
 
-.property-field input[type="checkbox"] {
+.propertyField input[type="checkbox"] {
     width: 16px;
     height: 16px;
     margin-top: 5px;
-}
-
-.color-input-wrapper {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.color-input-wrapper input[type="color"] {
-    width: 50px;
-    height: 30px;
-    border: 1px solid #FCE8E8;
-    border-radius: 4px;
-    cursor: pointer;
-    background: #F0F0F0;
 }
 
 .transparent-btn {
@@ -142,27 +143,9 @@
     background-color: #95a5a6;
 }
 
-.screen-background-section {
 
-    padding: 15px;
-    border-bottom: 1px solid #fdf1f1;
-}
 
-.screen-background-section h4 {
-    margin: 0 0 15px 0;
-    color: #595959;
-    font-size: 14px;
-    font-weight: 550;
-}
 
-.property-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 3px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
 
 /* 代码生成相关样式 */
 .code-generation-section {

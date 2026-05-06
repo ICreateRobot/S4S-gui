@@ -253,18 +253,7 @@ const ComponentRenderer = ({ component }) => {
                 );
 
             case 'image':
-                return component.src ? (
-                    <img
-                        src={component.src}
-                        alt="组件图片"
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'contain',
-                            ...baseStyle
-                        }}
-                    />
-                ) : (
+                return (
                     <div style={{
                         width: '100%',
                         height: '100%',
@@ -279,6 +268,32 @@ const ComponentRenderer = ({ component }) => {
                         image
                     </div>
                 );
+                // component.src ? (
+                //     <img
+                //         src={component.src}
+                //         alt="组件图片"
+                //         style={{
+                //             width: '100%',
+                //             height: '100%',
+                //             objectFit: 'contain',
+                //             ...baseStyle
+                //         }}
+                //     />
+                // ) : (
+                //     <div style={{
+                //         width: '100%',
+                //         height: '100%',
+                //         display: 'flex',
+                //         alignItems: 'center',
+                //         justifyContent: 'center',
+                //         backgroundColor: '#7f8c8d',
+                //         color: 'white',
+                //         fontSize: '10px',
+                //         ...baseStyle
+                //     }}>
+                //         image
+                //     </div>
+                // );
 
             case 'text':
                 return (

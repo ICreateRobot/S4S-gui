@@ -1,7 +1,6 @@
 .addedComponentsList {
    height: 100%;
-    width: 130px;
-    background-color: #FDFDFD;
+    width: 120px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -16,29 +15,30 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 6px;
-    padding-right: 3px;
+    padding: 8px 3px;
     margin-bottom: 6px;
-    background-color: #FDFDFD;
+    /* background-color: var(--ic-main-light-pluse); */
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
     border: 1px solid transparent;
+    position: relative;
 }
 
 .componentItem:hover {
-    background: #ffe4e6;
+    background: var(--ic-main-light-pluse);
 }
 
 .componentItemSelected {
-    background: #ffe4e6;
-    border-color: #FFE4E6;
+    background: var(--ic-main-light-very);
+    
+    /* border-color: #FFE4E6; */
 }
 
 .componentInfo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 5px;
     flex: 1;
 }
 
@@ -83,16 +83,16 @@
 
 /* screen 组件 */
 .screenComponent {
-    border-left: 3px solid #FFE4E6 !important;
+    border-left: 3px solid var(--ic-main-light-very) !important;
 }
 
 .screenComponentSelected {
-    border-color: #FFE4E6 !important;
-    background: #ffe4e6;
+    background: var(--ic-main-light-very);
 }
 
 /* 删除按钮 */
 .deleteBtn {
+    position: absolute;
     background: none;
     border: none;
     cursor: pointer;
@@ -105,6 +105,7 @@
     justify-content: center;
     width: 24px;
     height: 24px;
+    right:2px;
 }
 
 .deleteIcon {

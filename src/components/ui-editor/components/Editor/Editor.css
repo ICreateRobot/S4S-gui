@@ -2,7 +2,7 @@
     flex: 1;
     display: flex;
     flex-direction: row;
-    background-color: #FFFFFF;
+    background-color: var(--editor-bg);
     position: relative;
     overflow: hidden;
     padding: 10px;
@@ -22,11 +22,11 @@
 
 .editorContent {
     height: 550px;
-    padding: 20px;
+    /* padding: 20px; */
     overflow: hidden;
-    border: dashed #f3d0d0;
+    border: dashed var(--ic-main-light);
     border-radius: 15px;
-    background-color: #FDF1F1;
+    background-color: var(--editor-bg);
     position: relative;
     display: flex;
     justify-content: center;
@@ -46,9 +46,8 @@
     display: flex;
     gap: 8px;
     padding: 13px;
-padding-left: 0;
+    padding-left: 0;
     padding-right: 0;
-    background-color: #FDFDFD;
     border-radius: 8px;
     align-items: center;
     flex-wrap: nowrap;
@@ -61,11 +60,9 @@ padding-left: 0;
 .clearButton1 {
     display: flex;
     gap: 4px;
-    /* margin-left: 8px; */
-    background-color: #FDFDFD;
-    padding: 4px;
+    /* padding: 4px; */
     border-radius: 6px;
-    border: 1px dashed #F17E87;
+    border: 1px dashed var(--ic-main-light);
 }
 
 .runBox .toolbarBtn1 {
@@ -115,14 +112,12 @@ padding-left: 0;
 }
 
 .toolbarBtn:hover:not(:disabled) {
-    background-color: #FFE4E6;
-    border-color: #F8AFAF;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .toolbarBtn:hover:not(:disabled) .toolbarIcon {
-    filter: brightness(0) saturate(100%) invert(30%) sepia(90%) saturate(1352%) hue-rotate(336deg) brightness(90%) contrast(90%);
+    /* filter: brightness(0) saturate(100%) invert(30%) sepia(90%) saturate(1352%) hue-rotate(336deg) brightness(90%) contrast(90%); */
     transform: scale(1.1);
 }
 
@@ -137,8 +132,6 @@ padding-left: 0;
 }
 
 .toolbarBtn:disabled {
-    background-color: #F8F8F8;
-    border-color: #E8E8E8;
     cursor: not-allowed;
     opacity: 0.5;
 }
