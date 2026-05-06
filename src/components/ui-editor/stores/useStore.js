@@ -57,6 +57,7 @@ const useStore = create((set, get) => ({
             }));
 
             get().notifyVM_AddUI(titleComponent);//vm通知添加组件
+            get().updatePythonCode(); // 更新代码
 
             return titleComponent;
         }
@@ -148,6 +149,7 @@ const useStore = create((set, get) => ({
         }));
 
         get().notifyVM_AddUI(newComponent);//vm通知添加组件
+        get().updatePythonCode(); // 更新代码
 
         return newComponent;
     },
@@ -224,11 +226,6 @@ const useStore = create((set, get) => ({
                         newComp.sideLength = side;
                     }
 
-                    // // 如果是图片地址改变，则不更新
-                    // if (newComp.type === 'image' || updates.src !== undefined) {
-                         
-                    // }
-
                     return newComp;
                 }
                 return comp;
@@ -241,6 +238,8 @@ const useStore = create((set, get) => ({
                     : state.selectedComponent
             };
         });
+
+        get().updatePythonCode(); // 更新代码
     },
 
     // 删除组件方法
@@ -253,6 +252,8 @@ const useStore = create((set, get) => ({
                 ? null
                 : state.selectedComponent
         }));
+
+        get().updatePythonCode(); // 更新代码
     },
 
     // 选择组件方法
@@ -274,12 +275,22 @@ const useStore = create((set, get) => ({
             components: [],
             selectedComponent: { id: 'screen', type: 'screen', name: '屏幕' }
         });
+
+        get().updatePythonCode(); // 更新代码
     },
 
     // 更新屏幕背景颜色方法
     updateScreenBackgroundColor: (color) => {
         set({ screenBackgroundColor: color });
+        get().updatePythonCode(); // 更新代码
     },
+
+    // 自动更新Python代码,模拟一次事件
+    updatePythonCode: () => {
+        //模拟一次事件，强制更新代码
+        window.forceGenerateCode?.();
+    },
+    
 
     // 组件置顶功能
     bringToFront: (id) => {
@@ -709,11 +720,7 @@ const useStore = create((set, get) => ({
         const screenBgColor = convertColor(bgColor);
 
         // 导入语句和类定义
-        let code = `# Screen Background Setup
-screen=Screen.Background(${screenBgColor})
-
-# Create Components
-`;
+        let code = `screen=Screen.Background(${screenBgColor})\n`;
 
         // 为每个组件生成一行代码
         components.forEach((component, index) => {
@@ -897,7 +904,7 @@ function getComponentPythonCode(component) {
             return `Screen.Slider(${x}, ${y}, ${width}, ${height}, ${index}, ${sliderMin}, ${sliderMax}, ${sliderValue}, ${convertColor(sliderFillColor)}, ${convertBool(isTransparent('fillColor'))})`;
 
         case 'image':
-            const imageSrc = '';
+            const imageSrc = component.src;
             return `Screen.Image(${x}, ${y}, ${width}, ${height}, ${index}, "${imageSrc}")`;
 
         default:
@@ -1026,3 +1033,5 @@ const getDefaultProps = (type) => {
 };
 
 export default useStore;
+
+window.UIStore = useStore;

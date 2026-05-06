@@ -898,14 +898,17 @@ class Blocks extends React.Component {
             this._codeTimer = setTimeout(() => {
                 try {
                     let generatorName = "Python";//默认python
-                    //console.log(this.props.extensionName)
+                   // console.log(this.props.extensionName)
                     if(this.props.extensionName == "Microbit"){//根据设备判断语言
                         generatorName = "Python";
                     }else if(this.props.extensionName == "Arduino"){
                         generatorName = "Arduino";
-                    }else{//否则不显示代码
+                    }else if(this.props.extensionName == "ESP32"){
+                        generatorName = "Python";
+                    }else {//否则不显示代码
                         return
                     }
+                   
                     
                     // 检查生成器是否存在
                     const generator = this.ScratchBlocks[generatorName];
@@ -913,10 +916,25 @@ class Blocks extends React.Component {
 
                     if  (this.props.isLocked) return;//如果锁定了就不生成代码
 
+                    // 获取 UI 代码
+                    let uiCode = '';
+                    try {
+                        if (window.UIStore) {
+                            const storeState = window.UIStore.getState();
+                            uiCode = storeState.generatePythonCode();
+                        }
+                    } catch (error) {
+                        console.warn('获取 UI 代码失败:', error);
+                    }
+
                     code = generator.workspaceToCode(this.workspace);
 
                     let importStr = importCode[this.props.extensionName] || '';
                     code = importStr + code;
+
+                    if(this.props.extensionName == "ESP32"){
+                        code = importStr + uiCode + "\n" + code;
+                    }
 
                     console.log(code)
                     // this.props.setGeneratedCode(this.unindentCode(code));  
@@ -1311,19 +1329,4 @@ export default injectIntl(errorBoundaryHOC('Blocks')(
         mapDispatchToProps,
     )(LoadScratchBlocksHOC(Blocks))
 ));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

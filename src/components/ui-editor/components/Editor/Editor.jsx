@@ -69,6 +69,7 @@ const Editor = () => {
     const phoneScreenRef = useRef(null);
     const phoneImageRef = useRef(null);
 
+    //运行按钮点击事件
     const handleRunClick = () => {
         const pythonCode = generatePythonCode();
         if (pythonCode) {
@@ -619,7 +620,7 @@ const Editor = () => {
                         <button
                             className={styles.toolbarBtn1}
                             onClick={handleRunClick}
-                            title="Generate and view Python code"
+                            // title="Generate and view Python code"
                         >
                             <img src={runButton} alt="Run" className={styles.runButton1} />
                         </button>
@@ -630,72 +631,66 @@ const Editor = () => {
                             <button
                                 onClick={handleAlignBottom}
                                 disabled={!selectedComponent || selectedComponent.id === 'screen' || selectedComponent.type === 'title'}
-                                title="Align Bottom"
+                                // title="Align Bottom"
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={alignBottomIcon}
-                                    alt="Bottom Align"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
                             <button
                                 onClick={handleAlignMiddle}
                                 disabled={!selectedComponent || selectedComponent.id === 'screen' || selectedComponent.type === 'title'}
-                                title="Align Middle"
+                                // title="Align Middle"
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={alignMiddleIcon}
-                                    alt="Middle Align"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
                             <button
                                 onClick={handleAlignTop}
                                 disabled={!selectedComponent || selectedComponent.id === 'screen' || selectedComponent.type === 'title'}
-                                title="Align Top"
+                                // title="Align Top"
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={alignTopIcon}
-                                    alt="Top Align"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
                             <button
                                 onClick={handleAlignLeft}
                                 disabled={!selectedComponent || selectedComponent.id === 'screen' || selectedComponent.type === 'title'}
-                                title="Align Left"
+                                // title="Align Left"
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={alignLeftIcon}
-                                    alt="Left Align"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
                             <button
                                 onClick={handleAlignRight}
                                 disabled={!selectedComponent || selectedComponent.id === 'screen' || selectedComponent.type === 'title'}
-                                title="Align Right"
+                                // title="Align Right"
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={alignRightIcon}
-                                    alt="Right Align"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
                             <button
                                 onClick={handleAlignCenter}
                                 disabled={!selectedComponent || selectedComponent.id === 'screen' || selectedComponent.type === 'title'}
-                                title="Align Center"
+                                // title="Align Center"
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={alignCenterIcon}
-                                    alt="Center Align"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
@@ -705,11 +700,10 @@ const Editor = () => {
                             <button
                                 className={styles.toolbarBtn}
                                 onClick={handleAddVerticalGuide}
-                                title="Add Horizontal Guide"
+                                // title="Add Horizontal Guide"
                             >
                                 <img
                                     src={guideHorizontalIcon}
-                                    alt="Horizontal Guide"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
@@ -717,11 +711,10 @@ const Editor = () => {
                             <button
                                 className={styles.toolbarBtn}
                                 onClick={handleAddHorizontalGuide}
-                                title="Add Vertical Guide"
+                                // title="Add Vertical Guide"
                             >
                                 <img
                                     src={guideVerticalIcon}
-                                    alt="Vertical Guide"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
@@ -730,11 +723,10 @@ const Editor = () => {
                                 className={styles.toolbarBtn}
                                 onClick={handleToggleFixAllGuides}
                                 disabled={guides.length === 0}
-                                title={allGuidesFixed ? "Unlock All Guides" : "Lock All Guides"}
+                                // title={allGuidesFixed ? "Unlock All Guides" : "Lock All Guides"}
                             >
                                 <img
                                     src={allGuidesFixed ? unlockIcon : lockIcon}
-                                    alt={allGuidesFixed ? "Unlock" : "Lock"}
                                     className={styles.toolbarIcon}
                                 />
                             </button>
@@ -743,11 +735,10 @@ const Editor = () => {
                                 className={styles.toolbarBtn}
                                 onClick={handleRemoveAllGuides}
                                 disabled={guides.length === 0}
-                                title="Remove All Guides"
+                                // title="Remove All Guides"
                             >
                                 <img
                                     src={deleteGuideIcon}
-                                    alt="Remove Guides"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
@@ -755,23 +746,21 @@ const Editor = () => {
                         <div className={styles.clearButton1}>
                             <button
                                 onClick={() => useStore.getState().toggleGrid()}
-                                title={showGrid ? "Hide Grid" : "Show Grid"}
+                                // title={showGrid ? "Hide Grid" : "Show Grid"}
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={gridIcon}
-                                    alt="Grid"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
                             <button
                                 onClick={handleClear}
-                                title="Clear All Components"
+                                // title="Clear All Components"
                                 className={styles.toolbarBtn}
                             >
                                 <img
                                     src={clearIcon}
-                                    alt="Clear"
                                     className={styles.toolbarIcon}
                                 />
                             </button>
