@@ -29,6 +29,8 @@ import text2speechInsetIconURL from './text2speech/text2speech-small.svg';
 import AIVisionIconURL from './ICreate_K210/k210.png';
 import LinkbotIconURL from './ICreate_Linkbot/Linkbot.png';
 
+import UltrasonicIconURL from './ICreate_Ultrasonic/ultrasonic.png';
+import LineFollowIconURL from './ICreate_LineFollow/linefollow.png';
 
 export default [
     {
@@ -49,11 +51,10 @@ export default [
         tags: ["upload"],
         featured: true
     },
-    {
+    {//视觉模块
         name: (
             <FormattedMessage
                 defaultMessage="AI Vision"
-                description="Name for the 'Music' extension"
                 id="gui.extension.k210.name"
             />
         ),
@@ -66,6 +67,42 @@ export default [
             />
         ),
         tags: ['AI',"upload"],
+        featured: true
+    },
+    {//超声波
+        name: (
+            <FormattedMessage
+                defaultMessage="Ultrasonic"
+                id="gui.extension.Ultrasonic.name"
+            />
+        ),
+        extensionId: 'Ultrasonic',
+        iconURL: UltrasonicIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Detect obstacles and measure distances in real-time. Use sound waves to help your projects 'see' objects, avoid crashes, or trigger alarms when someone gets too close."
+                id="gui.extension.Ultrasonic.description"
+            />
+        ),
+        tags: ["upload"],
+        featured: true
+    },
+    {//巡线
+        name: (
+            <FormattedMessage
+                defaultMessage="Line Following Sensor"
+                id="gui.extension.LineFollow.name"
+            />
+        ),
+        extensionId: 'LineFollow',
+        iconURL: LineFollowIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Uses 4 sensors to track lines and detect colors. Used for following line paths, staying on track, or reacting to colors."
+                id="gui.extension.LineFollow.description"
+            />
+        ),
+        tags: ["upload"],
         featured: true
     },
 ];
