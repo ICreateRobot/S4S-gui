@@ -39,7 +39,8 @@ const ALL_TAG = {tag: 'all', intlLabel: messages.allTag};
 const MAIN_TAG={tag: 'main', intlLabel: messages.mainCon};
 const AI_TAG={tag: 'AI', intlLabel: "AI"};
 const scratch_TAG={tag: 'scratch', intlLabel: "scratch"};
-const tagListPrefix = [ALL_TAG,AI_TAG,scratch_TAG];
+const TinkerTek_TAG={tag: 'TinkerTek', intlLabel: "TinkerTek"};
+const tagListPrefix = [ALL_TAG,TinkerTek_TAG,AI_TAG,scratch_TAG];
 
 class LibraryComponent extends React.Component {
     constructor (props) {

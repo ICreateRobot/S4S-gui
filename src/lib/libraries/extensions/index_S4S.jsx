@@ -48,7 +48,7 @@ export default [
                 id="gui.extension.linkBot.description"
             />
         ),
-        tags: ["upload"],
+        tags: ["upload","TinkerTek"],
         featured: true
     },
     {//视觉模块
@@ -66,7 +66,7 @@ export default [
                 id="gui.extension.k210.description"
             />
         ),
-        tags: ['AI',"upload"],
+        tags: ['AI',"upload","TinkerTek"],
         featured: true
     },
     {//超声波
@@ -84,7 +84,7 @@ export default [
                 id="gui.extension.Ultrasonic.description"
             />
         ),
-        tags: ["upload"],
+        tags: ["upload","TinkerTek"],
         featured: true
     },
     {//巡线
@@ -102,7 +102,7 @@ export default [
                 id="gui.extension.LineFollow.description"
             />
         ),
-        tags: ["upload"],
+        tags: ["upload","TinkerTek"],
         featured: true
     },
 ];
