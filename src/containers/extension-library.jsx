@@ -225,7 +225,11 @@ class ExtensionLibrary extends React.PureComponent {
                 extensionManager._loadedExtensions.delete(extId);
             });
         }else{
-            runtime._blockInfo.filter(block => block.id !== id);
+            console.log(id);
+            console.log(runtime._blockInfo);
+            console.log(extensionManager._loadedExtensions);
+            // runtime._blockInfo.filter(block => block.id !== id);
+            runtime._blockInfo = runtime._blockInfo.filter( block => block.id !== id );
             extensionManager._loadedExtensions.delete(id);
         }
         window.vm.emit('workspaceUpdate');//直接通知刷新
