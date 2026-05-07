@@ -68,6 +68,7 @@ import ExampleModal from '../ExampleModal/ExampleModal.jsx'
 import MasterModal from '../master-modal/MasterModal.jsx'//设备
 import ConnectTabs from '../connect-modal/connectModal.jsx';//连接
 import FirmwareModal from '../firmware-modal/FirmwareModal.jsx'//固件
+import FlashModal from '../flash-modal/flashModal.jsx'//警告窗口
 
 
 import PythonEditor from '../python-editor/pythonEditor.jsx';//python编辑器
@@ -800,6 +801,9 @@ const GUIComponent = props => {
 
                     <LoadingOverlay isLoading={isLoading} />
                     <BurnLogs isLoading={isFlashing} logs={logs}></BurnLogs>
+
+                    {/* 警告窗口 */}
+                    <FlashModal />
 
                     {/* 示例程序弹窗 */}
                     <ExampleModal

@@ -29,6 +29,13 @@ export async function connect(device,currentDevice,modeValue) {
     }else if(currentDevice == "Microbit" && modeValue == "upload"){
         window.EditorPreload.exitReplMode();//退出repl
     }
+
+    //ESP32特殊处理
+    if(currentDevice == "ESP32" && modeValue == "interactive"){
+        window.EditorPreload.enterReplModeESP();//进入repl
+    }else if(currentDevice == "ESP32" && modeValue == "upload"){
+        window.EditorPreload.exitReplMode();//退出repl
+    }
     
     return result.info || device;
   } else {

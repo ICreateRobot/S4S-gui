@@ -88,9 +88,13 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
         if (newMode === 'interactive'){//切换到互动模式
             if(device === 'Microbit'){//应该还会判断是否连接，但是不管了,放主进程了
                 window.EditorPreload.enterReplMode();//进入repl
+            }else if(device === 'ESP32'){//
+                window.EditorPreload.enterReplModeESP();//进入repl
             }
-        }else  if (newMode === 'upload'){//切换到互动模式
+        }else  if (newMode === 'upload'){//切换到下载模式
             if(device === 'Microbit'){//
+                window.EditorPreload.exitReplMode();//退出repl
+            }else if(device === 'ESP32'){//
                 window.EditorPreload.exitReplMode();//退出repl
             }
         }
