@@ -2,13 +2,19 @@ import React from 'react';
 import { connect,useDispatch } from 'react-redux';
 
 import { setSelectedDevice } from '../../reducers/sun';
-import { FormattedMessage } from "react-intl";
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 
 import styles from './MasterModal.css';
 import arduinoImg from './images/ARDUINO.svg';
 import esp32Img from './images/ESP32.svg';
 import microbitImg from './images/Microbit.svg';
+
+//文件保存用
+import {requestNewProject} from '../../reducers/project-state';
+import {setFileHandle} from '../../reducers/tw.js';
+import sharedMessages from '../../lib/shared-messages';
+
 
 
 
@@ -41,6 +47,7 @@ class MasterModal extends React.Component {
       this.handledata = this.handledata.bind(this);
       this.addExtensions = this.addExtensions.bind(this);
       this.removeExtensions = this.removeExtensions.bind(this);
+      this.isProjectEmpty = this.isProjectEmpty.bind(this);
   }
 
   // 选择设备
@@ -53,11 +60,24 @@ class MasterModal extends React.Component {
     if(this.props.selectedDevice === deviceName) return
     console.log("当前",this.props.selectedDevice,"点击",deviceName)
 
-    if(this.props.selectedDevice){//如果已经有设备了，需要进行提示
-        const result = confirm("切换设备将丢失未保存的项目，是否继续？");
-        if (!result) return;
+    //if(this.props.selectedDevice){//如果已经有设备了，需要进行提示
+        // const result = confirm("切换设备将丢失未保存的项目，是否继续？");
+        // if (!result) return;
+    //}
+
+    if(this.isProjectEmpty()){//项目有变化
+        //弹出是否丢弃项目内容的确认逻辑
+        const readyToReplaceProject = window.confirm(
+            this.props.intl.formatMessage(sharedMessages.replaceProjectWarning)
+        );
+        //创建新工程
+        if (readyToReplaceProject) {
+            this.props.createNewProject(false);
+        }else{
+          return;
+        }
     }
-    //
+
 
     //执行切换
     await this.handledata('open', deviceName);
@@ -171,6 +191,17 @@ class MasterModal extends React.Component {
       }
   }
 
+  // 检查项目是否为空
+  isProjectEmpty() {
+    const numSprite = vm.runtime.targets.length 
+    const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > 1)
+
+    // console.log('是否有角色:', numSprite);
+    // console.log('是否有积木:', hasBlocks);
+
+    return (numSprite != 2 || hasBlocks);
+}
+
   render() {
     return (
       <div className={styles.modalOverlay}>
@@ -232,7 +263,13 @@ const mapStateToProps = (state) => ({
 
 // 派发 Redux Action
 const mapDispatchToProps = (dispatch) => ({
-    setSelectedDevice: (deviceName) => dispatch(setSelectedDevice(deviceName))
+    setSelectedDevice: (deviceName) => dispatch(setSelectedDevice(deviceName)),
+    createNewProject: needSave => {
+        dispatch(requestNewProject(needSave));
+        dispatch(setFileHandle(null));
+    }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MasterModal);
+export default injectIntl(
+    connect(mapStateToProps, mapDispatchToProps)(MasterModal)
+);
