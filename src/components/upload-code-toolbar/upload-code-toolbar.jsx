@@ -1,9 +1,10 @@
-import React from 'react';
+import React , { useState } from 'react';
 import styles from './upload-code-toolbar.css';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import runIcon from './run-icon.svg'; // 运行图片
 import downIcon from './down-icon.svg'; // 下载图片
+import stopIcon from './icon--stop-all.svg'; // 停止图片
 
 import lockIcon from './padlock.svg'; // 锁定图片
 import unlockIcon from './padlock-unlock.svg'; // 解锁图片
@@ -22,6 +23,8 @@ import modelFullStageIcon from '!../../lib/tw-recolor/build!./icon--model-stage.
 
 
 const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked,onToggleLock,vm }) => {
+
+    const [isRunning, setIsRunning] = useState(false);//运行状态
 
     //下载
     const handleDownload = async () => {
@@ -44,16 +47,28 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
 
     //运行(不持久化)
     const handleRun = async () => {
-        if(device == "Microbit"){
-            const result = await window.EditorPreload.mBUsbRunCode( generatedCode);
-            console.log(result) 
-        }else if(device == "ESP32"){
-         
-        }else if(device == "Arduino"){
-           
+        // 当前是运行状态 -> 点击停止
+        if (isRunning) {
+            if (device === "Microbit") {
+                await window.EditorPreload.mBUsbRunCode("");
+            }else if(device == "ESP32"){
+            
+            }
+
+            setIsRunning(false);
         }else{
-  
+            if(device == "Microbit"){
+                const result = await window.EditorPreload.mBUsbRunCode( generatedCode);
+                console.log(result) 
+            }else if(device == "ESP32"){
+            
+            }
+
+            setIsRunning(true);
         }
+
+
+        
     };
 
     //锁定/解锁
@@ -141,7 +156,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                     onClick={handleRun}
                 >
                     <img 
-                        src={runIcon} 
+                        src={isRunning ? stopIcon : runIcon}
                         className={styles.iconImage}
                     />
                 </button>
