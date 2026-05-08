@@ -206,6 +206,7 @@ const PropertyPanel = () => {
         if (selectedComponent.type !== 'title' &&
             selectedComponent.type !== 'circle' &&
             selectedComponent.type !== 'line' &&
+            selectedComponent.type !== 'image' &&
             selectedComponent.type !== 'triangle') {
             commonFields.push(
                 { key: 'x', label: 'X', type: 'number', min: 0, max: 320, step: 1 },
@@ -278,6 +279,8 @@ const PropertyPanel = () => {
             { key: 'borderWidth', label: 'Border Width', type: 'number', min: 0, max: 20 }
         ],
         image: [
+            { key: 'x', label: 'X', type: 'number', min: 0, max: 320, step: 1 },
+            { key: 'y', label: 'Y', type: 'number', min: 0, max: 240, step: 1 },
             { key: 'src', label: 'Path', type: 'text' }
         ],
         // text: [

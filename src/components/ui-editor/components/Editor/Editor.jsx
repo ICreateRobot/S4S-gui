@@ -570,7 +570,7 @@ const Editor = () => {
                                             w: gridItem.w || 100,
                                             h: gridItem.h || 50,
                                             isDraggable: gridItem.type !== 'title',
-                                            isResizable: gridItem.type !== 'title' && gridItem.type !== 'line',
+                                            isResizable: gridItem.type !== 'title' && gridItem.type !== 'line'&& gridItem.type !== 'image',
                                             minW: gridItem.type === 'title' ? SCREEN_WIDTH : (gridItem.type === 'circle' ? 20 : 1),
                                             minH: gridItem.type === 'title' ? 30 : (gridItem.type === 'circle' ? 20 : 1),
                                             maxW: gridItem.type === 'title' ? SCREEN_WIDTH : SCREEN_WIDTH,
