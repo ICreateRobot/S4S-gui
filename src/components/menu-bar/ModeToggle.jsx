@@ -92,7 +92,7 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
 
         setIsLoading(true);//出现加载页面
 
-        await newfile(false)//直接走新建文件，清除不知名错误
+        //await newfile(false)//直接走新建文件，清除不知名错误
         setSelectedMode(newMode);//更新模式
         
         await new Promise(r => setTimeout(r, 1000));//加钱就删的延时
@@ -115,6 +115,13 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
             }else if(device === 'ESP32'){//
                 window.EditorPreload.exitReplMode();//退出repl
             }
+        }
+
+        //清除ui编辑器状态
+        if (window.UIStore) {
+            const storeState = window.UIStore.getState();
+            storeState.removeAllGuides();//清空辅助线
+             storeState.clearComponents();//清空组件
         }
     };
 

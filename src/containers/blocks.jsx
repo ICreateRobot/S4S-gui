@@ -349,47 +349,6 @@ class Blocks extends React.Component {
             }
         }
 
-        // // 当前保留扩展（复制，不污染原数组）
-        // let currentKeepList = [...keepList];
-
-        // // 当前已加载扩展
-        // const loadedExts = Array.from( this.props.vm.extensionManager._loadedExtensions.keys());
-        // console.log('已加载扩展', loadedExts);
-
-        // // 是否存在 ESP32 主扩展
-        // const hasESP32 = loadedExts.includes('Esp32S4S');
-
-        // // 是否已加载 UIEditor
-        // const hasUIEditor = loadedExts.includes('UIEditor');
-
-        // // ESP32 + upload 模式 -> 保留 UIEditor
-        // if ( hasESP32 && this.props.modeValue === 'upload' ) {
-        //     console.log('加载 UIEditor');
-        //     await this.props.vm.extensionManager.loadExtensionIdSync( 'UIEditor');
-        // }
-
-        // // 非 upload -> 移除 UIEditor
-        // if (this.props.modeValue !== 'upload' && hasUIEditor) {
-        //     currentKeepList = currentKeepList.filter(
-        //         id => id !== 'UIEditor'
-        //     );
-        // }
-
-        // // 过滤 blockInfo
-        // this.props.vm.runtime._blockInfo =
-        //     this.props.vm.runtime._blockInfo.filter(
-        //         block => currentKeepList.includes(block.id)
-        //     );
-
-        // // 过滤 loadedExtensions
-        // for (const id of loadedExts) {
-        //     if (!currentKeepList.includes(id)) {
-        //         this.props.vm.extensionManager._loadedExtensions.delete(id);
-        //     }
-        // }
-
-
-        // gentlyRequestPersistentStorage();
 
         //程序停止监听
         // this.props.vm.runtime.on('PROJECT_RUN_STOP',()=>{
@@ -995,10 +954,12 @@ class Blocks extends React.Component {
                     code = generator.workspaceToCode(this.workspace);
 
                     let importStr = importCode[this.props.extensionName] || '';
-                    code = importStr + code;
+                    
 
                     if(this.props.extensionName == "ESP32"){
                         code = importStr + uiCode + "\n" + code;
+                    }else{
+                        code = importStr + code;
                     }
 
                     console.log(code)

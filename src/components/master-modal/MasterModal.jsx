@@ -90,7 +90,14 @@ class MasterModal extends React.Component {
 
     this.props.onRequestClose();//关闭当前窗口
     //打开新窗口(功能待定)
-  }
+
+    //清除ui编辑器状态
+    if (window.UIStore) {
+        const storeState = window.UIStore.getState();
+        storeState.removeAllGuides();//清空辅助线
+        storeState.clearComponents();//清空组件
+    }
+}
 
   // 取消选择设备
   async deselectDevice(index, e) {
