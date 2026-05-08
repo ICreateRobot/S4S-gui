@@ -1317,11 +1317,12 @@ class MenuBar extends React.Component {
                     />)}
                 </Tooltip>
                 
-
+                {/* 分隔 div */}
+                <div style={{ margin: '0 7px' }} />
                 {/* 登录 */}
-                <Tooltip text={this.props.intl.formatMessage({id: 'gui.tooltip.login',defaultMessage: 'Login'})} position="bottom">
+                {/* <Tooltip text={this.props.intl.formatMessage({id: 'gui.tooltip.login',defaultMessage: 'Login'})} position="bottom">
                     <LoginBut onClick={() =>alert("暂不支持")}></LoginBut>
-                </Tooltip>
+                </Tooltip> */}
                 {/* {aboutButton} */}
             </Box>
         );
