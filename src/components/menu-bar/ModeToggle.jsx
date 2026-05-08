@@ -12,7 +12,12 @@ import { injectIntl } from 'react-intl';
 
 import Tooltip from './Tooltip.jsx';//悬浮窗
 
-const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceConnection,intl }) => {
+//文件保存用
+import {requestNewProject} from '../../reducers/project-state';
+import {setFileHandle} from '../../reducers/tw.js';
+import sharedMessages from '../../lib/shared-messages';
+
+const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceConnection,intl,createNewProject }) => {
     const modes = [
         { id: 'interactive', icon: interactiveImg, label:'互动' },
         { id: 'upload', icon: uploadImg,label:'下载'},
@@ -33,10 +38,23 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
     };
 
     const handleClick =  async (newMode)=> {
-        console.log(deviceConnection,device)
+        //console.log(deviceConnection,device)
         if ( newMode == value) return//同模式不切换
 
         vm.stopAll() //停止正在执行的所有脚本
+
+        if(isProjectEmpty()){//项目有变化
+            //弹出是否丢弃项目内容的确认逻辑
+            const readyToReplaceProject = window.confirm(
+                intl.formatMessage(sharedMessages.replaceProjectWarning)
+            );
+            //创建新工程
+            if (readyToReplaceProject) {
+                createNewProject(false);
+            }else{
+                return;
+            }
+        }
 
         // if (value != "python"){//闪出确认弹窗
         //     let result = confirm( formatMessage({
@@ -99,6 +117,19 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
             }
         }
     };
+
+
+
+    // 检查项目是否为空
+    const isProjectEmpty = () => {
+        const numSprite = vm.runtime.targets.length 
+        const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > 1)
+
+        // console.log('是否有角色:', numSprite);
+        // console.log('是否有积木:', hasBlocks);
+
+        return (numSprite != 2 || hasBlocks);
+    }
 
 
     return (
@@ -183,7 +214,11 @@ const mapStateToProps = (state) => ({
 
 // 派发 Redux Action
 const mapDispatchToProps = (dispatch) => ({
-    setSelectedMode: (modeName) => dispatch(setSelectedMode(modeName))
+    setSelectedMode: (modeName) => dispatch(setSelectedMode(modeName)),
+    createNewProject: needSave => {
+        dispatch(requestNewProject(needSave));
+        dispatch(setFileHandle(null));
+    }
 });
 
 // export default connect(mapStateToProps, mapDispatchToProps)(ModeToggle);

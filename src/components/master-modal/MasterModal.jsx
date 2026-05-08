@@ -193,14 +193,14 @@ class MasterModal extends React.Component {
 
   // 检查项目是否为空
   isProjectEmpty() {
-    const numSprite = vm.runtime.targets.length 
-    const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > 1)
+      const numSprite = vm.runtime.targets.length 
+      const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > 1)
 
-    // console.log('是否有角色:', numSprite);
-    // console.log('是否有积木:', hasBlocks);
+      // console.log('是否有角色:', numSprite);
+      // console.log('是否有积木:', hasBlocks);
 
-    return (numSprite != 2 || hasBlocks);
-}
+      return (numSprite != 2 || hasBlocks);
+  }
 
   render() {
     return (
