@@ -67,7 +67,7 @@ const categoryMap = {
 };
 
 //可以一直存在的扩展
-const keepList = ['MicrobitIcreate', 'ArduinoS4S', 'Esp32S4S',"UIEditor", 'LinkBot','LinkBotActuators','LinkBotSensors','LinkBotPower','ICreateK210','Ultrasonic','LineFollow'];
+let keepList = ['MicrobitIcreate', 'ArduinoS4S', 'Esp32S4S','LinkBot','LinkBotActuators','LinkBotSensors','LinkBotPower','ICreateK210','Ultrasonic','LineFollow'];
 
 
 // TW: Strings we add to scratch-blocks are localized here
@@ -308,23 +308,88 @@ class Blocks extends React.Component {
         //     await this.props.vm.extensionManager.loadExtensionIdSync(id);
         // }
 
+        // upload模式才保留UIEditor
+        // if (this.props.extensionName === 'ESP32' && this.props.modeValue === 'upload') {
+        //     console.log('保留UIEditor扩展')
+        //     keepList.push('UIEditor');
+        // }
+
         // 新切换模式扩展留存方法，完全基于持久列表
         this.props.vm.runtime._blockInfo = this.props.vm.runtime._blockInfo.filter(block => keepList.includes(block.id));
 
         // 过滤 loadedExtensions
         for (const id of Array.from(this.props.vm.extensionManager._loadedExtensions.keys())) {
+            //console.log('已加载扩展', id);
             if (!keepList.includes(id)) {
-                //console.log(id)
                 this.props.vm.extensionManager._loadedExtensions.delete(id);
+            }
+            if (id === 'Esp32S4S' && this.props.modeValue === 'upload') {
+                const hasUI = this.props.vm.extensionManager._loadedExtensions.has('UIEditor');
+
+                if (!hasUI) {
+                    await this.props.vm.extensionManager.loadExtensionIdSync('UIEditor');
+                }
+
+                //调整顺序
+                const blockInfo = this.props.vm.runtime._blockInfo;
+
+                const espIndex = blockInfo.findIndex(b => b.id === 'Esp32S4S');
+
+                if (espIndex !== -1) {
+                    // 先移除 UIEditor（防止重复）
+                    const withoutUI = blockInfo.filter(b => b.id !== 'UIEditor');
+
+                    // 插入到 Esp32S4S 后面
+                    withoutUI.splice(espIndex + 1, 0,
+                        blockInfo.find(b => b.id === 'UIEditor')
+                    );
+
+                    this.props.vm.runtime._blockInfo = withoutUI;
+                }
             }
         }
 
-        // 不再通过读取的形式添加扩展
-        // for (const category of this.props.vm.runtime._blockInfo) {
-        //     this.handleExtensionAdded(category);
+        // // 当前保留扩展（复制，不污染原数组）
+        // let currentKeepList = [...keepList];
+
+        // // 当前已加载扩展
+        // const loadedExts = Array.from( this.props.vm.extensionManager._loadedExtensions.keys());
+        // console.log('已加载扩展', loadedExts);
+
+        // // 是否存在 ESP32 主扩展
+        // const hasESP32 = loadedExts.includes('Esp32S4S');
+
+        // // 是否已加载 UIEditor
+        // const hasUIEditor = loadedExts.includes('UIEditor');
+
+        // // ESP32 + upload 模式 -> 保留 UIEditor
+        // if ( hasESP32 && this.props.modeValue === 'upload' ) {
+        //     console.log('加载 UIEditor');
+        //     await this.props.vm.extensionManager.loadExtensionIdSync( 'UIEditor');
         // }
 
-        gentlyRequestPersistentStorage();
+        // // 非 upload -> 移除 UIEditor
+        // if (this.props.modeValue !== 'upload' && hasUIEditor) {
+        //     currentKeepList = currentKeepList.filter(
+        //         id => id !== 'UIEditor'
+        //     );
+        // }
+
+        // // 过滤 blockInfo
+        // this.props.vm.runtime._blockInfo =
+        //     this.props.vm.runtime._blockInfo.filter(
+        //         block => currentKeepList.includes(block.id)
+        //     );
+
+        // // 过滤 loadedExtensions
+        // for (const id of loadedExts) {
+        //     if (!currentKeepList.includes(id)) {
+        //         this.props.vm.extensionManager._loadedExtensions.delete(id);
+        //     }
+        // }
+
+
+        // gentlyRequestPersistentStorage();
 
         //程序停止监听
         // this.props.vm.runtime.on('PROJECT_RUN_STOP',()=>{

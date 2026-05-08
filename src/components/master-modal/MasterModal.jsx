@@ -126,7 +126,13 @@ class MasterModal extends React.Component {
 
   // 添加扩展（根据设备）
   async addExtensions(devices) {
-    let Exts = categoryMap[devices];
+    let Exts = [...categoryMap[devices]];
+
+    // 非upload模式不加载UIEditor
+    if (this.props.modeValue !== 'upload') {
+        Exts = Exts.filter(id => id !== 'UIEditor');
+    }
+
     for (const id of Exts) {
         try {
             if (!vm.extensionManager.isExtensionLoaded(id)) {//验重
@@ -180,7 +186,10 @@ class MasterModal extends React.Component {
       //         console.warn('扩展重新加载失败：', id, e);
       //     }
       // }
-      const Exts = categoryMap[devices];
+      let Exts = [...categoryMap[devices]];
+      if (this.props.modeValue !== 'upload') {
+          Exts.push('UIEditor');
+      }
       // 清除积木定义
       vm.runtime._blockInfo = vm.runtime._blockInfo.filter(block => !Exts.includes(block.id));
       // 卸载扩展

@@ -818,7 +818,7 @@ const GUIComponent = props => {
 
                     {/* 主控选择弹窗 */}
                     {props.masterModalVisible && (
-                        <MasterModal onRequestClose={props.onCloseMasterModal} setIsLoading={setIsLoading} />
+                        <MasterModal onRequestClose={props.onCloseMasterModal} modeValue={modeValue} setIsLoading={setIsLoading} />
                     )}
                     
                     {/* 连接窗口 */}
