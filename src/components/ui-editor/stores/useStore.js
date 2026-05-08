@@ -720,7 +720,7 @@ const useStore = create((set, get) => ({
         const screenBgColor = convertColor(bgColor);
 
         // 导入语句和类定义
-        let code = `screen=Screen.Background(${screenBgColor})\n`;
+        let code = `bk = Background(${screenBgColor})\n`;
 
         // 为每个组件生成一行代码
         components.forEach((component, index) => {
@@ -822,31 +822,31 @@ function getComponentPythonCode(component) {
             const titleTextColor = getColorValue('color', 'colorTransparent');
             const titleBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
 
-            return `Screen.Title(${index}, ${convertColor(titleBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(titleTextColor)}, ${convertBool(isTransparent('color'))}, "${titleText}", ${titleSize})`;
-
+            // return `Screen.Title(${index}, ${convertColor(titleBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(titleTextColor)}, ${convertBool(isTransparent('color'))}, "${titleText}", ${titleSize})`;
+            return `Title(index=${index},bkg_color=${convertColor(titleBgColor)},text_color=${convertColor(titleTextColor)},text="${titleText}",text_size=${titleSize})`
         case 'label':
             const labelText = component.text || '标签';
             const labelSize = component.fontSize || 12;
             const labelTextColor = getColorValue('color', 'colorTransparent');
             const labelBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
 
-            return `Screen.Label(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(labelBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(labelTextColor)}, ${convertBool(isTransparent('color'))}, "${labelText}", ${labelSize})`;
-
+            // return `Screen.Label(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(labelBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(labelTextColor)}, ${convertBool(isTransparent('color'))}, "${labelText}", ${labelSize})`;
+            return `Label(x=${x}, y=${y}, w=${width}, h=${height}, index=${index}, bkg_color=${convertColor(labelBgColor)}, text_color=${convertColor(labelTextColor)},text="${labelText}", text_size=${labelSize})`
         case 'rectangle':
             const rectBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
             const rectBorderColor = getColorValue('borderColor', 'borderColorTransparent');
             const borderWidth = 2; // 默认边框宽度
 
-            return `Screen.Rectangle(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(rectBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${borderWidth}, ${convertColor(rectBorderColor)}, ${convertBool(isTransparent('borderColor'))})`;
-
+            // return `Screen.Rectangle(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(rectBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${borderWidth}, ${convertColor(rectBorderColor)}, ${convertBool(isTransparent('borderColor'))})`;
+            return `Rectangle(x=${x}, y=${y}, w=${width}, h=${height}, index=${index},bkg_color=${convertColor(rectBgColor)},broder_width=${borderWidth}, border_color=${convertColor(rectBorderColor)})`
         case 'circle':
             const radius = Math.min(width, height) / 2;
             const circleBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
             const circleBorderColor = getColorValue('borderColor', 'borderColorTransparent');
             const circleBorderWidth = 2; // 默认边框宽度
 
-            return `Screen.Circle(${x}, ${y}, ${radius}, ${index}, ${convertColor(circleBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${circleBorderWidth}, ${convertColor(circleBorderColor)}, ${convertBool(isTransparent('borderColor'))})`;
-
+            // return `Screen.Circle(${x}, ${y}, ${radius}, ${index}, ${convertColor(circleBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${circleBorderWidth}, ${convertColor(circleBorderColor)}, ${convertBool(isTransparent('borderColor'))})`;
+            return `Circle(x=${x}, y=${y}, r=${radius}, index=${index}, bkg_color=${convertColor(circleBgColor)},  border_width=${circleBorderWidth}, border_color=${convertColor(circleBorderColor)})`
         case 'line':
             const x1 = component.x1 || 0;
             const y1 = component.y1 || 0;
@@ -855,8 +855,8 @@ function getComponentPythonCode(component) {
             const strokeWidth = component.strokeWidth || 2;
             const lineColor = getColorValue('strokeColor', 'strokeColorTransparent');
 
-            return `Screen.Line(${x2}, ${y2}, ${x1}, ${y1}, ${strokeWidth}, ${convertColor(lineColor)}, ${index})`;
-
+            // return `Screen.Line(${x2}, ${y2}, ${x1}, ${y1}, ${strokeWidth}, ${convertColor(lineColor)}, ${index})`;
+            return `Line(x1=${x1}, y1=${y1}, x2=${x2}, y2=${y2}, width=${strokeWidth}, color=${convertColor(lineColor)}, index=${index})`
         case 'triangle':
             const point1X = component.point1X || 50;
             const point1Y = component.point1Y || 10;
@@ -885,24 +885,24 @@ function getComponentPythonCode(component) {
             const buttonTextColor = getColorValue('color', 'colorTransparent');
             const buttonBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
 
-            return `Screen.Button(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(buttonBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(buttonTextColor)}, ${convertBool(isTransparent('color'))}, "${buttonText}", ${buttonSize})`;
-
+            // return `Screen.Button(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(buttonBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(buttonTextColor)}, ${convertBool(isTransparent('color'))}, "${buttonText}", ${buttonSize})`;
+            return `Button(x=${x}, y=${y}, w=${width}, h=${height}, index=${index},bkg_color=${convertColor(buttonBgColor)},text_color=${convertColor(buttonTextColor)},text="${buttonText}",text_size=${buttonSize})`
         case 'switch':
             const switchText = component.text || '开关';
             const switchBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
             const switchOnColor = getColorValue('onColor', 'onColorTransparent');
             const switchValue = component.value || false;
 
-            return `Screen.Switch(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(switchBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(switchOnColor)}, ${convertBool(isTransparent('onColor'))}, "${switchText}", ${convertBool(switchValue)})`;
-
+            // return `Screen.Switch(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(switchBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${convertColor(switchOnColor)}, ${convertBool(isTransparent('onColor'))}, "${switchText}", ${convertBool(switchValue)})`;
+            return `Switch(x=${x},y=${y},w=${width},h=${height},index=${index},bg_c=${convertColor(switchBgColor)},bg_c_checked=${convertColor(switchOnColor)})`
         case 'slider':
             const sliderMin = component.min || 0;
             const sliderMax = component.max || 100;
             const sliderValue = component.value || 50;
             const sliderFillColor = getColorValue('fillColor', 'fillColorTransparent');
 
-            return `Screen.Slider(${x}, ${y}, ${width}, ${height}, ${index}, ${sliderMin}, ${sliderMax}, ${sliderValue}, ${convertColor(sliderFillColor)}, ${convertBool(isTransparent('fillColor'))})`;
-
+            // return `Screen.Slider(${x}, ${y}, ${width}, ${height}, ${index}, ${sliderMin}, ${sliderMax}, ${sliderValue}, ${convertColor(sliderFillColor)}, ${convertBool(isTransparent('fillColor'))})`;
+            return `Slider(x=${x}, y=${y},w=${width},h=${height},index= ${index},min_value=${sliderMin}, max_value=${sliderMax}, value=${sliderValue},color=${convertColor(sliderFillColor)})`
         case 'image':
             const imageSrc = component.src;
             return `Screen.Image(${x}, ${y}, ${width}, ${height}, ${index}, "${imageSrc}")`;

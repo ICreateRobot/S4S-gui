@@ -954,7 +954,7 @@ class Blocks extends React.Component {
         console.log(event.type)
         const importCode = {"Microbit": "from microbit import *\nfrom s4s import *\n",
             "Arduino": '\n',
-            "Esp32": '\n'
+            "ESP32": 'from Screen import *\nfrom s4s import *\n'
         };
         if(event.type == 'endDrag' || event.type == 'change'){//拖拽结束或内容变化
             let code;
