@@ -1,4 +1,5 @@
 import React , { useState } from 'react';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import styles from './upload-code-toolbar.css';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -22,7 +23,7 @@ import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg'
 import modelFullStageIcon from '!../../lib/tw-recolor/build!./icon--model-stage.svg';
 
 
-const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked,onToggleLock,vm }) => {
+const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked,onToggleLock,vm,intl}) => {
 
     const [isRunning, setIsRunning] = useState(false);//运行状态
 
@@ -32,10 +33,11 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             //let packageList = parsePythonImports(finalCode)
             //console.log(packageList)
 
-            const result = await window.EditorPreload.usbdownloadCode( generatedCode);
+            const result = await window.EditorPreload.usbdownloadCode( generatedCode,device);
             console.log(result) 
         }else if(device == "ESP32"){
-         
+            const result = await window.EditorPreload.usbdownloadCode( generatedCode,device);
+            console.log(result) 
         }else if(device == "Arduino"){
             let import_code='#include "Arduino.h"\nvoid setup(){\n  pinMode(A0 , OUTPUT);\n}\nvoid loop(){\ndigitalWrite(A0,HIGH);\ndelay(1000);\ndigitalWrite(A0,LOW);\ndelay(1000);\n}\n';
             const result = await window.EditorPreload.download_ArduinoCode(import_code);
@@ -74,7 +76,8 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
     //锁定/解锁
     const handleLock = async () => {
         if(isLocked && device){
-            const result = confirm(formatMessage({
+            const result = confirm(
+                intl.formatMessage({
                 id: 'gui.alert.confirmUnlock',
                 defaultMessage: 'Unlocking will discard unsaved code. Continue?',//"解除锁定将丢失未保存代码，是否继续？"
             }));
@@ -255,7 +258,9 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
 const mapStateToProps = state => ({
     generatedCode: state.scratchGui.sun.generatedCode
 });
-export default connect(
+export default injectIntl(connect(
     mapStateToProps
-)(UploadCodeToolbar);
+)(UploadCodeToolbar));
+
+
 //export default UploadCodeToolbar;
