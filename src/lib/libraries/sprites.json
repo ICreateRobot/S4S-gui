@@ -1,6 +1,6 @@
 [
     {
-        "name": "ICrobot",
+        "name": "tinkertek",
         "tags": [
             "people",
             "animals"
@@ -9,10 +9,10 @@
         "variables": {},
         "costumes": [
             {
-                "assetId": "b9dceeedbff38a8770e52ede57eb6231",
-                "name": "ICrobot",
+                "assetId": "8a483b8fd43a70d85252b5ff5bc20b36",
+                "name": "tinkertek",
                 "bitmapResolution": 1,
-                "md5ext": "b9dceeedbff38a8770e52ede57eb6231.svg",
+                "md5ext": "8a483b8fd43a70d85252b5ff5bc20b36.svg",
                 "dataFormat": "svg",
                 "rotationCenterX": 72,
                 "rotationCenterY": 101
