@@ -1294,9 +1294,9 @@ class MenuBar extends React.Component {
                 <div style={{ margin: '0 10px' }} />
 
                 {/* 示例程序 */}
-                <Tooltip text={this.props.intl.formatMessage({id: 'gui.tooltip.documentation',defaultMessage: 'Documentation'})} position="bottom">
+                {/* <Tooltip text={this.props.intl.formatMessage({id: 'gui.tooltip.documentation',defaultMessage: 'Documentation'})} position="bottom">
                     <ExampleCode onClick={() =>alert("暂不支持")}></ExampleCode>
-                </Tooltip>             
+                </Tooltip>              */}
                 
                 {/*  设置菜单 */}
                 <Tooltip text={this.props.intl.formatMessage({id: 'gui.tooltip.settings',defaultMessage: 'Settings'})} position="bottom">
