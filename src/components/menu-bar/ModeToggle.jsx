@@ -43,7 +43,7 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
 
         vm.stopAll() //停止正在执行的所有脚本
 
-        if(isProjectEmpty()){//项目有变化
+        if(isProjectEmpty(value)){//项目有变化
             //弹出是否丢弃项目内容的确认逻辑
             const readyToReplaceProject = window.confirm(
                 intl.formatMessage(sharedMessages.replaceProjectWarning)
@@ -55,16 +55,6 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
                 return;
             }
         }
-
-        // if (value != "python"){//闪出确认弹窗
-        //     let result = confirm( formatMessage({
-        //         id: 'gui.alert.confirmchangemode',
-        //         default: 'This operation will clear the workspace. Continue?',
-        //         description: 'gui.alert.confirmchangemode'
-        //     }));
-    
-        //     if (!result) return
-        // }
 
         //arduino连接状态需要断开连接重新
         if (device == "Arduino" && deviceConnection.connected && newMode == "upload"){
@@ -128,9 +118,13 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
 
 
     // 检查项目是否为空
-    const isProjectEmpty = () => {
+    const isProjectEmpty = (currentMode) => {
+        let num = 0
+        if(currentMode == 'upload'){
+            num = 1;
+        }
         const numSprite = vm.runtime.targets.length 
-        const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > 1)
+        const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > num)
 
         // console.log('是否有角色:', numSprite);
         // console.log('是否有积木:', hasBlocks);

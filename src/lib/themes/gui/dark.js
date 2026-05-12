@@ -54,6 +54,8 @@ const guiColors = {
     'python-header-bg':'#333333',
     'python-packageName':'#e1e1e1',
     'toolboxSelected-ic': '#1e1e1e',
+    "upload-bg":"linear-gradient(  180deg,rgba(28,30,38,0.96),rgba(18,20,26,0.98))",
+    "upload-progress":"rgba(255,255,255,0.08)",
 };
 
 const blockColors = {

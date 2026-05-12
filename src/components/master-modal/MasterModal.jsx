@@ -65,7 +65,7 @@ class MasterModal extends React.Component {
         // if (!result) return;
     //}
 
-    if(this.isProjectEmpty()){//项目有变化
+    if(this.isProjectEmpty(this.props.modeValue)){//项目有变化
         //弹出是否丢弃项目内容的确认逻辑
         const readyToReplaceProject = window.confirm(
             this.props.intl.formatMessage(sharedMessages.replaceProjectWarning)
@@ -208,9 +208,13 @@ class MasterModal extends React.Component {
   }
 
   // 检查项目是否为空
-  isProjectEmpty() {
+  isProjectEmpty(currentMode) {
+      let num = 0
+      if(currentMode == 'upload'){
+          num = 1;
+      }
       const numSprite = vm.runtime.targets.length 
-      const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > 1)
+      const hasBlocks = vm.runtime.targets.some(t => t.blocks && Object.keys(t.blocks._blocks).length > num)
 
       // console.log('是否有角色:', numSprite);
       // console.log('是否有积木:', hasBlocks);
