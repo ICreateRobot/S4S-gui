@@ -18,7 +18,7 @@ import triangleIcon from '../../assets/icons/triangle.svg';
 
 import {FormattedMessage, injectIntl} from 'react-intl';
 
-const AddedComponentsList = () => {
+const AddedComponentsList = ({intl}) => {
     const components = useStore(state => state.components);
     const selectedComponent = useStore(state => state.selectedComponent);
     const selectComponent = useStore(state => state.selectComponent);
@@ -147,4 +147,5 @@ const AddedComponentsList = () => {
     );
 };
 
-export default AddedComponentsList;
+
+export default injectIntl(AddedComponentsList);
