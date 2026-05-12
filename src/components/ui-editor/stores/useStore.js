@@ -838,7 +838,7 @@ function getComponentPythonCode(component) {
             const borderWidth = 2; // 默认边框宽度
 
             // return `Screen.Rectangle(${x}, ${y}, ${width}, ${height}, ${index}, ${convertColor(rectBgColor)}, ${convertBool(isTransparent('backgroundColor'))}, ${borderWidth}, ${convertColor(rectBorderColor)}, ${convertBool(isTransparent('borderColor'))})`;
-            return `Rectangle(x=${x}, y=${y}, w=${width}, h=${height}, index=${index},bkg_color=${convertColor(rectBgColor)},broder_width=${borderWidth}, border_color=${convertColor(rectBorderColor)})`
+            return `Rectangle(x=${x}, y=${y}, w=${width}, h=${height}, index=${index},bkg_color=${convertColor(rectBgColor)},border_width=${borderWidth}, border_color=${convertColor(rectBorderColor)})`
         case 'circle':
             const radius = Math.min(width, height) / 2;
             const circleBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
@@ -905,7 +905,8 @@ function getComponentPythonCode(component) {
             return `Slider(x=${x}, y=${y},w=${width},h=${height},index= ${index},min_value=${sliderMin}, max_value=${sliderMax}, value=${sliderValue},color=${convertColor(sliderFillColor)})`
         case 'image':
             const imageSrc = component.src;
-            return `Screen.Image(${x}, ${y}, ${width}, ${height}, ${index}, "${imageSrc}")`;
+            // return `Screen.Image(${x}, ${y}, ${width}, ${height}, ${index}, "${imageSrc}")`;
+            return ` Image(img_src="${imageSrc}", x=${x}, y=${y}, index=${index})`
 
         default:
             return `# ${component.type}组件 - 未实现`;

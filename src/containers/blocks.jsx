@@ -167,6 +167,7 @@ class Blocks extends React.Component {
             'setLocale',
             'handleEnableProcedureReturns',
             'workspaceToCode',
+            'workspaceChange',
             'unindentCode',
             'findSecondTopParent',
             'handleRuntimeStop',
@@ -292,6 +293,8 @@ class Blocks extends React.Component {
         if(this.props.modeValue == "upload"){//下载模式监听代码变化
             this.workspace.addChangeListener(this.workspaceToCode);
         }
+        //目前的功能是为了实现积木被拖动时检测是否将帽子快置灰
+        // this.workspace.addChangeListener(this.workspaceChange)
 
         /* 根据模式加载扩展（初始模块在配置xmL中） 
         * 先清理掉所有的，再根据设备直接添加，没有任何干涉(此为旧方法，暂时启用，未来可能会有特殊模块，可能会再次启用)
@@ -367,6 +370,29 @@ class Blocks extends React.Component {
         if (!window.forceGenerateCode) {
             window.forceGenerateCode = () => { this.workspaceToCode({ type: 'change' })};
         }
+        const oldUpdateDisabled =
+            this.ScratchBlocks.BlockSvg.prototype.updateDisabled;
+
+            this.ScratchBlocks.BlockSvg.prototype.updateDisabled =
+            function(...args) {
+
+                oldUpdateDisabled.apply(this, args);
+
+                if (!this.svgGroup_) return;
+
+                if (this.disabled) {
+
+                    this.svgGroup_.style.opacity = '0.4';
+
+                    this.svgGroup_.style.pointerEvents = 'none';
+
+                } else {
+
+                    this.svgGroup_.style.opacity = '1';
+
+                    this.svgGroup_.style.pointerEvents = 'auto';
+                }
+            };
     }
     
 
@@ -905,6 +931,54 @@ class Blocks extends React.Component {
         this.requestToolboxUpdate();
     }
 
+    workspaceChange(event){
+        // 当前工作区里的所有模块
+        const workspaceBlocks =
+        this.workspace.getAllBlocks(false);
+
+        // 判断工作区里是否已经存在 UIEditor_whenButtonClicked
+        const hasButtonHat = workspaceBlocks.some(
+            block => block.type === 'UIEditor_whenButtonClicked'
+        );
+
+        // toolbox / flyout 工作区
+        const flyoutWorkspace =
+            this.workspace.getFlyout().getWorkspace();
+
+        // toolbox 里的所有模块
+        const flyoutBlocks =
+            flyoutWorkspace.getAllBlocks(false);
+
+        flyoutBlocks.forEach(block => {
+
+            // 找到 toolbox 中对应模块
+            if (block.type === 'UIEditor_whenButtonClicked') {
+
+                if (hasButtonHat) {
+
+                    // 已存在 → 置灰
+                    block.disabled = true;
+
+                    // 记录原颜色（避免恢复不了）
+                    if (!block._oldColour) {
+                        block._oldColour = block.getColour();
+                    }
+
+                    block.setColour('#808080');
+
+                } else {
+
+                    // 不存在 → 恢复
+
+                    block.disabled = false;
+
+                    if (block._oldColour) {
+                        block.setColour(block._oldColour);
+                    }
+                }
+            }
+        });
+    }
 
 
     //* 新增的 */
