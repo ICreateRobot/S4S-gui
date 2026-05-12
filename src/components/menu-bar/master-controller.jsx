@@ -6,9 +6,9 @@ import {MenuItem} from '../menu/menu.jsx';
 // import logo from './logo.png'
 import styles from './settings-menu.css';
 
-import microbitImg from './images/Microbit.svg';
-import arduinoImg from './images/ARDUINO.svg';
-import esp32Img from './images/ESP32.svg';
+import microbitImg from './images/Microbit.png';
+import arduinoImg from './images/ARDUINO.png';
+import esp32Img from './images/ESP32.png';
 import defaultImg from './images/default.svg'; //默认
 
 // 根据 value 映射图片

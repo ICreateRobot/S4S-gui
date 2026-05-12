@@ -6,9 +6,9 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 
 
 import styles from './MasterModal.css';
-import arduinoImg from './images/ARDUINO.svg';
-import esp32Img from './images/ESP32.svg';
-import microbitImg from './images/Microbit.svg';
+import arduinoImg from './images/ARDUINO.png';
+import esp32Img from './images/ESP32.png';
+import microbitImg from './images/Microbit.png';
 
 //文件保存用
 import {requestNewProject} from '../../reducers/project-state';

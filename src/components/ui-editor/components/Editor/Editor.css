@@ -149,7 +149,7 @@
 .phoneImage {
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/editor-bg.png');
+    background-image: url('../../assets/editor-bg.svg');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

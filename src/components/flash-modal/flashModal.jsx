@@ -48,10 +48,16 @@ const FlashModal = () => {
             }, 600);
         };
 
-        window.EditorPreload.onFlashProgress(updateFlashProgress);
-        window.EditorPreload.onFlashError(showFlashError);
-        window.EditorPreload.onFlashDone(hideFlashModal);
 
+        const removeProgress = window.EditorPreload.onFlashProgress(updateFlashProgress);//进度
+        const removeError = window.EditorPreload.onFlashError(showFlashError);//错误
+        const removeDone = window.EditorPreload.onFlashDone(hideFlashModal);//结束
+
+        return () => {
+            removeProgress?.();
+            removeError?.();
+            removeDone?.();
+        };
     }, []);
 
     // 复制错误

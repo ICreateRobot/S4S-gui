@@ -39,7 +39,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             const result = await window.EditorPreload.usbdownloadCode( generatedCode,device);
             console.log(result) 
         }else if(device == "Arduino"){
-            let import_code='#include "Arduino.h"\nvoid setup(){\n  pinMode(A0 , OUTPUT);\n}\nvoid loop(){\ndigitalWrite(A0,HIGH);\ndelay(1000);\ndigitalWrite(A0,LOW);\ndelay(1000);\n}\n';
+            let import_code='#include <Arduino.h>"\nvoid setup(){\n  pinMode(A0 , OUTPUT);\n}\nvoid loop(){\ndigitalWrite(A0,HIGH);\ndelay(1000);\ndigitalWrite(A0,LOW);\ndelay(1000);\n}\n';//#include <MyLib.h> \n
             const result = await window.EditorPreload.download_ArduinoCode(import_code);
             console.log(result)
         }
