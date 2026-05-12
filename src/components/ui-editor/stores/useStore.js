@@ -818,7 +818,7 @@ function getComponentPythonCode(component) {
     switch (component.type) {
         case 'title':
             const titleText = component.text || '标题';
-            const titleSize = component.fontSize || 14;
+            const titleSize = component.fontSize || 18;
             const titleTextColor = getColorValue('color', 'colorTransparent');
             const titleBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
 
@@ -881,7 +881,7 @@ function getComponentPythonCode(component) {
 
         case 'button':
             const buttonText = component.text || '按钮';
-            const buttonSize = component.fontSize || 12;
+            const buttonSize = component.fontSize || 14;
             const buttonTextColor = getColorValue('color', 'colorTransparent');
             const buttonBgColor = getColorValue('backgroundColor', 'backgroundColorTransparent');
 
@@ -918,7 +918,7 @@ const getDefaultProps = (type) => {
     const defaults = {
         title: {
             text: 'title',
-            fontSize: 14,
+            fontSize: 18,
             color: '#000000',
             backgroundColor: '#ffffff',
             colorTransparent: false,

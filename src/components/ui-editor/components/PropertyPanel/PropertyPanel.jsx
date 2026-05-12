@@ -233,9 +233,9 @@ const PropertyPanel = () => {
             {
                 key: 'fontSize', label: 'Font Size', type: 'select', options: [
                     { value: 12, label: 'Small' },
-                    { value: 14, label: 'Medium' },
-                    { value: 16, label: 'Large' }
-                ], defaultValue: 16
+                    { value: 18, label: 'Medium' },
+                    { value: 24, label: 'Large' }
+                ], defaultValue: 18
             },
         ],
         label: [
@@ -245,9 +245,9 @@ const PropertyPanel = () => {
             {
                 key: 'fontSize', label: 'Font Size', type: 'select', options: [
                     { value: 12, label: 'Small' },
-                    { value: 14, label: 'Medium' },
-                    { value: 16, label: 'Large' }
-                ], defaultValue: 14
+                    { value: 18, label: 'Medium' },
+                    { value: 24, label: 'Large' }
+                ], defaultValue: 12
             },
         ],
         rectangle: [
@@ -300,9 +300,9 @@ const PropertyPanel = () => {
             {
                 key: 'fontSize', label: 'Font Size', type: 'select', options: [
                     { value: 12, label: 'Small' },
-                    { value: 14, label: 'Medium' },
-                    { value: 16, label: 'Large' }
-                ], defaultValue: 14
+                    { value: 18, label: 'Medium' },
+                    { value: 24, label: 'Large' }
+                ], defaultValue: 12
             },
             { key: 'color', label: 'Color', type: 'color' },
             { key: 'backgroundColor', label: 'Background', type: 'color' }
