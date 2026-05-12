@@ -15,17 +15,19 @@ import buttonIcon from '../../assets/icons/button.svg';
 import switchIcon from '../../assets/icons/switch.svg';
 import sliderIcon from '../../assets/icons/slider.svg';
 
+import {FormattedMessage, injectIntl} from 'react-intl';
+
 const componentTypes = [
-    { type: 'title', name: 'title', icon: titleIcon },
-    { type: 'label', name: 'label', icon: labelIcon },
-    { type: 'rectangle', name: 'rectangle', icon: rectangleIcon },
-    { type: 'circle', name: 'circle', icon: circleIcon },
-    { type: 'line', name: 'line', icon: lineIcon },
-    { type: 'image', name: 'image', icon: imageIcon },
+    { type: 'title', name: 'title', icon: titleIcon, nameId: 'uieditor.component.title',defaultLabel: 'title' },
+    { type: 'label', name: 'label', icon: labelIcon, nameId: 'uieditor.component.label',defaultLabel: 'label' },
+    { type: 'rectangle', name: 'rectangle', icon: rectangleIcon, nameId: 'uieditor.component.rectangle',defaultLabel: 'rectangle' },
+    { type: 'circle', name: 'circle', icon: circleIcon, nameId: 'uieditor.component.circle',defaultLabel: 'circle' },
+    { type: 'line', name: 'line', icon: lineIcon, nameId: 'uieditor.component.line',defaultLabel: 'line' },
+    { type: 'image', name: 'image', icon: imageIcon, nameId: 'uieditor.component.image',defaultLabel: 'image' },
     // { type: 'text', name: 'text', icon: textIcon },
-    { type: 'button', name: 'button', icon: buttonIcon },
-    { type: 'switch', name: 'switch', icon: switchIcon },
-    { type: 'slider', name: 'slider', icon: sliderIcon },
+    { type: 'button', name: 'button', icon: buttonIcon, nameId: 'uieditor.component.button',defaultLabel: 'button' },
+    { type: 'switch', name: 'switch', icon: switchIcon , nameId: 'uieditor.component.switch',defaultLabel: 'switch'},
+    { type: 'slider', name: 'slider', icon: sliderIcon, nameId: 'uieditor.component.slider',defaultLabel: 'slider' },
 ];
 
 const ComponentPanel = () => {
@@ -57,7 +59,10 @@ const ComponentPanel = () => {
                                 className={styles.componentSvgIcon}
                             />
                             <span className={styles.componentName}>
-                                {comp.name}
+                                <FormattedMessage
+                                    id={comp.nameId}
+                                    defaultMessage={comp.defaultLabel}
+                                />
                             </span>
                         </div>
                     ))}

@@ -16,6 +16,8 @@ import sliderIcon from '../../assets/icons/slider.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
 import triangleIcon from '../../assets/icons/triangle.svg';
 
+import {FormattedMessage, injectIntl} from 'react-intl';
+
 const AddedComponentsList = () => {
     const components = useStore(state => state.components);
     const selectedComponent = useStore(state => state.selectedComponent);
@@ -59,10 +61,15 @@ const AddedComponentsList = () => {
     const handleDeleteClick = (e, componentId) => {
         e.stopPropagation();
         if (componentId === 'screen') {
-            alert('屏幕组件不可删除');
             return;
         }
-        if (window.confirm('确定要删除这个组件吗？')) {
+        //弹出是否丢弃项目内容的确认逻辑
+        const result =  window.confirm(intl.formatMessage({
+            id: `uieditor.delete.confirm`,
+            defaultMessage: 'Confirm delete this component?'
+        }))
+               
+        if (result) {
             deleteComponent(componentId);
         }
     };
