@@ -335,9 +335,8 @@ class Blocks extends React.Component {
             }
             if (id === 'Esp32S4S' && this.props.modeValue === 'upload') {
                 const hasUI = this.props.vm.runtime._blockInfo.some(block => block.id === 'UIEditor');
-                console.log(hasUI)
+                //console.log(hasUI)
                 if (!hasUI) {
-                    console.log("进来添加")
                     await this.props.vm.extensionManager.loadExtensionIdSync('UIEditor');
                 }
                 
@@ -991,7 +990,7 @@ class Blocks extends React.Component {
     workspaceToCode (event) {
         //console.log(event.type)
         const importCode = {"Microbit": "from microbit import *\nfrom s4s import *\n",
-            "Arduino": '\n',
+            "Arduino": '#include "prepare.h"\n',
             "ESP32": 'from Screen import *\nfrom s4s import *\n'
         };
         if(event.type == 'endDrag' || event.type == 'change'){//拖拽结束或内容变化
