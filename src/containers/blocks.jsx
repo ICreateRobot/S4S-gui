@@ -318,7 +318,14 @@ class Blocks extends React.Component {
         // }
 
         // 新切换模式扩展留存方法，完全基于持久列表
-        this.props.vm.runtime._blockInfo = this.props.vm.runtime._blockInfo.filter(block => keepList.includes(block.id));
+        let finalKeepList = [...keepList];
+        if (this.props.modeValue === 'upload') {
+            const index = finalKeepList.indexOf('Esp32S4S');
+            if (index !== -1) {
+                finalKeepList.splice(index + 1, 0, 'UIEditor');
+            }
+        }
+        this.props.vm.runtime._blockInfo = this.props.vm.runtime._blockInfo.filter(block => finalKeepList.includes(block.id));
 
         // 过滤 loadedExtensions
         for (const id of Array.from(this.props.vm.extensionManager._loadedExtensions.keys())) {
@@ -327,17 +334,16 @@ class Blocks extends React.Component {
                 this.props.vm.extensionManager._loadedExtensions.delete(id);
             }
             if (id === 'Esp32S4S' && this.props.modeValue === 'upload') {
-                const hasUI = this.props.vm.extensionManager._loadedExtensions.has('UIEditor');
-
+                const hasUI = this.props.vm.runtime._blockInfo.some(block => block.id === 'UIEditor');
+                console.log(hasUI)
                 if (!hasUI) {
+                    console.log("进来添加")
                     await this.props.vm.extensionManager.loadExtensionIdSync('UIEditor');
                 }
-
+                
                 //调整顺序
                 const blockInfo = this.props.vm.runtime._blockInfo;
-
                 const espIndex = blockInfo.findIndex(b => b.id === 'Esp32S4S');
-
                 if (espIndex !== -1) {
                     // 先移除 UIEditor（防止重复）
                     const withoutUI = blockInfo.filter(b => b.id !== 'UIEditor');
@@ -346,7 +352,6 @@ class Blocks extends React.Component {
                     withoutUI.splice(espIndex + 1, 0,
                         blockInfo.find(b => b.id === 'UIEditor')
                     );
-
                     this.props.vm.runtime._blockInfo = withoutUI;
                 }
             }
@@ -984,7 +989,7 @@ class Blocks extends React.Component {
     //* 新增的 */
     //大大的有用（事件检测，生成代码相关）
     workspaceToCode (event) {
-        console.log(event.type)
+        //console.log(event.type)
         const importCode = {"Microbit": "from microbit import *\nfrom s4s import *\n",
             "Arduino": '\n',
             "ESP32": 'from Screen import *\nfrom s4s import *\n'
@@ -1036,7 +1041,7 @@ class Blocks extends React.Component {
                         code = importStr + code;
                     }
 
-                    console.log(code)
+                    //console.log(code)
                     // this.props.setGeneratedCode(this.unindentCode(code));  
                     this.props.setGeneratedCode( code );  
                 } catch (e) {

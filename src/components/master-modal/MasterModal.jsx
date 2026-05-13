@@ -197,10 +197,12 @@ class MasterModal extends React.Component {
       if (this.props.modeValue !== 'upload') {
           Exts.push('UIEditor');
       }
+      console.log(vm.runtime._blockInfo)
       // 清除积木定义
       vm.runtime._blockInfo = vm.runtime._blockInfo.filter(block => !Exts.includes(block.id));
       // 卸载扩展
       for (const id of Array.from(vm.extensionManager._loadedExtensions.keys())) {
+        console.log(id)
           if (Exts.includes(id)) {
               vm.extensionManager._loadedExtensions.delete(id);
           }
