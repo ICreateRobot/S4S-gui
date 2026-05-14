@@ -40,7 +40,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             // console.log(result) 
         }else if(device == "Arduino"){
             let import_code='#include "TinkerCode.h"\nvoid app_setup(){\n  pinMode(A0 , OUTPUT);\n}\nvoid app_loop(){\ndigitalWrite(A0,HIGH);\ndelay(1000);\ndigitalWrite(A0,LOW);\ndelay(1000);\n}\n';//
-            const result = await window.EditorPreload.download_ArduinoCode(import_code);
+            const result = await window.EditorPreload.download_ArduinoCode(generatedCode);
             console.log(result)
         }
     };
