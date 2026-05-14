@@ -204,3 +204,31 @@
     transform: translateY(-1px);
     opacity: .92;
 }
+
+
+/* Arduino 新增的编译样式 */
+.spinner {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+
+    border: 3px solid rgba(255,255,255,0.15);
+    border-top-color: #00d2ff;
+
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.compileBox {
+    min-height: 12px;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    /* line-height: 1.5; */
+    color: var(--text-primary);
+}

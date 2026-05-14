@@ -6,20 +6,29 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 const FlashModal = () => {
     const [visible, setVisible] = useState(false);
 
-    // 当前位于的阶段（未来arduino可扩展）
-    const [stage, setStage] = useState('flashing');
-    const [progress, setProgress] = useState(0);
+    const [stage, setStage] = useState('flashing');// 阶段
+    const [progress, setProgress] = useState(0);// 进度
+    const [compileMessage, setCompileMessage] = useState('');// 编译日志
     
     const [error, setError] = useState(null);// 错误对象
     const [copied, setCopied] = useState(false);// 复制状态
 
     useEffect(() => {
         // 进度更新
-        const updateFlashProgress = (p) => {
+        const updateFlashProgress = (data) => {
             setVisible(true);
-            setStage('flashing');
+            setStage(data.stage);
             setError(null);
-            setProgress(p);
+            // 编译阶段
+            if (data.stage === 'compile') {
+                if (data.message) {
+                    setCompileMessage(data.message);
+                }else{
+                    setCompileMessage('')
+                }
+            }
+            // 烧录阶段
+            setProgress(data.progress || 0);
         };
 
         // 错误
@@ -111,24 +120,33 @@ const FlashModal = () => {
                     </div>
 
                     <div className={styles.percentTop}>
-                        {progress}%
+                        {stage === 'compile' ? (
+                            <div className={styles.spinner} />
+                        ) : (
+                            `${progress}%`
+                        )}
                     </div>
                 </div>
 
                 {/* 主体 */}
                 <div className={styles.body}>
 
-                    {/* 进度条 */}
-                    <div className={styles.progressWrapper}>
-                        <div className={styles.progressBg}>
-                            <div
-                                className={styles.progressBar}
-                                style={{
-                                    width: `${progress}%`
-                                }}
-                            />
+                    {stage === 'compile' ? (
+                        <div className={styles.compileBox}>
+                            {compileMessage}
                         </div>
-                    </div>
+                    ) : (
+                        <div className={styles.progressWrapper}>
+                            <div className={styles.progressBg}>
+                                <div
+                                    className={styles.progressBar}
+                                    style={{
+                                        width: `${progress}%`
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
 
                     {/* 阶段 */}
                     {/* <div className={styles.stageText}>

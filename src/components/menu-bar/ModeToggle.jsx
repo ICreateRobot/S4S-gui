@@ -57,28 +57,28 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
         }
 
         //arduino连接状态需要断开连接重新
-        if (device == "Arduino" && deviceConnection.connected && newMode == "upload"){
-            console.log("执行断开")
-            // 创建全屏遮罩
-            const loadingOverlay = createLoadingOverlay( formatMessage({
-                id: 'gui.alert.changeModeDisSerial',
-                default: "Please wait while switching mode. This will disconnect the board. So, please reconnect after switching.",
-                description: 'gui.alert.changeModeDisSerial'
-            }) );
-            try{
-                const result = await window.EditorPreload.serialDisconnect();
-                if (!result || !result.success) {
-                    throw new Error(result?.message || result?.error || "断开失败");
-                }
-                console.log("断开成功")
-            }catch(e){
+        // if (device == "Arduino" && deviceConnection.connected && newMode == "upload"){
+        //     console.log("执行断开")
+        //     // 创建全屏遮罩
+        //     const loadingOverlay = createLoadingOverlay( formatMessage({
+        //         id: 'gui.alert.changeModeDisSerial',
+        //         default: "Please wait while switching mode. This will disconnect the board. So, please reconnect after switching.",
+        //         description: 'gui.alert.changeModeDisSerial'
+        //     }) );
+        //     try{
+        //         const result = await window.EditorPreload.serialDisconnect();
+        //         if (!result || !result.success) {
+        //             throw new Error(result?.message || result?.error || "断开失败");
+        //         }
+        //         console.log("断开成功")
+        //     }catch(e){
 
-            }
-            // 等待2秒后移除遮罩
-            setTimeout(() => {
-                loadingOverlay.remove();
-            }, 2000);
-        }
+        //     }
+        //     // 等待2秒后移除遮罩
+        //     setTimeout(() => {
+        //         loadingOverlay.remove();
+        //     }, 2000);
+        // }
 
         setIsLoading(true);//出现加载页面
 
