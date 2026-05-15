@@ -61,6 +61,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(setTheme(theme));
         dispatch(closeSettingsMenu());
         persistTheme(theme);
+        window.forceGenerateCode?.();//强制生成代码
     }
 });
 

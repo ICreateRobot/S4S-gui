@@ -4,6 +4,9 @@
 export async function scan(deviceType) {
   try {
     //console.log("设备类型",deviceType)
+    if(deviceType=="ESP32"){
+      return [];
+    }
 
     const result = await window.EditorPreload.serialScan(deviceType);
     console.log(result)

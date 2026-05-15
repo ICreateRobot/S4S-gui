@@ -16,7 +16,7 @@ import ConnectContent from "./ConnectContent.jsx";
 const DEVICE_CONNECTION_MODES = {
   Microbit: ['serial'],
   Arduino: ['serial'],
-  ESP32: ['wifi']//, 'bluetooth','serial'
+  ESP32: ['serial','wifi']//, 'bluetooth'
 };
 
 //调用模块集合
