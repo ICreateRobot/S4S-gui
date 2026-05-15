@@ -1,3 +1,4 @@
+//连接窗口
 import React, { useState, useEffect } from "react";
 import styles from "./connectModal.css";
 import { connect } from 'react-redux';
@@ -15,7 +16,7 @@ import ConnectContent from "./ConnectContent.jsx";
 const DEVICE_CONNECTION_MODES = {
   Microbit: ['serial'],
   Arduino: ['serial'],
-  ESP32: ['serial']//, 'bluetooth','wifi'
+  ESP32: ['wifi']//, 'bluetooth','serial'
 };
 
 //调用模块集合
