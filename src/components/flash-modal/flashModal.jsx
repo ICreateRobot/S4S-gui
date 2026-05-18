@@ -27,8 +27,12 @@ const FlashModal = () => {
                     setCompileMessage('')
                 }
             }
-            // 烧录阶段
-            setProgress(data.progress || 0);
+             // 烧录阶段
+            if(data.progress){
+                setProgress(data.progress);
+            }
+           
+            //setProgress(data.progress || 0);
         };
 
         // 错误
