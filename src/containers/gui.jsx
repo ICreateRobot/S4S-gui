@@ -45,10 +45,12 @@ import TWThemeManagerHOC from './tw-theme-manager-hoc.jsx';
 
 import DesktopAPI from '../lib/DesktopAPI.js';
 
+
 //import vmDownloadListenerHOC from '../lib/vm-download-listener-hoc.jsx';//新增的下载vm相关
 //import vmDownloadManagerHOC from '../lib/vm-download-manager-hoc.jsx';
 
 import { setSelectedMode } from '../reducers/sun';
+import { clearDeviceConnection} from '../reducers/device-connection';
 
 
 import downloadVM  from '../lib/download-vm.js';
@@ -83,6 +85,20 @@ class GUI extends React.Component {
         };
 
         this.props.vm.on('projectModeChanged', this.handleProjectModeChanged);
+
+        // wifi断开监听
+        this.handleWifiDisconnected = () => {
+            console.log('[GUI] WIFI_DEVICE_DISCONNECTED 事件触发');
+            this.props.clearDeviceConnectionAction();
+
+            // 清空 runtime 中的 connKey
+            this.props.vm.runtime.connKey = "";
+        };
+
+        this.props.vm.runtime.on(
+            'WIFI_DEVICE_DISCONNECTED',
+            this.handleWifiDisconnected
+        );
         
     }
     componentDidUpdate (prevProps) {//组件更新时触发，用来检测属性变化并做相应的操作
@@ -106,6 +122,12 @@ class GUI extends React.Component {
         //取消监听
         if (this.props.vm && this.handleProjectModeChanged) {
             this.props.vm.off('projectModeChanged', this.handleProjectModeChanged);
+        }
+        if (this.props.vm && this.handleWifiDisconnected) {
+            this.props.vm.runtime.off(
+                'WIFI_DEVICE_DISCONNECTED',
+                this.handleWifiDisconnected
+            );
         }
     }
 
@@ -252,6 +274,7 @@ const mapDispatchToProps = dispatch => {
         onRequestCloseCostumeLibrary: () => dispatch(closeCostumeLibrary()),
         onRequestCloseTelemetryModal: () => dispatch(closeTelemetryModal()),
         setSelectedMode: (mode) => dispatch(setSelectedMode(mode)),//模式
+        clearDeviceConnectionAction: () =>dispatch(clearDeviceConnection()),//清除设备连接
 
         ...DesktopAPI
     };

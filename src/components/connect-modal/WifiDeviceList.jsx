@@ -1,65 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import styles from "./connectModal.css";
 
-const SerialDeviceList = ({
-  loading,
-  devices,
-  selectedIndex,
-  portConnected,
-  portInfo,
-  actionLoading,
-  onConnect
-}) => {
+import wifiImg from './wifi-connect.png';
+
+const MAX_LENGTH = 8;
+
+const WifiDeviceList = ({ code, setCode,historyCodes, portConnected, portInfo}) => {
+  console.log(portConnected)
+  console.log(portInfo)
+  // 输入是否合法
+  const isValid = code.length === MAX_LENGTH;
+
+  // 输入处理
+  const handleChange = (e) => {
+    let value = e.target.value.toUpperCase();
+    // 仅允许数字和字母
+    value = value.replace(/[^A-Z0-9]/g, "");
+    // 长度限制
+    value = value.slice(0, MAX_LENGTH);
+    setCode(value);
+  };
+
+
   return (
     <div className={styles.deviceList}>
-      {loading && (
-        <div className={styles.emptyTip}>
-          <FormattedMessage id="gui.connectModal.scanning" defaultMessage="Scanning..." />
+
+      {/* 标题 + 输入框 */}
+      <div className={styles.wifiRow}>
+
+        {/* 标题 */}
+        <div className={styles.wifiLabel}>
+          <FormattedMessage
+            id="gui.connectModal.wifiTip"
+            defaultMessage="Connection Key"
+          />
         </div>
-      )}
 
-      {!loading && (!devices || devices.length === 0) && (
-        <div className={styles.deviceItem}>
-          <FormattedMessage id="gui.connectModal.noDevices" defaultMessage="No device found" />
-        </div>
-      )}
+        {/* 输入区域 */}
+        <div className={styles.wifiInputWrapper}>
 
-      {!loading && devices.map((device, idx) => {
-        const isSelected = selectedIndex === idx;
+          {/* 输入框 */}
+          <input
+            list="wifi-history"
+            value={code}
+            onChange={handleChange}
+            placeholder="XXXXXXXX"
+            autoComplete="off"
+            spellCheck={false}
+            className={`${styles.wifiInput} ${
+              code.length === 0
+                ? ""
+                : isValid
+                ? styles.wifiInputValid
+                : styles.wifiInputInvalid
+            }`}
+          />
 
-        return (
+          {/* 历史下拉 */}
+          <datalist id="wifi-history">
+            {historyCodes.map((item) => (
+              <option key={item} value={item} />
+            ))}
+          </datalist>
+
+          {/* 字数统计 */}
           <div
-            key={idx}
-            className={`${styles.deviceItem} ${isSelected ? styles.deviceItemActive : ""}`}
+            className={`${styles.wifiCount} ${
+              isValid
+                ? styles.wifiCountValid
+                : styles.wifiCountInvalid
+            }`}
           >
-            <div>
-              <div className={styles.deviceName}>{device.name}</div>
-            </div>
-
-            <div>
-              {portConnected && portInfo?.comPort === device.comPort ? (
-                <span style={{ color: "#4caf50", fontWeight: 600 }}>
-                  <FormattedMessage id="gui.connectModal.connected" defaultMessage="Connected" />
-                </span>
-              ) : (
-                <button
-                  className={styles.connectBtn}
-                  disabled={actionLoading}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onConnect(device, idx);
-                  }}
-                >
-                  <FormattedMessage id="gui.connectModal.connect" defaultMessage="Connect" />
-                </button>
-              )}
-            </div>
+            {code.length}/{MAX_LENGTH}
           </div>
-        );
-      })}
+        </div>
+      </div>
+
+      {/* 图片 */}
+      <div className={styles.wifiImageWrapper}>
+        <img
+          src={wifiImg}
+          className={styles.wifiImage}
+        />
+      </div>
+      {/* 已连接状态 */}
+      {portConnected && (
+        <div className={styles.wifiConnectedInfo}>
+
+          {/* 绿色圆点 */}
+          <div className={styles.wifiConnectedDot}></div>
+
+          {/* 版本号 */}
+          {portInfo?.version && (
+            <div className={styles.wifiVersion}>
+              V{portInfo.version}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
-export default SerialDeviceList;
+export default WifiDeviceList;

@@ -210,3 +210,133 @@
 
 .scanBtn { background: #00bfa5; color: #fff; }
 .disconnectBtn { background: #ff4c4c; color: #fff; }
+
+
+
+
+
+
+/* wifi row */
+.wifiRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* label */
+.wifiLabel {
+  white-space: nowrap;
+  font-weight: 600;
+  min-width: 110px;
+}
+
+/* input wrapper */
+.wifiInputWrapper {
+  position: relative;
+  flex: 1;
+}
+
+/* input */
+.wifiInput {
+  width: 100%;
+  padding: 10px 55px 10px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  transition: border-color 0.2s;
+}
+
+/* valid */
+.wifiInputValid {
+  border-color: #4caf50;
+}
+
+/* invalid */
+.wifiInputInvalid {
+  border-color: #f44336;
+}
+
+/* count */
+.wifiCount {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* valid count */
+.wifiCountValid {
+  color: #4caf50;
+}
+
+/* invalid count */
+.wifiCountInvalid {
+  color: #f44336;
+}
+
+/* disabled button */
+.connectBtnDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wifiConnectBtn {
+  width: 100%;
+  margin-top: 40px;
+  padding: 10px;
+}
+
+/* 图片区域 */
+.wifiImageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* margin-top: 15px; */
+
+}
+
+/* 图片 */
+.wifiImage {
+  width: 180px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.wifiConnectedInfo {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #2e7d32;
+}
+
+.wifiConnectedDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+.wifiVersion {
+  padding: 2px 8px;
+  border-radius: 999px;
+
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 600;
+}

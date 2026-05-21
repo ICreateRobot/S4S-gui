@@ -16,7 +16,7 @@ import ConnectContent from "./ConnectContent.jsx";
 const DEVICE_CONNECTION_MODES = {
   Microbit: ['serial'],
   Arduino: ['serial'],
-  ESP32: ['serial','wifi']//, 'bluetooth'
+  ESP32: ['wifi']//,'serial', 'bluetooth'
 };
 
 //调用模块集合
@@ -37,6 +37,12 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
   const [loading, setLoading] = useState(false); // 扫描或连接的 loading 状态
   const [actionLoading, setActionLoading] = useState(false); // 正在连接/断开
 
+  // 获取历史记录
+  const historyCodes = JSON.parse(
+    localStorage.getItem("wifi_history") || "[]"
+  );
+  const [wifiCode, setWifiCode] = useState(historyCodes[0] || "");// wifi连接码输入状态
+
   
   useEffect(() => { 
     let isMounted = true;
@@ -51,15 +57,23 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
         const allowedModes = DEVICE_CONNECTION_MODES[selectedDevice];
         setAvailableModes(allowedModes);
 
+        console.log(deviceConnection);
+
+        //已有连接
         if (deviceConnection && deviceConnection.connected && allowedModes.includes(deviceConnection.mode)) {// 如果有已连接设备，并且模式匹配，直接恢复连接状态
           setActiveTab(deviceConnection.mode);
           setPortConnected(true);
           setPortInfo(deviceConnection.info);
 
-          handleScan(deviceConnection.mode,selectedDevice,deviceConnection.info);
+          // 只有 serial 才自动扫描
+          if (deviceConnection.mode === 'serial') {
+            handleScan(deviceConnection.mode,selectedDevice,deviceConnection.info);
+          }
         } else {//无连接设备，直接扫描
           setActiveTab(allowedModes[0]);
-          handleScan(allowedModes[0],selectedDevice);//开扫
+          if (deviceConnection.mode === 'serial') {
+            handleScan(allowedModes[0],selectedDevice);//开扫
+          }
         }
       } 
     }
@@ -87,11 +101,13 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
   
   // 切换连接模式
   const handleTabSwitch = async (mode) => {
-    if (!availableModes.includes(mode)) return showToast(`当前设备不支持 ${mode}`);//正常情况完全用不到此判断（保险）
-    if (portConnected) return showToast("请先断开当前连接");
-    setActiveTab(mode);
+    if (!availableModes.includes(mode)) return ;//正常情况完全用不到此判断（保险）
+    if (portConnected) return //showToast("请先断开当前连接");
 
-    await handleScan(mode,currentDevice);//执行扫描
+    setActiveTab(mode);
+    if (mode !== 'wifi') {
+      await handleScan(mode,currentDevice);//执行扫描
+    }
   };
 
   // 扫描设备（将来这里可能都要改，先这样吧）
@@ -187,6 +203,81 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
     }
   };
 
+  // wifi连接
+  const handleWifiConnect = async () => {
+    if(actionLoading) return;//正在连接中，避免重复点击
+    setActionLoading(true);
+
+    // 检查链接码
+    if (wifiCode.length !== 8  ){
+      vm.runtime.ioDevices.toast.guiToast("","请检查Connection Key","error",3000);
+      return;
+    } 
+    
+    try {
+      // 获取设备信息
+      const info = await MODE_HANDLERS.wifi.connect(wifiCode);
+
+      //console.log("设备信息:", info);
+      if(info.code === 201){
+        vm.runtime.ioDevices.toast.guiToast( "", "设备连接成功", "info", 2000 );
+
+        /* 将数据保存，各个地方应用 */
+        // 保存到全局 Redux
+        dispatch(setDeviceConnection({
+          mode: "wifi",
+          info: {
+            ...info.data,
+            connKey: wifiCode
+          }
+        }));
+        // 保存历史
+        saveHistory(wifiCode);
+        vm.runtime.connKey = wifiCode; // 通知扩展
+        setPortConnected(true);
+        setPortInfo(info.data);
+
+        setTimeout(() => {
+          onRequestClose(); // 关闭当前窗口
+        }, 500);
+
+      }else{//其他所有情况都按照此种情况处理，如果想要更细致，根据文档再扩展
+        vm.runtime.ioDevices.toast.guiToast("002", "请检测链接码是否正确或设备已离线", "error", 3000 );
+        dispatch(clearDeviceConnection()); // 清空全局连接状态
+        vm.runtime.connKey = ""; // 通知扩展
+        setPortConnected(false);
+      }
+
+    } catch (err) {
+      //console.log(err);
+      vm.runtime.ioDevices.toast.guiToast( "",  "连接失败", "error",  3000 );
+      dispatch(clearDeviceConnection()); // 清空全局连接状态
+      vm.runtime.connKey = ""; // 通知扩展
+      setPortConnected(false);
+    }finally {
+      setActionLoading(false);
+    }
+  }
+
+  // 保存历史记录
+  const saveHistory = (newCode) => {
+    const oldList = JSON.parse(
+      localStorage.getItem("wifi_history") || "[]"
+    );
+
+    // 去重 + 最新放最前
+    const newList = [
+      newCode,
+      ...oldList.filter(item => item !== newCode)
+    ];
+
+    // 最多保存10条
+    localStorage.setItem(
+      "wifi_history",
+      JSON.stringify(newList.slice(0, 10))
+    );
+  };
+
 
   // 警告窗口
   const showToast = (msg) => {
@@ -253,36 +344,58 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
             portInfo={portInfo}
             actionLoading={actionLoading}
             onConnect={handleSelectOrConnect}
+            code={wifiCode}
+            setCode={setWifiCode}
+            historyCodes={historyCodes}
           />
 
           {/* 底部固定按钮 */}
-          <div className={styles.footer}>
-            {!portConnected ? (
+          {/* 非wifi模式 扫描与断开 */}
+          {activeTab !== 'wifi' && (
+            <div className={styles.footer}>
+              {!portConnected ? (
+                <button
+                  className={`${styles.serialBtn} ${styles.scanBtn}`}
+                  onClick={() => handleFooterAction()}
+                  disabled={loading || actionLoading}
+                >
+                  {loading ?
+                    <FormattedMessage id="gui.connectModal.scanning" defaultMessage="Scanning..." />
+                    : 
+                    <FormattedMessage id="gui.connectModal.scan" defaultMessage="Scan Devices" />
+                  }
+                </button>
+              ) : (
+                <button
+                  className={`${styles.serialBtn} ${styles.disconnectBtn}`}
+                  onClick={() => handleFooterAction()}
+                  disabled={actionLoading}
+                >
+                  {actionLoading ? 
+                    <FormattedMessage id="gui.connectModal.disconnecting" defaultMessage="Disconnecting..." />
+                    : 
+                    <FormattedMessage id="gui.connectModal.disconnect" defaultMessage="Disconnect" />
+                  }
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* wifi模式 连接 */}
+          {activeTab === 'wifi' && (
+            <div className={styles.footer}>
               <button
                 className={`${styles.serialBtn} ${styles.scanBtn}`}
-                onClick={() => handleFooterAction()}
-                disabled={loading || actionLoading}
+                // disabled={wifiCode.length !== 8 || actionLoading}
+                onClick={handleWifiConnect}
               >
-                {loading ?
-                  <FormattedMessage id="gui.connectModal.scanning" defaultMessage="Scanning..." />
-                  : 
-                  <FormattedMessage id="gui.connectModal.scan" defaultMessage="Scan Devices" />
-                }
+                <FormattedMessage
+                  id="gui.connectModal.connect"
+                  defaultMessage="Connect"
+                />
               </button>
-            ) : (
-              <button
-                className={`${styles.serialBtn} ${styles.disconnectBtn}`}
-                onClick={() => handleFooterAction()}
-                disabled={actionLoading}
-              >
-                {actionLoading ? 
-                  <FormattedMessage id="gui.connectModal.disconnecting" defaultMessage="Disconnecting..." />
-                  : 
-                  <FormattedMessage id="gui.connectModal.disconnect" defaultMessage="Disconnect" />
-                }
-              </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

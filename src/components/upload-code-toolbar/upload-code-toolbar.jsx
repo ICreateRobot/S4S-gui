@@ -22,6 +22,8 @@ import fullStageIcon from '!../../lib/tw-recolor/build!./icon--full-stage.svg';
 import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg';
 import modelFullStageIcon from '!../../lib/tw-recolor/build!./icon--model-stage.svg';
 
+import { run, upload } from "../connect-modal/wifi.js"
+
 
 const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked,onToggleLock,vm,intl}) => {
 
@@ -36,8 +38,23 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             const result = await window.EditorPreload.usbdownloadCode( generatedCode,device);
             console.log(result) 
         }else if(device == "ESP32"){
-            // const result = await window.EditorPreload.usbdownloadCode( generatedCode,device);
-            // console.log(result) 
+            if (!vm.runtime.connKey) {
+                vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
+                return;
+            }
+            const result = await upload(vm.runtime.connKey, generatedCode);
+
+            // 正常
+            if (result.code === 203) {
+                
+            }else{//其他异常一并处理
+                vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
+
+                // 通知 GUI 清除连接
+                vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+
+                return;
+            }
         }else if(device == "Arduino"){
             let import_code='#include "TinkerCode.h"\nvoid app_setup(){\n  pinMode(A0 , OUTPUT);\n}\nvoid app_loop(){\ndigitalWrite(A0,HIGH);\ndelay(1000);\ndigitalWrite(A0,LOW);\ndelay(1000);\n}\n';//
             const result = await window.EditorPreload.download_ArduinoCode(generatedCode);
@@ -52,7 +69,24 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             if (device === "Microbit") {
                 await window.EditorPreload.mBUsbRunCode("");
             }else if(device == "ESP32"){
-            
+                if (!vm.runtime.connKey) {
+                    vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
+                    return;
+                }
+                const result = await run(vm.runtime.connKey, " ");
+                console.log(result)
+
+                // 正常
+                if (result.code === 202) {
+                    
+                }else{//其他异常一并处理
+                    vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
+
+                    // 通知 GUI 清除连接
+                    vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+
+                    return;
+                }
             }
 
             setIsRunning(false);
@@ -61,14 +95,27 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                 const result = await window.EditorPreload.mBUsbRunCode( generatedCode);
                 console.log(result) 
             }else if(device == "ESP32"){
-            
+                if (!vm.runtime.connKey) {
+                    vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
+                    return;
+                }
+                const result = await run(vm.runtime.connKey, generatedCode);
+                console.log(result)
+                // 正常
+                if (result.code === 202) {
+                    
+                }else{//其他异常一并处理
+                    vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
+
+                    // 通知 GUI 清除连接
+                    vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+
+                    return;
+                }
             }
 
             setIsRunning(true);
-        }
-
-
-        
+        } 
     };
 
     //锁定/解锁

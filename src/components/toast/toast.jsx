@@ -28,10 +28,15 @@ const Toast = () => {
 
             // 优先使用国际化 id
             let text = message || '';
-            if (id === '001') {
+            if (id === '001') {//请连接设备
                 text = formatMessage({
                     id: 'gui.toast.error.001',
                     default: "unconnected device"
+                });
+            }else if (id === '002') {//设备不在线，无法执行操作
+                text = formatMessage({
+                    id: 'gui.toast.error.002',
+                    default: "Device is offline, unable to perform the operation."
                 });
             }
             setToast({ text, type });
