@@ -16,6 +16,12 @@ import {setFileHandle} from '../../reducers/tw.js';
 import sharedMessages from '../../lib/shared-messages';
 
 
+import {  clearDeviceConnection } from '../../reducers/device-connection'; 
+import * as serial from '../connect-modal/serial.js';
+import * as bluetooth from '../connect-modal/bluetooth.js';
+
+
+
 
 
 const devices = [
@@ -78,7 +84,6 @@ class MasterModal extends React.Component {
         }
     }
 
-
     //执行切换
     await this.handledata('open', deviceName);
     this.props.setSelectedDevice(deviceName)
@@ -115,6 +120,11 @@ class MasterModal extends React.Component {
   async handledata(type,devices){
     vm.stopAll();//停止所有
     this.props.setIsLoading(true);//出现加载页面
+
+    //切换设备需要断开连接
+    if(this.props.deviceConnection.connected){
+      this.disconnectDevice(this.props.deviceConnection.mode)//断开连接
+    }
 
     //根据打开或者关闭进行扩展操作
     if(type == 'open'){
@@ -224,6 +234,18 @@ class MasterModal extends React.Component {
       return (numSprite != 2 || hasBlocks);
   }
 
+  // 清除连接状态
+  disconnectDevice(mode){
+    if(mode === 'serial'){
+      serial.disconnect();
+    }else if(mode === 'bluetooth'){
+      bluetooth.disconnect();
+    }else if(mode === 'wifi'){
+      this.props.clearDeviceConnection(); // 清空全局连接状态
+      vm.runtime.connKey = ""; // 通知扩展
+    }
+  }
+
   render() {
     return (
       <div className={styles.modalOverlay}>
@@ -280,7 +302,8 @@ class MasterModal extends React.Component {
  
 // 从 Redux 获取状态
 const mapStateToProps = (state) => ({
-    selectedDevice: state.scratchGui.sun.selectedDevice//统一管理的设备
+    selectedDevice: state.scratchGui.sun.selectedDevice,//统一管理的设备
+    deviceConnection: state.scratchGui.deviceConnectionState //设备连接状态
 });
 
 // 派发 Redux Action
@@ -289,7 +312,8 @@ const mapDispatchToProps = (dispatch) => ({
     createNewProject: needSave => {
         dispatch(requestNewProject(needSave));
         dispatch(setFileHandle(null));
-    }
+    },
+    clearDeviceConnection: () => dispatch(clearDeviceConnection()) // 清空连接状态
 });
 
 export default injectIntl(
