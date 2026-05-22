@@ -6,7 +6,7 @@ import backdrop from '!raw-loader!./cd21514d0531fdffb22204e0ec5ed84a.svg';
 import costume1 from '!raw-loader!./dango-cat.svg';
 /* eslint-enable import/no-unresolved */
 import {TextEncoder} from '../tw-text-encoder';
-import costume2 from '!raw-loader!./8a483b8fd43a70d85252b5ff5bc20b36.svg'
+import costume2 from '!raw-loader!./712130adf06246f0005465447d0e03f4.svg'
 
 const defaultProject = translator => {
     if (overrideDefaultProject.byteLength > 0) {
@@ -38,7 +38,7 @@ const defaultProject = translator => {
         dataFormat: 'SVG',
         data: encoder.encode(backdrop)
     },  {
-        id: '8a483b8fd43a70d85252b5ff5bc20b36',
+        id: '712130adf06246f0005465447d0e03f4',
         assetType: 'ImageVector',
         dataFormat: 'SVG',
         data: encoder.encode(costume2)

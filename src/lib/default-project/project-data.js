@@ -60,13 +60,13 @@ const projectData = translateFunction => {
                 currentCostume: 0,
                 costumes: [
                     {
-                        assetId: '8a483b8fd43a70d85252b5ff5bc20b36',
+                        assetId: '712130adf06246f0005465447d0e03f4',
                         name: translator(messages.costume, {index: 1}),
                         bitmapResolution: 1,
-                        md5ext: '8a483b8fd43a70d85252b5ff5bc20b36.svg',
+                        md5ext: '712130adf06246f0005465447d0e03f4.svg',
                         dataFormat: 'svg',
-                        rotationCenterX: 72,
-                        rotationCenterY: 101
+                        rotationCenterX: 50,
+                        rotationCenterY: 50
                     }
                 ],
                 sounds: [],
@@ -74,7 +74,7 @@ const projectData = translateFunction => {
                 visible: true,
                 x: 0,
                 y: 0,
-                size: 100,
+                size: 150,
                 direction: 90,
                 draggable: false,
                 rotationStyle: 'all around'
