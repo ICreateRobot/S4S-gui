@@ -4,6 +4,24 @@ import { FormattedMessage,injectIntl } from "react-intl";
 import { connect } from 'react-redux';
 import styles from './FirmwareModal.css';
 
+import arduinoImg from '../master-modal/images/ARDUINO.png';
+import esp32Img from '../master-modal/images/ESP32.png';
+import microbitImg from '../master-modal/images/Microbit.png';
+
+const deviceInfoMap = {
+  Microbit: {
+    name: 'Micro:bit',
+    image: microbitImg
+  },
+  Arduino: {
+    name: 'Arduino',
+    image: arduinoImg
+  },
+  ESP32: {
+    name: 'ESP32',
+    image: esp32Img
+  }
+};
 
 const firmwareList = {
     Microbit: [ { id: 'Microbit_LinkBot', name: 'Microbit_LinkBot', version: 'V1.0.0' } ],
@@ -11,8 +29,10 @@ const firmwareList = {
     ESP32: []
 }
 
+
+
 const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceConnection }) => {
-  const [selectedFirmware, setSelectedFirmware] = useState(null);// 当前选中的固件
+  //const [selectedFirmware, setSelectedFirmware] = useState(null);// 当前选中的固件
   const [selectedPort, setSelectedPort] = useState('');// 当前选中的串口
   const [upgrading, setUpgrading] = useState(false);// 升级状态
   const [serialPorts, setSerialPorts] = useState([]);//串口列表
@@ -74,7 +94,8 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
   
   // 执行烧录
   const handleUpgrade = async () => {
-    if (!selectedFirmware || !selectedPort) return;
+    return
+    if ( !selectedPort) return;
 
     // 清空上一次状态
     setProgress(0);
@@ -84,7 +105,7 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
     //执行
     setUpgrading(true);
     try {
-      await window.EditorPreload.flashFirmwareAll(extensionName,selectedFirmware.id+"_"+selectedFirmware.version,selectedPort)
+      //await window.EditorPreload.flashFirmwareAll(extensionName,selectedPort)
     } finally {
       //setUpgrading(false);//不需要了，根据监听直接决定最终状态
     }
@@ -106,55 +127,52 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
         </div>
         <div className={styles.modalBody}>
 
-          {/* 固件选择 */}
-          <div className={styles.section}>
-            <div className={styles.sectionTitle}>
+
+        {/* 设备信息 */}
+        <div className={styles.deviceCard}>
+            <img
+                src={deviceInfoMap[extensionName]?.image}
+                className={styles.deviceImage}
+            />
+
+            <div className={styles.deviceName}>
+                {deviceInfoMap[extensionName]?.name}
+            </div>
+
+            <div className={styles.deviceDesc}>
                 <FormattedMessage
-                    description="select firmware"
-                    id="gui.uploadFirmware.choiceFirmware"
+                    id="gui.uploadFirmware.deviceDesc"
+                    defaultMessage="Firmware upgrade for connected device"
                 />
             </div>
-            <div className={styles.firmwareList}>
-              {firmwareList[extensionName].map(fw => (
-                <div
-                  key={fw.id}
-                  className={`${styles.firmwareItem} ${
-                    selectedFirmware?.id === fw.id ? styles.active : ''
-                  }`}
-                  onClick={() => setSelectedFirmware(fw)}
-                >
-                  <div>{fw.name}</div>
-                  <div className={styles.version}>{fw.version}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+        </div>
 
           {/* 串口选择 */}
-          <div className={styles.section}>
-            <div className={styles.sectionTitle}>
-                <FormattedMessage
-                    description="select serial port"
-                    id="gui.uploadFirmware.choiceSerial"
-                />
-            </div>
-            <select
-              className={styles.select}
-              value={selectedPort}
-              onChange={e => setSelectedPort(e.target.value)}
-            >
-              <option value="">
-               { intl.formatMessage({
+          <div className={styles.serialCard}>
+            <div className={styles.selectWrapper}>
+              <select
+                className={styles.select}
+                value={selectedPort}
+                onChange={e => setSelectedPort(e.target.value)}
+              >
+                <option value="">
+                  {intl.formatMessage({
                     description:"please select a serial port",
                     id:"gui.uploadFirmware.choiceSerial_p"
-                })}
-              </option>
-              {serialPorts.map(p => (
-                <option key={p.comPort} value={p.comPort}>
-                  {p.comPort}
+                  })}
                 </option>
-              ))}
-            </select>
+
+                {serialPorts.map(p => (
+                  <option key={p.comPort} value={p.comPort}>
+                    {p.comPort}
+                  </option>
+                ))}
+              </select>
+
+              <div className={styles.selectArrow}>
+                ▼
+              </div>
+            </div>
           </div>
         </div>
 
@@ -181,7 +199,7 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
         <div className={styles.footer}>
         <button
             className={`${styles.serialBtn} ${styles.scanBtn}`}
-            disabled={!selectedFirmware || !selectedPort || upgrading}
+            disabled={!selectedPort || upgrading}
             onClick={handleUpgrade}
         >
             {upgrading

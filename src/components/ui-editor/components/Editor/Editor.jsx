@@ -20,6 +20,8 @@ import unlockIcon from '../../assets/icons/unlock.svg';
 import deleteGuideIcon from '../../assets/icons/delete-guide.svg';
 import runButton from '../../assets/icons/run.svg';
 
+import { run } from "../../../connect-modal/wifi.js"
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Editor = () => {
@@ -70,12 +72,21 @@ const Editor = () => {
     const phoneImageRef = useRef(null);
 
     //运行按钮点击事件
-    const handleRunClick = () => {
+    const handleRunClick = async() => {
         const pythonCode = generatePythonCode();
-        if (pythonCode) {
-            alert(pythonCode);
-        } else {
-            alert('没有组件需要生成代码。');
+        if (!vm.runtime.connKey) {
+            vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
+            return;
+        }
+        const result = await run(vm.runtime.connKey, 'from Screen import *\nfrom s4s import *\n' + pythonCode);
+        // 正常
+        if (result.code === 202) {
+            
+        }else{//其他异常一并处理
+            vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
+            // 通知 GUI 清除连接
+            vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+            return;
         }
     };
 
