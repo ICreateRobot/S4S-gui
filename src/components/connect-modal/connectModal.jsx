@@ -57,7 +57,7 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
         const allowedModes = DEVICE_CONNECTION_MODES[selectedDevice];
         setAvailableModes(allowedModes);
 
-        console.log(deviceConnection);
+        //console.log(deviceConnection);
 
         //已有连接
         if (deviceConnection && deviceConnection.connected && allowedModes.includes(deviceConnection.mode)) {// 如果有已连接设备，并且模式匹配，直接恢复连接状态
@@ -71,7 +71,7 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
           }
         } else {//无连接设备，直接扫描
           setActiveTab(allowedModes[0]);
-          if (deviceConnection.mode === 'serial') {
+          if (allowedModes[0] === 'serial') {
             handleScan(allowedModes[0],selectedDevice);//开扫
           }
         }
@@ -220,7 +220,7 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
 
       //console.log("设备信息:", info);
       if(info.code === 201){
-        vm.runtime.ioDevices.toast.guiToast( "", "设备连接成功", "info", 2000 );
+        vm.runtime.ioDevices.toast.guiToast("200", "设备连接成功", "info", 2000 );
 
         /* 将数据保存，各个地方应用 */
         // 保存到全局 Redux
