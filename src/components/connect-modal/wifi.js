@@ -1,6 +1,6 @@
 // modes/wifi.js
 
-const BASE_URL = "http://192.168.20.161:3000";
+const BASE_URL = "http://139.129.32.56:3000";////192.168.20.161
 
 // 连接
 export async function connect(connKey) {
