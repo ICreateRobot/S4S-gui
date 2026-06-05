@@ -76,7 +76,7 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
             defaultMessage: "upgrade completed"
         }), 'success', 3000);
       setUpgrading(false);
-    });gui.uploadFirmware.failed
+    });
   
     // 错误
     const offError = window.EditorPreload.onFlashFirmwareError((error) => {
