@@ -8,6 +8,8 @@ import arduinoImg from '../master-modal/images/ARDUINO.png';
 import esp32Img from '../master-modal/images/ESP32.png';
 import microbitImg from '../master-modal/images/Microbit.png';
 
+import WifiConfigModal from './WifiConfigModal.jsx';
+
 const deviceInfoMap = {
   Microbit: {
     name: 'Micro:bit',
@@ -30,7 +32,6 @@ const firmwareList = {
 }
 
 
-
 const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceConnection }) => {
   //const [selectedFirmware, setSelectedFirmware] = useState(null);// 当前选中的固件
   const [selectedPort, setSelectedPort] = useState('');// 当前选中的串口
@@ -38,31 +39,27 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
   const [serialPorts, setSerialPorts] = useState([]);//串口列表
 
   const [progress, setProgress] = useState(0);     // 进度
-  const [errorMsg, setErrorMsg] = useState(null);  // 错误信息
-  const [done, setDone] = useState(false);         // 是否完成
+  const [errorMsg, setErrorMsg] = useState(null);  // 错误信息(用不到了)
+  const [done, setDone] = useState(false);         // 是否完成(用不到了)
+
+  const [showWifiPanel, setShowWifiPanel] = useState(false);//wifi设置面板
 
 
-  useEffect(() => {
-    const init = async () => {
-     console.log(deviceConnection)
-      // 已有设备连接  锁定串口
-      if (deviceConnection?.connected) {
-        const portInfo = deviceConnection.info;
-        //setSerialPorts(portInfo ? [portInfo] : []);
-        setSelectedPort(portInfo?.comPort || portInfo?.path || '');
-        //return;
-      }
+  // useEffect(() => {
+  //   const init = async () => {
+  //     //console.log(deviceConnection)
+  //     // 已有设备连接  锁定串口
+  //     if (deviceConnection?.connected) {
+  //       const portInfo = deviceConnection.info;
+  //       setSelectedPort(portInfo?.comPort || portInfo?.path || '');
+  //     }
   
-      //没有连接  扫描所有串口
-      const result = await window.EditorPreload.serialScan(extensionName);
+  //     //没有连接  扫描所有串口
+  //     await scanPorts();
+  //   };
   
-      if (result?.success) {
-        setSerialPorts(result.devices || []);
-      }
-    };
-  
-    init();
-  }, [deviceConnection]);
+  //   init();
+  // }, [deviceConnection]);
 
 
   useEffect(() => {
@@ -73,17 +70,25 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
   
     // 完成
     const offDone = window.EditorPreload.onFlashFirmwareDone(() => {
-      setDone(true);
+      vm.runtime.ioDevices.toast.guiToast("", 
+        intl.formatMessage({
+            id: "gui.uploadFirmware.success",
+            defaultMessage: "upgrade completed"
+        }), 'success', 3000);
       setUpgrading(false);
-    });
+    });gui.uploadFirmware.failed
   
     // 错误
     const offError = window.EditorPreload.onFlashFirmwareError((error) => {
-      setErrorMsg(error);
+      vm.runtime.ioDevices.toast.guiToast("", 
+        intl.formatMessage({
+            id: "gui.uploadFirmware.failed",
+            defaultMessage: "upgrade failed"
+        }), 'error', 3000);
       setUpgrading(false);
     });
   
-    // 移除监听
+    // 移除监听/
     return () => {
       offProgress?.();
       offDone?.();
@@ -94,20 +99,35 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
   
   // 执行烧录
   const handleUpgrade = async () => {
-    return
     if ( !selectedPort) return;
 
     // 清空上一次状态
     setProgress(0);
-    setErrorMsg(null);
-    setDone(false);
 
     //执行
     setUpgrading(true);
     try {
-      //await window.EditorPreload.flashFirmwareAll(extensionName,selectedPort)
+      console.log(extensionName);
+      await window.EditorPreload.flashFirmwareAll(extensionName,selectedPort)
     } finally {
       //setUpgrading(false);//不需要了，根据监听直接决定最终状态
+    }
+  };
+
+  // 重新刷新串口
+  const scanPorts = async () => {
+    const result = await window.EditorPreload.serialScan(extensionName);
+
+    if (result?.success) {
+      const devices = result.devices || [];
+      setSerialPorts(devices);
+
+      // ❗关键：如果当前 selectedPort 不在设备列表中，清掉
+      const exists = devices.some(p => p.comPort === selectedPort);
+
+      if (!exists) {
+        setSelectedPort('');
+      }
     }
   };
 
@@ -125,27 +145,35 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
             &times;
           </button>
         </div>
+
         <div className={styles.modalBody}>
+          {/* 设备信息 */}
+          <div className={styles.deviceCard}>
+              <img
+                  src={deviceInfoMap[extensionName]?.image}
+                  className={styles.deviceImage}
+              />
 
+              {extensionName === 'ESP32' && (
+                <button
+                  className={styles.settingBtn}
+                  onClick={() => setShowWifiPanel(true)}
+                >
+                  ⚙
+                </button>
+              )}
 
-        {/* 设备信息 */}
-        <div className={styles.deviceCard}>
-            <img
-                src={deviceInfoMap[extensionName]?.image}
-                className={styles.deviceImage}
-            />
+              <div className={styles.deviceName}>
+                  {deviceInfoMap[extensionName]?.name}
+              </div>
 
-            <div className={styles.deviceName}>
-                {deviceInfoMap[extensionName]?.name}
-            </div>
-
-            <div className={styles.deviceDesc}>
-                <FormattedMessage
-                    id="gui.uploadFirmware.deviceDesc"
-                    defaultMessage="Firmware upgrade for connected device"
-                />
-            </div>
-        </div>
+              <div className={styles.deviceDesc}>
+                  <FormattedMessage
+                      id="gui.uploadFirmware.deviceDesc"
+                      defaultMessage="Firmware upgrade for connected device"
+                  />
+              </div>
+          </div>
 
           {/* 串口选择 */}
           <div className={styles.serialCard}>
@@ -154,6 +182,7 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
                 className={styles.select}
                 value={selectedPort}
                 onChange={e => setSelectedPort(e.target.value)}
+                onClick={scanPorts}
               >
                 <option value="">
                   {intl.formatMessage({
@@ -176,26 +205,6 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
           </div>
         </div>
 
-
-        {errorMsg && (
-        <div className={styles.error}>
-            <FormattedMessage
-                description="upgrade failed"
-                id="gui.uploadFirmware.failed"
-            /> 
-            ：{errorMsg}
-        </div>
-        )}
-
-        {done && (
-        <div className={styles.success}>
-            <FormattedMessage
-                description="upgrade completed"
-                id="gui.uploadFirmware.success"
-            /> 
-        </div>
-        )}
-
         <div className={styles.footer}>
         <button
             className={`${styles.serialBtn} ${styles.scanBtn}`}
@@ -215,35 +224,75 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
         </button>
         </div>
 
-        {upgrading && (
-            <div className={styles.blockingOverlay}>
-                <div className={styles.blockingContent}>
-                <div className={styles.blockingTitle}>
-                    <FormattedMessage
-                        description="upgrading firmware"
-                        id="gui.uploadFirmware.uploading"
-                    /> 
-                </div>
+        {/* {upgrading && (
+          <div className={styles.blockingOverlay}>
+            <div className={styles.blockingContent}>
+              <div className={styles.blockingTitle}>
+                  <FormattedMessage
+                      description="upgrading firmware"
+                      id="gui.uploadFirmware.uploading"
+                  /> 
+              </div>
 
-                <div className={styles.progressText}>
-                    {progress}%
-                </div>
+              <div className={styles.progressText}>
+                  {progress}%
+              </div>
 
-                <div className={styles.progressBar}>
-                    <div
-                    className={styles.progressFill}
-                    style={{ width: `${progress}%` }}
-                    />
-                </div>
+              <div className={styles.progressBar}>
+                  <div
+                  className={styles.progressFill}
+                  style={{ width: `${progress}%` }}
+                  />
+              </div>
 
-                <div className={styles.blockingTip}>
-                    <FormattedMessage
-                        description="do not disconnect the device or close the window"
-                        id="gui.uploadFirmware.uploading_inf"
-                    /> 
-                </div>
-                </div>
+              <div className={styles.blockingTip}>
+                  <FormattedMessage
+                      description="do not disconnect the device or close the window"
+                      id="gui.uploadFirmware.uploading_inf"
+                  /> 
+              </div>
             </div>
+          </div>
+        )} */}
+        {upgrading && (
+  <div className={styles.blockingOverlay}>
+    <div className={styles.blockingContent}>
+      
+      <div className={styles.loadingRow}>
+        <span className={styles.blockingTitle}>
+          Flashing firmware...
+        </span>
+      </div>
+
+      <div className={styles.progressText}>{progress}%</div>
+
+      <div className={styles.progressBar}>
+        <div
+          className={styles.progressFill}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <div className={styles.blockingTip}>
+        <FormattedMessage
+          description="do not disconnect the device or close the window"
+          id="gui.uploadFirmware.uploading_inf"
+        />
+      </div>
+
+    </div>
+  </div>
+)}
+
+        {extensionName === 'ESP32' && showWifiPanel && (
+          <WifiConfigModal
+            onClose={() => setShowWifiPanel(false)}
+            selectedPort={selectedPort}
+            setSelectedPort={setSelectedPort}
+            serialPorts={serialPorts}
+            scanPorts={scanPorts}
+            intl={intl}
+          />
         )}
       </div>
     </div>

@@ -190,6 +190,7 @@
     0 4px 12px rgba(0,0,0,0.04),
     inset 0 1px 0 rgba(255,255,255,0.4); */
   transition: all 0.2s ease;
+  position: relative;
 }
 
 .deviceImage {
@@ -232,55 +233,272 @@
     margin-top: 8px;
     text-align: center;
   }
+
+  
   /* ================== 升级阻断遮罩 ================== */
 .blockingOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
   z-index: 10000;
 
+  background: rgba(0,0,0,0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  pointer-events: all; /* 吃掉所有点击 */
 }
 
 .blockingContent {
-  width: 320px;
+  width: 400px;
+  padding: 20px;
   background: var(--ui-white);
-  border-radius: 14px;
-  padding: 24px;
+  border-radius: 12px;
   text-align: center;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.loadingRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .blockingTitle {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
+  font-size: 18px;       
+  font-weight: 600;       
+  color: var(--text-primary);          
+  margin-bottom: 14px;  
+  display: block;
+  text-align: center;
 }
 
-.blockingTip {
-  margin-top: 12px;
-  font-size: 13px;
-  color: #666;
-}
-  
 .progressText {
-  font-size: 14px;
-  margin-bottom: 6px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ic-main);
+  margin-bottom: 10px;
 }
-  
+
 .progressBar {
   width: 100%;
-  height: 8px;
+  height: 10px;
   background: #eee;
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .progressFill {
   height: 100%;
-  background: #4caf50;
-  transition: width 0.2s linear;
+  background: linear-gradient(90deg, var(--ic-main), var(--ic-main-light));
+  transition: width 0.25s ease;
+}
+
+.blockingTip {
+  font-size: 12px;
+  color: #888;
+}
+
+
+
+
+
+/* 设置按钮 */
+.settingBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+
+  border: none;
+  cursor: pointer;
+
+  background: #d9d9d9;
+  color: #737373;
+
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
+}
+
+.settingBtn:hover {
+  background: #bdbcbc;
+  transform: scale(1.05);
+}
+
+
+
+
+
+/* ---------------------------- wifi 配置 ------------------------------- */
+/* ===== 遮罩 ===== */
+.wifiOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 10001;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== 弹窗 ===== */
+.wifiModal {
+  width: 360px;
+  background: var(--ui-white);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  animation: popup 0.22s ease-out;
+}
+
+@keyframes popup {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ===== Header ===== */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  position: relative; 
+}
+
+.wifiHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: var(--menu-bar-background);
+  background-image: var(--menu-bar-background-image);
+}
+
+.wifiHeader h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 30px;
+  line-height: 1;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.closeBtn:hover {
+  color: #ff4c4c;
+}
+
+
+/* ===== Body ===== */
+.wifiBody {
+  padding: 18px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ===== Input ===== */
+.input {
+  height: 40px;
+  padding: 0 12px;
+  font-size: 13.5px;
+  border-radius: 10px;
+  border: 1px solid #dcdcdc;
+  background: #fafafa;
+  transition: all 0.2s ease;
+  color: #575757;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ic-main);
+  background: #fff;
+  box-shadow: 0 0 0 2.5px rgba(79, 140, 255, 0.15);
+}
+
+
+
+/* ===== Button ===== */
+.wifiBtn {
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  background: var(--ic-main);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wifiBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+.serialBtn {
+  width: 92%;
+  max-width: 420px;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+} */
+
+/* ===== Error ===== */
+.error {
+  font-size: 12px;
+  color: #e53935;
+  text-align: center;
+}
+
+
+/* 写入遮罩 */
+.loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明的黑色背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 确保覆盖在所有内容之上 */
+}
+
+/* 转动的圆圈样式 */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
