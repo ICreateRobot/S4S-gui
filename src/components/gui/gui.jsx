@@ -75,6 +75,7 @@ import PythonEditor from '../python-editor/pythonEditor.jsx';//python编辑器
 import PythonInstall from '../python-install/pythonInstall.jsx';//python库管理器
 
 import UiEditor from '../ui-editor/uiEditor.jsx';//ui编辑器
+import App from '../iot/App.jsx';//iot编辑器
 
 import UploadCodeToolbar from '../upload-code-toolbar/upload-code-toolbar.jsx';
 
@@ -693,7 +694,7 @@ const GUIComponent = props => {
                                                 />
                                             </Tab>
                                          )}  
-                                        {/* {(extensionName === 'ESP32') && (
+                                        {(extensionName === 'ESP32') && (
                                             <Tab className={tabClassNames.tab} >
                                                 <img
                                                     draggable={false}
@@ -705,7 +706,7 @@ const GUIComponent = props => {
                                                     id="gui.gui.iotTab"
                                                 />
                                             </Tab>
-                                        )} */}
+                                        )}
                                         
                                     </TabList>
 
@@ -773,11 +774,12 @@ const GUIComponent = props => {
                                         </TabPanel>
                                     )}
 
-                                    {/* {(extensionName === 'ESP32' || extensionName === 'Arduino') && (
+                                    {(extensionName === 'ESP32' ) && (
                                         <TabPanel className={tabClassNames.tabPanel}>
-                                            <div >IOT</div>
+                                            {/* <div >IOT</div> */}
+                                            <App />
                                         </TabPanel>
-                                    )} */}
+                                    )}
                                 </Tabs>
                             </Box>
                             <UploadCodeToolbar device={extensionName} layout={uploadLayout} onChangeLayout={setUploadLayout} isLocked={isLocked} onToggleLock={() => setIsLocked(prev => !prev)} vm={vm}/>

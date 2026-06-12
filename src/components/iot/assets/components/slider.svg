@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.894 15.636">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 1.203px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #989898;
+      }
+    </style>
+  </defs>
+  <rect class="cls-2" y="6.014" width="40.894" height="3.608"/>
+  <circle class="cls-1" cx="27.062" cy="7.818" r="7.217"/>
+</svg>

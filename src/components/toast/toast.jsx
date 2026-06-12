@@ -43,7 +43,21 @@ const Toast = () => {
                     id: 'gui.toast.error.200',
                     default: "Connected Successfully"
                 });
+            }else if (id === '201') {//执行成功(上传iot页面至服务器)
+                text = "Execution successful"
+                // formatMessage({
+                //     id: 'gui.toast.error.201',
+                //     default: "Execution successful"
+                // });
+            }else if (id === '003') {//执行失败(上传iot页面至服务器)
+                text = "Execution failed"
+                // formatMessage({
+                //     id: 'gui.toast.error.201',
+                //     default: "Execution successful"
+                // });
             }
+
+            
             setToast({ text, type });
 
             setTimeout(() => {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50.992 48.992">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #989898;
+      }
+
+      .cls-1, .cls-3 {
+        stroke: #989898;
+        stroke-miterlimit: 10;
+        stroke-width: .992px;
+      }
+
+      .cls-2 {
+        font-family: BaskOldFace, 'Baskerville Old Face';
+        font-size: 33.731px;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <rect class="cls-3" x="3.496" y="2.996" width="44" height="42"/>
+  <text class="cls-2" transform="translate(13.918 35.615)"><tspan x="0" y="0">T</tspan></text>
+  <rect class="cls-1" x=".496" y=".496" width="8" height="7"/>
+  <rect class="cls-1" x="42.496" y=".496" width="8" height="7"/>
+  <rect class="cls-1" x=".496" y="41.496" width="8" height="7"/>
+  <rect class="cls-1" x="42.496" y="41.496" width="8" height="7"/>
+</svg>

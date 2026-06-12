@@ -44,9 +44,10 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             }
             const result = await upload(vm.runtime.connKey, generatedCode);
 
-            // 正常
+            // 正常(设备会重启，所以直接断开)
             if (result.code === 203) {
-                
+                // 通知 GUI 清除连接
+                vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
             }else{//其他异常一并处理
                 vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
 

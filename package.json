@@ -56,6 +56,8 @@
     "core-js": "2.5.7",
     "css-loader": "^1.0.0",
     "dapjs": "2.3.0",
+    "echarts": "^6.1.0",
+    "echarts-for-react": "^3.0.6",
     "es6-object-assign": "1.1.0",
     "format-message": "^6.2.4",
     "get-float-time-domain-data": "0.1.0",
