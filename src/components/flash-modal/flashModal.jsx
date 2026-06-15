@@ -77,9 +77,8 @@ const FlashModal = () => {
     const handleCopy = async () => {
         if (!error) return;
         try {
-            await navigator.clipboard.writeText(
-                `${error.id}\n${error.message}`
-            );
+            console.log(error)
+            await navigator.clipboard.writeText(  error  );
             setCopied(true);
             setTimeout(() => {
                 setCopied(false);
