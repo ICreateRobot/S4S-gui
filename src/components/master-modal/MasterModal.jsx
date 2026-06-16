@@ -36,7 +36,7 @@ const categoryMap = {
       'ArduinoS4S'
   ],
   ESP32: [
-      'Esp32S4S',"UIEditor"
+      'Esp32S4S',"UIEditor","UIIoT"
   ],
   Microbit: [
       'MicrobitIcreate'
@@ -148,6 +148,7 @@ class MasterModal extends React.Component {
     // 非upload模式不加载UIEditor
     if (this.props.modeValue !== 'upload') {
         Exts = Exts.filter(id => id !== 'UIEditor');
+        Exts = Exts.filter(id => id !== 'UIIoT');
     }
 
     for (const id of Exts) {
@@ -206,6 +207,7 @@ class MasterModal extends React.Component {
       let Exts = [...categoryMap[devices]];
       if (this.props.modeValue !== 'upload') {
           Exts.push('UIEditor');
+          Exts.push('UIIoT');
       }
       console.log(vm.runtime._blockInfo)
       // 清除积木定义

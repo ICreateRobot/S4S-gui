@@ -322,7 +322,8 @@ class Blocks extends React.Component {
         if (this.props.modeValue === 'upload') {
             const index = finalKeepList.indexOf('Esp32S4S');
             if (index !== -1) {
-                finalKeepList.splice(index + 1, 0, 'UIEditor');
+                //finalKeepList.splice(index + 1, 0, 'UIEditor');
+                finalKeepList.splice(index + 1, 0, 'UIEditor', 'UIIoT');
             }
         }
         this.props.vm.runtime._blockInfo = this.props.vm.runtime._blockInfo.filter(block => finalKeepList.includes(block.id));
@@ -339,19 +340,45 @@ class Blocks extends React.Component {
                 if (!hasUI) {
                     await this.props.vm.extensionManager.loadExtensionIdSync('UIEditor');
                 }
+
+                const hasUIIoT = this.props.vm.runtime._blockInfo.some( block => block.id === 'UIIoT');
+                if (!hasUIIoT) {
+                    await this.props.vm.extensionManager.loadExtensionIdSync('UIIoT');
+                }
                 
                 //调整顺序
                 const blockInfo = this.props.vm.runtime._blockInfo;
-                const espIndex = blockInfo.findIndex(b => b.id === 'Esp32S4S');
-                if (espIndex !== -1) {
-                    // 先移除 UIEditor（防止重复）
-                    const withoutUI = blockInfo.filter(b => b.id !== 'UIEditor');
+                const espBlock = blockInfo.find(b => b.id === 'Esp32S4S');
+                const uiEditorBlock = blockInfo.find(b => b.id === 'UIEditor');
+                const uiIoTBlock = blockInfo.find(b => b.id === 'UIIoT');
 
-                    // 插入到 Esp32S4S 后面
-                    withoutUI.splice(espIndex + 1, 0,
-                        blockInfo.find(b => b.id === 'UIEditor')
+                if (espBlock) {
+                    const withoutBlocks = blockInfo.filter(
+                        b => !['UIEditor', 'UIIoT'].includes(b.id)
                     );
-                    this.props.vm.runtime._blockInfo = withoutUI;
+
+                    const espIndex = withoutBlocks.findIndex(
+                        b => b.id === 'Esp32S4S'
+                    );
+
+                    if (espIndex !== -1) {
+                        const insertBlocks = [];
+
+                        if (uiEditorBlock) {
+                            insertBlocks.push(uiEditorBlock);
+                        }
+
+                        if (uiIoTBlock) {
+                            insertBlocks.push(uiIoTBlock);
+                        }
+
+                        withoutBlocks.splice(
+                            espIndex + 1,
+                            0,
+                            ...insertBlocks
+                        );
+                        this.props.vm.runtime._blockInfo = withoutBlocks;
+                    }
                 }
             }
         }
