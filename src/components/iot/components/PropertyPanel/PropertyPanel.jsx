@@ -296,10 +296,11 @@ const PropertyPanel = () => {
             { key: 'strokeWidth', label: 'Line Width', type: 'number' }
         ],
         image: [
-            { key: 'src', label: 'URL', type: 'text' }
+            { key: 'src', label: 'URL', type: 'text' },
+            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000},
         ],
         text: [
-            { key: 'text', label: 'Text', type: 'text' },
+            // { key: 'text', label: 'Text', type: 'text' },
             { key: 'color', label: 'Color', type: 'color' },
             // { key: 'backgroundColor', label: 'Background', type: 'color' },
             { key: 'fontSize', label: 'Font Size', type: 'number' },
@@ -357,6 +358,7 @@ const PropertyPanel = () => {
             { key: 'max', label: 'Max Value', type: 'number' },
             { key: 'color', label: 'Color', type: 'color' },
             { key: 'label', label: 'Text', type: 'text' },
+            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000},
             // { key: 'showValue', label: 'Show Value', type: 'checkbox' },
             // { key: 'showRange', label: 'Show Range', type: 'checkbox' }
         ],

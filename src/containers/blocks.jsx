@@ -58,6 +58,9 @@ import { createBlocksLogic} from './hooks/blocks-logic.js';
 
 import { setGeneratedCode } from '../reducers/sun';//设置生成的code
 
+import useStore from '../components/iot/stores/useStore.js';
+
+
 
 // 旧机制，根据设备加载扩展
 const categoryMap = {
@@ -1015,7 +1018,7 @@ class Blocks extends React.Component {
     //* 新增的 */
     //大大的有用（事件检测，生成代码相关）
     workspaceToCode (event) {
-        //console.log(event.type)
+        console.log(event.type)
         const importCode = {"Microbit": "from microbit import *\nfrom s4s import *\n",
             "Arduino": "",
             "ESP32": 'from Screen import *\nfrom s4s import *\n'
@@ -1076,7 +1079,23 @@ class Blocks extends React.Component {
                 }
             }, 150);
             return code;
+        }else if(event.type == 'delete'){
+            console.log(1111)
+            const blockId = event.oldXml?.getAttribute('id');
+            if (!blockId?.startsWith('iot_')) {
+                return;
+            }
+            const block = this.workspace.getBlockById(blockId);
+
+            // Workspace重建时可能还没完成
+            if (block) {
+                return;
+            }
+           
+            const componentId = event.blockId.replace('iot_', '');
+            useStore.getState().deleteComponent(componentId);
         }
+
         return ''  
     }
 

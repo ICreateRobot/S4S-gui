@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { runIoTProject } from "../../connect-modal/wifi.js"
 
 const useStore = create((set, get) => ({
     components: [],
@@ -107,15 +108,27 @@ const useStore = create((set, get) => ({
             });
         }
     },
+
+    //计数器--组件递增
+    componentCounters: {
+        label: 0,
+        image: 0,
+        text: 0,
+        button: 0,
+        switch: 0,
+        slider: 0,
+        gauge: 0,
+        joystick: 0
+    },
     
+    // 新增组件
     addComponent: (type, props = {}) => {
         const components = get().components;
         const screenSize = get().screenSize;
 
-        // 标题组件特殊处理
+        // 标题组件特殊处理，只能存在一个
         if (type === 'title') {
             const existingTitle = components.find(comp => comp.type === 'title');
-            //只能存在一个
             if (existingTitle) {
                 return existingTitle;
             }
@@ -243,13 +256,24 @@ const useStore = create((set, get) => ({
         };
 
         const defaultName = componentNames[type] || type;
+        // 当前类型组件
         const sameTypeComponents = components.filter(comp => comp.type === type);
-        const sameTypeCount = sameTypeComponents.length;
-        const nameSuffix = `${sameTypeCount + 1}`;
 
-        const maxIndex = components.length > 0
-            ? Math.max(...components.map(comp => comp.index || 0))
-            : 0;
+        const counters = get().componentCounters || {};
+
+        // 如果当前已经没有这种组件了
+        if (sameTypeComponents.length === 0) {
+            counters[type] = 0;// 重置计数器
+        }
+
+        // 递增
+        const nextIndex = (counters[type] || 0) + 1;
+
+        // 写回 
+        counters[type] = nextIndex;
+        set({
+            componentCounters: counters
+        });
 
         const newComponent = {
             id: `comp_${Date.now()}`,
@@ -258,19 +282,25 @@ const useStore = create((set, get) => ({
             y: newY,
             w: newW,
             h: newH,
-            name: `${defaultName}${nameSuffix}`,
-            index: maxIndex + 1,
+            name: `${defaultName}${nextIndex}`,
+            index: nextIndex,
             ...getDefaultProps(type),
             ...props
         };
+
 
         set(state => ({
             components: [...state.components, newComponent],
             selectedComponent: newComponent
         }));
 
+        get().createIoTVariable(newComponent);   //先创建变量   (我超威，突然发现变量能自动创建，但是目前必须得用，有不用变量的需要自行创建，有空再拆分吧)
+        get().notifyVM_AddUI(newComponent);//vm通知添加组件
+
         return newComponent;
     },
+
+    //修改组件
     updateComponent: (id, updates) => {
         const component = get().components.find(comp => comp.id === id);
         if (component && component.type === 'title') {
@@ -292,9 +322,14 @@ const useStore = create((set, get) => ({
                     ? { ...state.selectedComponent, ...updates }
                     : state.selectedComponent
             }));
+
+            const newName = updates.name ?? component.name;
+            get().notifyVM_UpdateUI(id, newName);
+            
         }
     },
 
+    //删除组件
     deleteComponent: (id) => {
         set(state => ({
             components: state.components.filter(comp => comp.id !== id),
@@ -302,6 +337,8 @@ const useStore = create((set, get) => ({
                 ? null
                 : state.selectedComponent
         }));
+
+        get().notifyVM_DeleteUI(id);
     },
 
     selectComponent: (id) => {
@@ -315,8 +352,11 @@ const useStore = create((set, get) => ({
         }
     },
 
+    // 清空所有组件
     clearComponents: () => {
         set({ components: [], selectedComponent: { id: 'screen', type: 'screen', name: 'Screen' } });
+
+        get().notifyVM_ClearUI();
     },
 
     updateScreenBackgroundColor: (color) => {
@@ -583,37 +623,28 @@ const useStore = create((set, get) => ({
                 showScreenBorder: state.showScreenBorder
             };
 
-            // 发送服务端
-            const response = await fetch('http://192.168.20.161:3000/iot/project', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    connKey: 'ABC123',   // 设备连接码
-                    data: projectData
-                })
-            });
+            const result = await runIoTProject(projectData);
 
-            const result = await response.json();
+            console.log(result);
 
             if (result.success) {
                 window.vm.runtime.ioDevices.toast.guiToast( "201", "", "success", 2000 );
                   
-
                 if (showCode) {
                     set({ isRunning: true });
-                    const previewUrl = `http://192.168.20.161:3000/preview/${result.id}`;
-                    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(previewUrl)}`;
+                    // const previewUrl = `http://192.168.20.161:3000/preview/${result.id}`;
+                    // const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(previewUrl)}`;
 
                     set({
-                        serverUrl: previewUrl,
-                        qrCodeUrl
+                        serverUrl: result.previewUrl,
+                        qrCodeUrl: result.qrCodeUrl
                     });
                 }
+            }else{
+                window.vm.runtime.ioDevices.toast.guiToast( "003", "", "error", 2000 );
             }
         } catch (error) {
-           window.vm.runtime.ioDevices.toast.guiToast( "003", "", "error", 2000 );
+            window.vm.runtime.ioDevices.toast.guiToast( "003", "", "error", 2000 );
             set({ isRunning: false });
         }
     },
@@ -629,9 +660,217 @@ const useStore = create((set, get) => ({
 
     toggleGrid: () => {
         set(state => ({ showGrid: !state.showGrid }));
-    }
+    },
+
+    // 通知 VM 添加组件
+    notifyVM_AddUI: (component) => { 
+        if (window.vm.extensionManager) {
+            const ext = window.vm.extensionManager._loadedExtensions.get('UIIoT');
+            if (ext) {
+                window.vm.runtime.emit('IoT_ADD_COMPONENT', {
+                    type: component.type,
+                    id: component.id,
+                    name: component.name
+                });
+            }
+
+            setTimeout(() => {
+                get().createCallbackBlock(component);
+            }, 50);
+        }
+    },
+    // 通知 VM 更新组件名称
+    notifyVM_UpdateUI: (id,data) => {
+        if (window.vm.extensionManager) {
+            const ext = window.vm.extensionManager._loadedExtensions.get('UIIoT');
+            if (ext) {
+                window.vm.runtime.emit('IoT_UPDATE_COMPONENT', {
+                    id: id,
+                    name: data
+                });
+            }
+        }
+
+
+
+        setTimeout(() => {
+            get().updateCallbackBlock(id, data);
+        }, 50);
+    },
+    // 通知 VM 删除组件
+    notifyVM_DeleteUI: (id) => {
+        if (window.vm.extensionManager) {
+            const ext = window.vm.extensionManager._loadedExtensions.get('UIIoT');
+            if (ext) {
+                window.vm.runtime.emit('IoT_DELETE_COMPONENT', {
+                    id: id
+                });
+            }
+        }
+        setTimeout(() => {
+            get().deleteCallbackBlock(id);
+        }, 50);
+    },
+    // 通知 VM 清除所有组件
+    notifyVM_ClearUI() {
+       if (window.vm.extensionManager) {
+            const ext = window.vm.extensionManager._loadedExtensions.get('UIIoT');
+            if (ext) {
+                window.vm.runtime.emit('IoT_CLEAR_ALL');
+            }
+        }
+        setTimeout(() => {
+            get().clearCallbackBlocks();
+        }, 50);
+    },
+
+    // ########################变量相关
+    createIoTVariable: (component) => {
+        const target = window.vm.runtime.getTargetForStage();
+        if (!target) return;
+
+        let variables = [];
+
+        // 需要根据名称创建的（只创建一个的）
+        if (component.type === 'text') {
+            variables.push(`iot_text_value`);
+        }else if (component.type === 'switch') {
+            variables.push(`iot_switch_value`);
+        }else if (component.type === 'slider') {
+            variables.push(`iot_slider_value`);
+        }else if (component.type === 'joystick') {
+            variables.push(`iot_joystick_Xvalue`);
+            variables.push(`iot_joystick_Yvalue`);
+        }else {
+            //其他的按照名称创建
+            variables.push(`iot_${component.name}`);
+        }
+
+        // 创建变量
+        variables.forEach((variableName, index) => {
+            // 名称查重
+            const existVar = Object.values(target.variables) .find(v => v.name === variableName);
+
+            if (existVar) return;
+
+            // id 查重
+            const variableId = `Variable_${component.id}_${index}`;
+
+            target.createVariable(
+                variableId,
+                variableName,
+                ''
+            );
+        });
+    },
+
+    // ########################模块相关
+    // 创建模块
+    createCallbackBlock: (component) => {
+        const workspace = window.Blockly.getMainWorkspace();
+        const type = component.type;
+
+        const blockType = BLOCK_TYPE_MAP[type];
+        if (!blockType) return;
+
+        //通用配置
+        const blockId = `iot_${ component.id}`;
+        const baseX = 50;
+        const baseY = TYPE_INDEX[type] * 100 ;
+
+        //变量配置
+        const variableId = `Variable_${component.id}`;
+        const variableName = `iot_${component.name}`;
+        let valueXml = '';
+        if(type === 'label' || type === 'image' || type === 'gauge'){
+             valueXml = `
+                <value name="DATA">
+                    <block type="data_variable">
+                        <field
+                            name="VARIABLE"
+                            id="${variableId}"
+                            variabletype=""
+                        >${variableName}</field>
+                    </block>
+                </value>
+            `;
+        }else{//text,button,switch
+
+        }
+        
+        const xmlText = `
+        <xml xmlns="https://developers.google.com/blockly/xml">
+            <block
+                id="${blockId}"
+                type="${blockType}"
+                x="${baseX}"
+                y="${baseY}">
+                <field name="ITEM">${component.name}</field>
+                ${valueXml}
+            </block>
+        </xml>`;
+
+        const dom = Blockly.Xml.textToDom(xmlText);
+        Blockly.Xml.domToWorkspace( dom,  workspace );
+    },
+
+    //更新组件名称
+    updateCallbackBlock: (id, name) => {
+        const workspace = window.Blockly.getMainWorkspace();
+        const blockId = `iot_${id}`;
+        const block = workspace.getBlockById(blockId);
+        if (!block) return;
+        block.setFieldValue(name, 'ITEM');
+    },
+
+    //删除组件
+    deleteCallbackBlock: (id) => {
+        const workspace = window.Blockly.getMainWorkspace();
+        const blockId = `iot_${id}`;
+
+        const block = workspace.getBlockById(blockId);
+
+        if (block) {
+            block.dispose(false);
+        }
+    },
+
+    // 清除所有的回调函数
+    clearCallbackBlocks: () => {
+        const workspace =  window.Blockly.getMainWorkspace();
+
+        workspace.getAllBlocks(false) .forEach(block => {
+            if (  block.id &&  block.id.startsWith('iot_') ) {
+                block.dispose(false);
+            }
+        });
+    },
+
 }));
 
+
+const BLOCK_TYPE_MAP = {
+    label: 'UIIoT_labelCallback',
+    image: 'UIIoT_imageCallback',
+    text: 'UIIoT_textCallback',
+    button: 'UIIoT_buttonCallback',
+    switch: 'UIIoT_switchCallback',
+    slider: 'UIIoT_sliderCallback',
+    gauge: 'UIIoT_gaugeCallback',
+    joystick: 'UIIoT_joystickCallback'
+};
+const TYPE_INDEX = {
+    label: 1,
+    image: 2,
+    text: 3,
+    button: 4,
+    switch: 5,
+    slider: 6,
+    gauge: 7,
+    joystick: 8
+};
+
+ 
 // 获取默认属性
 const getDefaultProps = (type) => {
     const defaults = {
@@ -679,6 +918,7 @@ const getDefaultProps = (type) => {
         },
         image: {
             src: '',
+            interval:3000,
             index: 0
         },
         text: {
@@ -782,7 +1022,7 @@ const getDefaultProps = (type) => {
             outerRadius: '80%'
         },
         gauge: {
-            name: 'Gauge',
+            // name: 'Gauge',
             value: 50,
             min: 0,
             max: 100,
@@ -795,10 +1035,11 @@ const getDefaultProps = (type) => {
             showRange: true,
             arcWidth: 10,
             startAngle: 180,
+            interval:3000,
             endAngle: 0
         },
         joystick: {
-            name: 'Joystick',
+            // name: 'Joystick',
             xValue: 0,
             yValue: 0,
             xMin: -100,

@@ -333,7 +333,8 @@ const ComponentRenderer = ({ component }) => {
                     <div style={{ ...baseStyle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <img
                             src={component.src}
-                            alt="Component Image"
+                            //alt="Component Image"
+                            draggable={false}
                             style={{
                                 maxWidth: '100%',
                                 maxHeight: '100%',

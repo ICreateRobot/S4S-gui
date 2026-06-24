@@ -53,7 +53,9 @@ import { setSelectedMode } from '../reducers/sun';
 import { clearDeviceConnection} from '../reducers/device-connection';
 
 
-import downloadVM  from '../lib/download-vm.js';
+//import downloadVM  from '../lib/download-vm.js';
+
+
 
 const {RequestMetadata, setMetadata, unsetMetadata} = storage.scratchFetch;
 
@@ -99,7 +101,7 @@ class GUI extends React.Component {
             'WIFI_DEVICE_DISCONNECTED',
             this.handleWifiDisconnected
         );
-        
+   
     }
     componentDidUpdate (prevProps) {//组件更新时触发，用来检测属性变化并做相应的操作
         //如果 projectId 发生了变化，会调用 onUpdateProjectId 来更新项目 ID。
@@ -254,7 +256,6 @@ const mapStateToProps = state => {
         masterSelectedState: state.scratchGui.modals.masterSelectedState,//选择了哪个设备
     };
 };
-
 
 //把操作函数绑定到组件
 const mapDispatchToProps = dispatch => {

@@ -70,6 +70,7 @@ import ConnectTabs from '../connect-modal/connectModal.jsx';//连接
 import FirmwareModal from '../firmware-modal/FirmwareModal.jsx'//固件
 import FlashModal from '../flash-modal/flashModal.jsx'//烧录窗口
 import Toast from '../toast/toast.jsx';//警告窗口
+import VisionMsg from '../vision/visionMsg.jsx';//版本更新提示窗口
 
 import PythonEditor from '../python-editor/pythonEditor.jsx';//python编辑器
 import PythonInstall from '../python-install/pythonInstall.jsx';//python库管理器
@@ -80,6 +81,8 @@ import App from '../iot/App.jsx';//iot编辑器
 import UploadCodeToolbar from '../upload-code-toolbar/upload-code-toolbar.jsx';
 
 import ToolboxSearchButton from '../../containers/toolbox-search-button.jsx';
+
+import { getVersion } from "../connect-modal/wifi.js"
 
 
 const messages = defineMessages({
@@ -263,17 +266,34 @@ const GUIComponent = props => {
 
 
     const [uploadLayout, setUploadLayout] = useState('split');//下载模式用（不同编辑模式，改变区域占比）
-    const [isLocked, setIsLocked] = useState(false);//下载模式用，锁定代码
+    const [isLocked, setIsLocked] = useState(false);//下载模式用，锁定代码‘
+
+    const [visionVisible, setVisionVisible] = useState(false);//显示更新窗口
+
+    //检测
+    const check = async() => {
+        let newVision = await getVersion("TinkerCode")
+        alert(newVision)
+        if(newVision){
+            setVisionVisible(true)
+        }
+        vm.runtime.checkVersion = "ok"
+    };
+
+    if(vm.runtime.checkVersion != "ok"){
+        check();
+    }
 
 
     // 监听设备变化
     useEffect(() => {
-        console.log("gui")
-        console.log(props.selectedDevice,props.selectedmode)
+        // console.log("gui")
+        // console.log(props.selectedDevice,props.selectedmode)
         setExtensionName(props.selectedDevice);//先用着后面更换
         setModeValue(props.selectedmode)
        
     }, [props.selectedDevice,props.selectedmode]);
+
 
 
     // 搜索模块相关
@@ -808,6 +828,10 @@ const GUIComponent = props => {
                     <Toast />
                     {/* 进度窗口 */}
                     <FlashModal />
+
+                    {/* 版本提示窗口 */}
+                    {visionVisible && <VisionMsg onClose={setVisionVisible(false)} />}
+                    
 
                     {/* 示例程序弹窗 */}
                     <ExampleModal
