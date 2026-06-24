@@ -1,14 +1,16 @@
 import React from 'react';
+import { FormattedMessage } from "react-intl";
 
 class VisionMsg extends React.Component {
     render() {
         const {onClose} = this.props;
 
-
         return (
             <div style={styles.box}>
                 <div style={styles.content}>
-                    <span>检测到新版本，请更新</span>
+                    <span>
+                        <FormattedMessage id="gui.checkVersion.update" defaultMessage="New version detected, please update" />
+                    </span>
 
                     <button style={styles.btn} onClick={onClose}>
                         ×
@@ -41,7 +43,10 @@ const styles = {
         border: 'none',
         background: 'transparent',
         cursor: 'pointer',
-        fontSize: 16
+        fontSize: 16,
+        color: '#c52d2d',
+        fontWeight: 'bold'
+        
     }
 };
 

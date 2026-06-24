@@ -54,7 +54,8 @@ import { clearDeviceConnection} from '../reducers/device-connection';
 
 
 //import downloadVM  from '../lib/download-vm.js';
-
+import { getVersion } from "../components/connect-modal/wifi.js"
+import VisionMsg from "../components/vision/visionMsg.jsx"//版本更新提示窗口
 
 
 const {RequestMetadata, setMetadata, unsetMetadata} = storage.scratchFetch;
@@ -72,9 +73,16 @@ const setProjectIdMetadata = projectId => {
 };
 
 
-
+//let newVision =getVersion("TKinterCode")
 
 class GUI extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            visionVisible: false
+        };
+    }
     componentDidMount () {//初始化
         setIsScratchDesktop(this.props.isScratchDesktop);//设置当前是否是桌面版应用。
         this.props.onStorageInit(storage);//初始化存储，传入 storage 对象。
@@ -97,10 +105,24 @@ class GUI extends React.Component {
             this.props.vm.runtime.connKey = "";
         };
 
+
         this.props.vm.runtime.on(
             'WIFI_DEVICE_DISCONNECTED',
             this.handleWifiDisconnected
         );
+
+        //检测
+        const check = async() => {
+            let newVision = await getVersion("TinkerCode")
+            if(newVision){
+                this.setState({  visionVisible: true });
+            }
+            this.props.vm.runtime.checkVersion = "ok"
+        };
+
+        if(this.props.vm.runtime.checkVersion != "ok"){
+            check();
+        }
    
     }
     componentDidUpdate (prevProps) {//组件更新时触发，用来检测属性变化并做相应的操作
@@ -159,14 +181,20 @@ class GUI extends React.Component {
             ...componentProps
         } = this.props;
         return (
-            <GUIComponent
-                loading={fetchingProject || isLoading || loadingStateVisible}
-                masterSelectedState={this.props.masterSelectedState}//传递设备选择状态
-                //downloadVM = {downloadVM} // 传递下载VM
-                {...componentProps}
-            >
-                {children}
-            </GUIComponent>
+            <>
+                <GUIComponent
+                    loading={fetchingProject || isLoading || loadingStateVisible}
+                    masterSelectedState={this.props.masterSelectedState}//传递设备选择状态
+                    //downloadVM = {downloadVM} // 传递下载VM
+                    {...componentProps}
+                >
+                    {children}
+                </GUIComponent>
+
+                {this.state.visionVisible && (
+                    <VisionMsg onClose={() => this.setState({ visionVisible: false })}/>
+                )}
+            </>
         );
     }
 }
