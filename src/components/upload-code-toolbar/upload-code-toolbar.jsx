@@ -46,13 +46,14 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
 
             // 正常(设备会重启，所以直接断开)
             if (result.code === 203) {
+                vm.runtime.ioDevices.toast.guiToast("201", "", 'success', 2000);
                 // 通知 GUI 清除连接
-                vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                //vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
             }else{//其他异常一并处理
                 vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
 
                 // 通知 GUI 清除连接
-                vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                //vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
 
                 return;
             }
@@ -69,8 +70,9 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
         if (isRunning) {
             if (device === "Microbit") {
                 await window.EditorPreload.mBUsbRunCode("");
-                
+                setIsRunning(false);
             }else if(device == "ESP32"){
+                setIsRunning(false);
                 return
                 if (!vm.runtime.connKey) {
                     vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
@@ -91,7 +93,6 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                     return;
                 }
             }
-            setIsRunning(false);
         }else{
             if(device == "Microbit"){
                 const result = await window.EditorPreload.mBUsbRunCode( generatedCode);
@@ -103,15 +104,15 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                     return;
                 }
                 const result = await run(vm.runtime.connKey, generatedCode);
-                console.log(result)
+                //console.log(result)
                 // 正常
                 if (result.code === 202) {
-                    
+                    vm.runtime.ioDevices.toast.guiToast("201", "", 'success', 2000);
                 }else{//其他异常一并处理
                     vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
 
                     // 通知 GUI 清除连接
-                    vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                    //vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
 
                     return;
                 }
