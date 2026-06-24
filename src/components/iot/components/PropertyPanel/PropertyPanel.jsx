@@ -6,7 +6,7 @@ import deleteIcon from '../../assets/delete.svg';
 
 import {FormattedMessage, injectIntl} from 'react-intl';
 
-const PropertyPanel = () => {
+const PropertyPanel = ({intl}) => {
     const selectedComponent = useStore(state => state.selectedComponent);
     const updateComponent = useStore(state => state.updateComponent);
     const screenBackgroundColor = useStore(state => state.screenBackgroundColor);
@@ -199,9 +199,18 @@ const PropertyPanel = () => {
             //alert('Screen component cannot be deleted');
             return;
         }
-        if (window.confirm('Are you sure you want to delete this component?')) {
+        //弹出是否丢弃项目内容的确认逻辑
+        const result =  window.confirm(intl.formatMessage({
+            id: `uieditor.delete.confirm`,
+            defaultMessage: 'Confirm delete this component?'
+        }))
+               
+        if (result) {
             deleteComponent(componentId);
         }
+        // if (window.confirm('Are you sure you want to delete this component?')) {
+        //     deleteComponent(componentId);
+        // }
     };
 
     // Render screen background settings interface
@@ -256,8 +265,8 @@ const PropertyPanel = () => {
 
     const getCommonFields = () => {
         const commonFields = [
-            { key: 'name', label: 'Name', type: 'text' },
-            { key: 'index', label: 'Layer', type: 'number' }
+            { key: 'name', label: 'Name', type: 'text' , labelId: 'uieditor.property.name',defaultLabel: 'Name:'},
+            { key: 'index', label: 'Layer', type: 'number',labelId: 'uieditor.property.layer', defaultLabel: 'Layer' }
         ];
         // if (selectedComponent.type !== 'title') {
         //     commonFields.push(
@@ -277,18 +286,18 @@ const PropertyPanel = () => {
 
     const typeSpecificFields = {
         title: [
-            { key: 'text', label: 'Text', type: 'text' },
-            { key: 'color', label: 'Color', type: 'color' },
-            { key: 'backgroundColor', label: 'Background', type: 'color' },
-            { key: 'fontSize', label: 'Font Size', type: 'number' },
+            { key: 'text', label: 'Text', type: 'text', labelId: 'uieditor.property.text',defaultLabel: 'Text'},
+            { key: 'color', label: 'Color', type: 'color',labelId: 'uieditor.property.color',defaultLabel: 'Color' },
+            { key: 'backgroundColor', label: 'Background', type: 'color',labelId: 'uieditor.property.background',defaultLabel: 'Background' },
+            { key: 'fontSize', label: 'Font Size', type: 'number',labelId: 'uieditor.property.fontSize',defaultLabel: 'Font Size' },
             // { key: 'fontWeight', label: 'Font Weight', type: 'select', options: ['normal', 'bold'] }
         ],
         label: [
-            { key: 'text', label: 'Text', type: 'text' },
-            { key: 'color', label: 'Color', type: 'color' },
+            { key: 'text', label: 'Text', type: 'text' ,labelId: 'uieditor.property.text',defaultLabel: 'Text' },
+            { key: 'color', label: 'Color', type: 'color' ,labelId: 'uieditor.property.color',defaultLabel: 'Color' },
             // { key: 'backgroundColor', label: 'Background', type: 'color' },
-            { key: 'fontSize', label: 'Font Size', type: 'number' },
-            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000},
+            { key: 'fontSize', label: 'Font Size', type: 'number',labelId: 'uieditor.property.fontSize',defaultLabel: 'Font Size' },
+            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000 ,labelId: 'iot.property.interval',defaultLabel: 'Interval(ms)'},
 
             // { key: 'fontWeight', label: 'Font Weight', type: 'select', options: ['normal', 'bold'] }
         ],
@@ -306,31 +315,31 @@ const PropertyPanel = () => {
             { key: 'strokeWidth', label: 'Line Width', type: 'number' }
         ],
         image: [
-            { key: 'src', label: 'URL', type: 'text' },
-            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000},
+            { key: 'src', label: 'URL', type: 'text' ,labelId: 'iot.property.url',defaultLabel: 'URL'},
+            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000 ,labelId: 'iot.property.interval',defaultLabel: 'Interval(ms)'},
         ],
         text: [
             // { key: 'text', label: 'Text', type: 'text' },
-            { key: 'color', label: 'Color', type: 'color' },
+            { key: 'color', label: 'Color', type: 'color' ,labelId: 'uieditor.property.color',defaultLabel: 'Color'},
             // { key: 'backgroundColor', label: 'Background', type: 'color' },
-            { key: 'fontSize', label: 'Font Size', type: 'number' },
+            { key: 'fontSize', label: 'Font Size', type: 'number',labelId: 'uieditor.property.fontSize',defaultLabel: 'Font Size' },
             // { key: 'fontWeight', label: 'Font Weight', type: 'select', options: ['normal', 'bold'] }
         ],
         button: [
-            { key: 'text', label: 'Text', type: 'text' },
-            { key: 'color', label: 'Color', type: 'color' },
-            { key: 'backgroundColor', label: 'Background', type: 'color' },
-            { key: 'fontSize', label: 'Font Size', type: 'number' },
+            { key: 'text', label: 'Text', type: 'text' ,labelId: 'uieditor.property.text',defaultLabel: 'Text'},
+            { key: 'color', label: 'Color', type: 'color' ,labelId: 'uieditor.property.color',defaultLabel: 'Color'},
+            { key: 'backgroundColor', label: 'Background', type: 'color',labelId: 'uieditor.property.background',defaultLabel: 'Background' },
+            { key: 'fontSize', label: 'Font Size', type: 'number',labelId: 'uieditor.property.fontSize',defaultLabel: 'Font Size' },
         ],
         switch: [
-            { key: 'backgroundColor', label: 'Background', type: 'color' },
-            { key: 'onColor', label: 'On Color', type: 'color' }
+            { key: 'backgroundColor', label: 'Background', type: 'color',labelId: 'uieditor.property.background',defaultLabel: 'Background' },
+            { key: 'onColor', label: 'On Color', type: 'color'  ,labelId: 'uieditor.property.onColor',defaultLabel: 'On Color'}
         ],
         slider: [
-            { key: 'min', label: 'Min', type: 'number' },
-            { key: 'max', label: 'Max', type: 'number' },
-            { key: 'value', label: 'Value', type: 'number' },
-            { key: 'fillColor', label: 'Color', type: 'color' }
+            { key: 'min', label: 'Min', type: 'number' ,labelId: 'uieditor.property.min',defaultLabel: 'Min'},
+            { key: 'max', label: 'Max', type: 'number' ,labelId: 'uieditor.property.max',defaultLabel: 'Max'},
+            { key: 'value', label: 'Value', type: 'number' ,labelId: 'uieditor.property.value',defaultLabel: 'Value'},
+            { key: 'fillColor', label: 'Color', type: 'color' ,labelId: 'uieditor.property.color',defaultLabel: 'Color'}
         ],
         barChart: [
             { key: 'color', label: 'Bar Color', type: 'color' },
@@ -363,21 +372,21 @@ const PropertyPanel = () => {
             { key: 'showTooltip', label: 'Show Tooltip', type: 'checkbox' }
         ],
         gauge: [
-            { key: 'value', label: 'Value', type: 'number' },
-            { key: 'min', label: 'Min Value', type: 'number' },
-            { key: 'max', label: 'Max Value', type: 'number' },
-            { key: 'color', label: 'Color', type: 'color' },
-            { key: 'label', label: 'Text', type: 'text' },
-            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000},
+            { key: 'value', label: 'Value', type: 'number' ,labelId: 'uieditor.property.value',defaultLabel: 'Value'},
+            { key: 'min', label: 'Min Value', type: 'number' ,labelId: 'uieditor.property.min',defaultLabel: 'Min'},
+            { key: 'max', label: 'Max Value', type: 'number' ,labelId: 'uieditor.property.max',defaultLabel: 'Max'},
+            { key: 'color', label: 'Color', type: 'color' ,labelId: 'uieditor.property.color',defaultLabel: 'Color'},
+            { key: 'label', label: 'Text', type: 'text' ,labelId: 'uieditor.property.text',defaultLabel: 'Text'},
+            { key: 'interval', label: 'Interval(ms)', type: 'number',min: 3000 ,labelId: 'iot.property.interval',defaultLabel: 'Interval(ms)'},
             // { key: 'showValue', label: 'Show Value', type: 'checkbox' },
             // { key: 'showRange', label: 'Show Range', type: 'checkbox' }
         ],
         joystick: [
-            { key: 'xMin', label: 'X Min', type: 'number' },
-            { key: 'xMax', label: 'X Max', type: 'number' },
-            { key: 'yMin', label: 'Y Min', type: 'number' },
-            { key: 'yMax', label: 'Y Max', type: 'number' },
-            { key: 'color', label: 'Color', type: 'color' },
+            { key: 'xMin', label: 'X Min', type: 'number' ,labelId: 'iot.property.Xmin',defaultLabel: 'X Min'},
+            { key: 'xMax', label: 'X Max', type: 'number' ,labelId: 'iot.property.Xmax',defaultLabel: 'X Max'},
+            { key: 'yMin', label: 'Y Min', type: 'number' ,labelId: 'iot.property.Ymin',defaultLabel: 'Y Min'},
+            { key: 'yMax', label: 'Y Max', type: 'number' ,labelId: 'iot.property.Ymax',defaultLabel: 'Y Max'},
+            { key: 'color', label: 'Color', type: 'color' ,labelId: 'uieditor.property.color',defaultLabel: 'Color'},
             // { key: 'returnToCenter', label: 'Auto Return to Center', type: 'checkbox' }
         ]
     };
@@ -409,7 +418,12 @@ const PropertyPanel = () => {
                 selectedComponent.type === 'pieChart') && field.key === 'data') {
                 return (
                     <div key={field.key} className={styles.propertyField}>
-                        <label>{field.label}:</label>
+                        <label>
+                            <FormattedMessage
+                                id={field.labelId}
+                                defaultMessage={field.defaultLabel}
+                            />:
+                        </label>
                         <div className={styles.chartDataEditor}>
                             <button
                                 type="button"
@@ -426,7 +440,12 @@ const PropertyPanel = () => {
             if (field.type === 'color') {
                 return (
                     <div key={field.key} className={styles.propertyField}>
-                        <label>{field.label}:</label>
+                        <label>
+                            <FormattedMessage
+                                id={field.labelId}
+                                defaultMessage={field.defaultLabel}
+                            />:
+                        </label>
                         {renderColorInput(field, selectedComponent)}
                     </div>
                 );
@@ -434,7 +453,12 @@ const PropertyPanel = () => {
 
             return (
                 <div key={field.key} className={styles.propertyField}>
-                    <label>{field.label}:</label>
+                    <label>
+                        <FormattedMessage
+                            id={field.labelId}
+                            defaultMessage={field.defaultLabel}
+                        />:
+                    </label>
                     {field.type === 'text' && (
                         <input
                             type="text"
@@ -582,7 +606,7 @@ const PropertyPanel = () => {
                     />
                     <span>
                         <FormattedMessage
-                            id = {`gui.iot.${selectedComponent.type}`}
+                            id = "gui.spriteSelectorItem.contextMenuDelete"
                             defaultMessage="delete"
                         />
                     </span>
@@ -592,4 +616,4 @@ const PropertyPanel = () => {
     );
 };
 
-export default PropertyPanel;
+export default injectIntl(PropertyPanel);

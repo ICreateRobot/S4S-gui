@@ -10,7 +10,9 @@ import QRImg from '../../assets/QR.svg';
 
 import styles from './Header.css';
 
-function Header() {
+import {FormattedMessage, injectIntl} from 'react-intl';
+
+function Header({intl}) {
     const { 
         updateScreenSize,
         selectedComponent, //当前选中的组件
@@ -73,7 +75,13 @@ function Header() {
     
     //清理
     const handleClear = () => {
-        if (window.confirm('Are you sure you want to clear all components?')) {
+        //弹出是否丢弃项目内容的确认逻辑
+        const result =  window.confirm(intl.formatMessage({
+            id: `uieditor.delete.allConfirm`,
+            defaultMessage: 'Confirm delete all component?'
+        }))
+               
+        if (result) {
             clearComponents();
         }
     };
@@ -191,4 +199,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default injectIntl(Header);

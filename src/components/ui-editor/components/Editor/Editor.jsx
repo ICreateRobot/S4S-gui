@@ -22,9 +22,11 @@ import runButton from '../../assets/icons/run.svg';
 
 import { run } from "../../../connect-modal/wifi.js"
 
+import {FormattedMessage, injectIntl} from 'react-intl';
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const Editor = () => {
+const Editor = ({intl}) => {
     const {
         components,
         selectedComponent,
@@ -352,7 +354,13 @@ const Editor = () => {
     };
 
     const handleClear = () => {
-        if (window.confirm('确定要清除所有组件吗？')) {
+        //弹出是否丢弃项目内容的确认逻辑
+        const result =  window.confirm(intl.formatMessage({
+            id: `uieditor.delete.allConfirm`,
+            defaultMessage: 'Confirm delete all component?'
+        }))
+               
+        if (result) {
             clearComponents();
         }
     };
@@ -783,4 +791,4 @@ const Editor = () => {
     );
 };
 
-export default Editor;
+export default injectIntl(Editor);

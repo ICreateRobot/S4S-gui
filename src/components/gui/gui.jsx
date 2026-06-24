@@ -811,7 +811,6 @@ const GUIComponent = props => {
                     <Toast />
                     {/* 进度窗口 */}
                     <FlashModal />
-                    
 
                     {/* 示例程序弹窗 */}
                     <ExampleModal
