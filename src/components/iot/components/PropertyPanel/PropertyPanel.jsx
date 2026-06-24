@@ -4,6 +4,8 @@ import styles from './PropertyPanel.css';
 
 import deleteIcon from '../../assets/delete.svg';
 
+import {FormattedMessage, injectIntl} from 'react-intl';
+
 const PropertyPanel = () => {
     const selectedComponent = useStore(state => state.selectedComponent);
     const updateComponent = useStore(state => state.updateComponent);
@@ -194,7 +196,7 @@ const PropertyPanel = () => {
     const handleDeleteClick = (e, componentId) => {
         e.stopPropagation();
         if (componentId === 'screen') {
-            alert('Screen component cannot be deleted');
+            //alert('Screen component cannot be deleted');
             return;
         }
         if (window.confirm('Are you sure you want to delete this component?')) {
@@ -208,12 +210,20 @@ const PropertyPanel = () => {
             <div className={styles.propertyPanel}>
                 {/* 类型区域 */}
                 <div className={styles.panelHeader}>
-                    screen
+                    <FormattedMessage
+                        id="gui.iot.screen"
+                        defaultMessage="screen"
+                    />:
                 </div>
                 {/*属性区域 */}
                 <div className={styles.propertyContent}>
                     <div className={styles.propertyField}>
-                        <label>Background:</label>
+                        <label>
+                            <FormattedMessage
+                                id="uieditor.property.background"
+                                defaultMessage="Background"
+                            />:
+                        </label>
                         <div className={styles.colorInputWrapper}>
                             <input
                                 type="color"
@@ -470,7 +480,11 @@ const PropertyPanel = () => {
         <div className={styles.propertyPanel}>
             {/* 类型区域 */}
             <div className={styles.panelHeader}>
-                {selectedComponent.type}
+                {/* {selectedComponent.type} */}
+                <FormattedMessage
+                    id = {`gui.iot.${selectedComponent.type}`}
+                    defaultMessage={selectedComponent.type}
+                />
             </div>
             {/*属性区域 */}
             <div className={styles.propertyContent}>
@@ -566,7 +580,12 @@ const PropertyPanel = () => {
                         src={deleteIcon}
                         className={styles.deleteIcon}
                     />
-                    <span>delete</span>
+                    <span>
+                        <FormattedMessage
+                            id = {`gui.iot.${selectedComponent.type}`}
+                            defaultMessage="delete"
+                        />
+                    </span>
                 </button>
             </div>
         </div>
