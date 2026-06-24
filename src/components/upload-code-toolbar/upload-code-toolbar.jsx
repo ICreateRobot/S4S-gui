@@ -53,7 +53,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                 vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
 
                 // 通知 GUI 清除连接
-                //vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
 
                 return;
             }
@@ -112,7 +112,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                     vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
 
                     // 通知 GUI 清除连接
-                    //vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                    vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
 
                     return;
                 }
