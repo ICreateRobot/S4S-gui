@@ -356,6 +356,8 @@ const useStore = create((set, get) => ({
     clearComponents: () => {
         set({ components: [], selectedComponent: { id: 'screen', type: 'screen', name: 'Screen' } });
 
+        set({ screenBackgroundColor: "#ffffff" });//初始化屏幕
+
         get().notifyVM_ClearUI();
     },
 
@@ -741,6 +743,8 @@ const useStore = create((set, get) => ({
         }else if (component.type === 'joystick') {
             variables.push(`iot_joystick_Xvalue`);
             variables.push(`iot_joystick_Yvalue`);
+        }else if (component.type === 'button') {
+            
         }else {
             //其他的按照名称创建
             variables.push(`iot_${component.name}`);
@@ -1056,3 +1060,5 @@ const getDefaultProps = (type) => {
     return defaults[type] || {};
 };
 export default useStore;
+
+window.IoTStore = useStore;

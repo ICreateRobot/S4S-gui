@@ -110,8 +110,11 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
         //清除ui编辑器状态
         if (window.UIStore) {
             const storeState = window.UIStore.getState();
-            storeState.removeAllGuides();//清空辅助线
-             storeState.clearComponents();//清空组件
+            storeState.removeAllGuides();//清空uieditor辅助线
+            storeState.clearComponents();//清空uieditor组件
+
+            const IoTstoreState = window.IoTStore.getState();
+            IoTstoreState.clearComponents();//清空iot组件
         }
     };
 

@@ -99,8 +99,11 @@ class MasterModal extends React.Component {
     //清除ui编辑器状态
     if (window.UIStore) {
         const storeState = window.UIStore.getState();
-        storeState.removeAllGuides();//清空辅助线
-        storeState.clearComponents();//清空组件
+        storeState.removeAllGuides();//清空uieditor辅助线
+        storeState.clearComponents();//清空uieditor组件
+
+        const IoTstoreState = window.IoTStore.getState();
+        IoTstoreState.clearComponents();//清空iot组件
     }
 }
 
@@ -145,7 +148,7 @@ class MasterModal extends React.Component {
   async addExtensions(devices) {
     let Exts = [...categoryMap[devices]];
 
-    // 非upload模式不加载UIEditor
+    // 非upload模式不加载UIEditor,iot
     if (this.props.modeValue !== 'upload') {
         Exts = Exts.filter(id => id !== 'UIEditor');
         Exts = Exts.filter(id => id !== 'UIIoT');

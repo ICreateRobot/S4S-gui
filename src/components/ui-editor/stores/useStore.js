@@ -276,6 +276,8 @@ const useStore = create((set, get) => ({
             selectedComponent: { id: 'screen', type: 'screen', name: '屏幕' }
         });
 
+        set({ screenBackgroundColor: "#000000" });//初始化屏幕
+
         get().updatePythonCode(); // 更新代码
     },
 
