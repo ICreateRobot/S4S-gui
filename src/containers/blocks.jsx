@@ -1018,7 +1018,7 @@ class Blocks extends React.Component {
     //* 新增的 */
     //大大的有用（事件检测，生成代码相关）
     workspaceToCode (event) {
-        console.log(event.type)
+        //console.log(event.type)
         const importCode = {"Microbit": "from microbit import *\nfrom s4s import *\n",
             "Arduino": "",
             "ESP32": 'from Screen import *\nfrom s4s import *\n'

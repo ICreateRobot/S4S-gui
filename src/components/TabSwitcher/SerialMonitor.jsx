@@ -41,7 +41,7 @@ const SerialMonitor = ({ device, intl }) => {
   const handleSend = () => {
     if (!input.trim()) return;
 
-    window.EditorPreload?.sendSerialCommand?.(input + '\n',"Microbit");
+    window.EditorPreload?.sendSerialCommand?.(input + '\n',device);
 
     setLines(prev => [...prev, `> ${input}`]);
     setInput('');

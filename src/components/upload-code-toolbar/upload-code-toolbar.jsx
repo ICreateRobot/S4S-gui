@@ -69,6 +69,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
         if (isRunning) {
             if (device === "Microbit") {
                 await window.EditorPreload.mBUsbRunCode("");
+                setIsRunning(false);
             }else if(device == "ESP32"){
                 if (!vm.runtime.connKey) {
                     vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
@@ -89,13 +90,13 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                     return;
                 }
             }
-
-            setIsRunning(false);
         }else{
             if(device == "Microbit"){
                 const result = await window.EditorPreload.mBUsbRunCode( generatedCode);
                 console.log(result) 
+                
             }else if(device == "ESP32"){
+                return 
                 if (!vm.runtime.connKey) {
                     vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
                     return;
@@ -113,7 +114,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
 
                     return;
                 }
-            }
+            } 
 
             setIsRunning(true);
         } 
