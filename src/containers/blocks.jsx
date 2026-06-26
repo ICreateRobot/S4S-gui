@@ -1080,7 +1080,7 @@ class Blocks extends React.Component {
             }, 150);
             return code;
         }else if(event.type == 'delete'){
-            console.log(1111)
+            //console.log(1111)
             const blockId = event.oldXml?.getAttribute('id');
             if (!blockId?.startsWith('iot_')) {
                 return;

@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 
 import CodeMirror from '@uiw/react-codemirror';
 import { python } from '@codemirror/lang-python';
+import { cpp } from '@codemirror/lang-cpp'; // Arduino本质C++
 import { EditorView } from '@codemirror/view';
 import { autocompletion } from '@codemirror/autocomplete';
 import { oneDark } from '@codemirror/theme-one-dark';
@@ -11,10 +12,24 @@ import { connect } from 'react-redux';
 import { setGeneratedCode } from 'scratch-gui/src/reducers/sun';
 import { FormattedMessage } from "react-intl";
 
+function getLanguage(device) {
+    switch (device) {
+        case 'Microbit':
+        case 'ESP32':
+            return python();
 
+        case 'Arduino':
+            return cpp();
+
+        default:
+            return python();
+    }
+}
 
 const CodeMirrorComponent = ({ generatedCode,onCodeChange ,theme,device }) => {
     const codeMirrorRef = useRef(null);
+
+    const languageExt = getLanguage(device);
     
     // 是否暗色
     let editorTheme = "light";
@@ -50,12 +65,14 @@ const CodeMirrorComponent = ({ generatedCode,onCodeChange ,theme,device }) => {
             overflow: 'hidden' // 添加 防止内容溢出
         }}>
             <CodeMirror
+                key={device}
                 ref={codeMirrorRef}
                 value={generatedCode}
                 height="50vh"
                 width="100%"
                 extensions={[
-                    python(),
+                    // python(),
+                    languageExt,
                     autocompletion(),
                     EditorView.lineWrapping,
                     noFocusOutline // 添加 移除焦点样式的扩展

@@ -57,7 +57,7 @@ const Editor = () => {
     const [isDragging, setIsDragging] = useState(false); // 当前是否进行拖拽动作
     const dragStartPosRef = useRef({ x: 0, y: 0 }); // Drag start position
 
-    // Fixed screen area position and size offsets
+    // 偏移量
     const SCREEN_AREA_OFFSET = { x: 30, y: 30 };
 
     useEffect(() => {
@@ -93,7 +93,6 @@ const Editor = () => {
         if (type) {
 
             if (type === 'title') {
-
                 const dropProps = {
                     x: SCREEN_AREA_OFFSET.x, // Fixed at screen area x coordinate
                     y: SCREEN_AREA_OFFSET.y, // Fixed at screen area y coordinate
@@ -201,20 +200,27 @@ const Editor = () => {
             return;
         }
 
-        // If dragging, update position
+        //let isShow = isComponentInScreenArea(newItem)
+
+        // 拖动更新位置
         updateComponent(newItem.i, {
             x: newItem.x,
-            y: newItem.y
+            y: newItem.y,
+            //show: isShow
         });
         setIsDragging(false);
     }, [updateComponent, selectComponent, components]);
 
     const onResizeStop = useCallback((layout, oldItem, newItem) => {
         const component = components.find(comp => comp.id === newItem.i);
+
+        //let isShow = isComponentInScreenArea(newItem)
+ 
         if (component) {
             updateComponent(newItem.i, {
                 w: newItem.w,
-                h: newItem.h
+                h: newItem.h,
+                //show: isShow
             });
         }
     }, [updateComponent, components]);
@@ -230,48 +236,48 @@ const Editor = () => {
         selectComponent('screen');
     };
 
-    const handleClear = () => {
-        if (window.confirm('Are you sure you want to clear all components?')) {
-            clearComponents();
-        }
-    };
+    // const handleClear = () => {
+    //     if (window.confirm('Are you sure you want to clear all components?')) {
+    //         clearComponents();
+    //     }
+    // };
 
-    // Alignment function handlers - modified to only align components inside screen area
-    const handleAlignLeft = () => {
-        if (selectedComponent && selectedComponent.id !== 'screen') {
-            alignComponentLeft(selectedComponent.id);
-        }
-    };
+    // // Alignment function handlers - modified to only align components inside screen area
+    // const handleAlignLeft = () => {
+    //     if (selectedComponent && selectedComponent.id !== 'screen') {
+    //         alignComponentLeft(selectedComponent.id);
+    //     }
+    // };
 
-    const handleAlignCenter = () => {
-        if (selectedComponent && selectedComponent.id !== 'screen') {
-            alignComponentCenter(selectedComponent.id);
-        }
-    };
+    // const handleAlignCenter = () => {
+    //     if (selectedComponent && selectedComponent.id !== 'screen') {
+    //         alignComponentCenter(selectedComponent.id);
+    //     }
+    // };
 
-    const handleAlignRight = () => {
-        if (selectedComponent && selectedComponent.id !== 'screen') {
-            alignComponentRight(selectedComponent.id);
-        }
-    };
+    // const handleAlignRight = () => {
+    //     if (selectedComponent && selectedComponent.id !== 'screen') {
+    //         alignComponentRight(selectedComponent.id);
+    //     }
+    // };
 
-    const handleAlignTop = () => {
-        if (selectedComponent && selectedComponent.id !== 'screen') {
-            alignComponentTop(selectedComponent.id);
-        }
-    };
+    // const handleAlignTop = () => {
+    //     if (selectedComponent && selectedComponent.id !== 'screen') {
+    //         alignComponentTop(selectedComponent.id);
+    //     }
+    // };
 
-    const handleAlignMiddle = () => {
-        if (selectedComponent && selectedComponent.id !== 'screen') {
-            alignComponentMiddle(selectedComponent.id);
-        }
-    };
+    // const handleAlignMiddle = () => {
+    //     if (selectedComponent && selectedComponent.id !== 'screen') {
+    //         alignComponentMiddle(selectedComponent.id);
+    //     }
+    // };
 
-    const handleAlignBottom = () => {
-        if (selectedComponent && selectedComponent.id !== 'screen') {
-            alignComponentBottom(selectedComponent.id);
-        }
-    };
+    // const handleAlignBottom = () => {
+    //     if (selectedComponent && selectedComponent.id !== 'screen') {
+    //         alignComponentBottom(selectedComponent.id);
+    //     }
+    // };
 
     // Guide line handling methods
     // const handleToggleGuides = () => {
@@ -352,7 +358,7 @@ const Editor = () => {
     const onResize = useCallback((layout, oldItem, newItem) => {
         const component = components.find(comp => comp.id === newItem.i);
 
-        // For circle components, maintain equal width and height (square)
+        // 对于圆形组件，保持宽度和高度相等（呈正方形）
         if (component && component.type === 'circle') {
             const size = Math.min(newItem.w, newItem.h);
             newItem.w = size;
@@ -369,7 +375,7 @@ const Editor = () => {
         return newItem;
     }, [components, updateComponent]);
 
-    // Check if component is inside screen area
+    // 检查组件是否位于屏幕区域
     const isComponentInScreenArea = (component) => {
         const screenX = SCREEN_AREA_OFFSET.x;
         const screenY = SCREEN_AREA_OFFSET.y;

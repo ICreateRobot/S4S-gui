@@ -83,7 +83,7 @@ const Editor = ({intl}) => {
         const result = await run(vm.runtime.connKey, 'from Screen import *\nfrom s4s import *\n' + pythonCode);
         // 正常
         if (result.code === 202) {
-            
+            vm.runtime.ioDevices.toast.guiToast("201", "", 'success', 2000);
         }else{//其他异常一并处理
             vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
             // 通知 GUI 清除连接

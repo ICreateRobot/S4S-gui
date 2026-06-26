@@ -29,6 +29,8 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
 
     const [isRunning, setIsRunning] = useState(false);//运行状态
 
+    const [runLoading, setRunLoading] = useState(false);//esp32运行时需要禁止重复操一会，给与开关机的时间
+
     //下载
     const handleDownload = async () => {
         if(device == "Microbit"){
@@ -42,27 +44,38 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                 vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
                 return;
             }
-            const result = await upload(vm.runtime.connKey, generatedCode);
+            // 正在执行，直接忽略
+            if (runLoading) return;
+            setRunLoading(true);
+            try {
+                const result = await upload(vm.runtime.connKey, generatedCode);
 
-            // 正常(设备会重启，所以直接断开)
-            if (result.code === 203) {
-                vm.runtime.ioDevices.toast.guiToast("201", "", 'success', 2000);
-                // 通知 GUI 清除连接
-                //vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
-            }else{//其他异常一并处理
-                vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
+                // 正常(设备会重启，所以直接断开)
+                if (result.code === 203) {
+                    vm.runtime.ioDevices.toast.guiToast("201", "", 'success', 2000);
+                    // 通知 GUI 清除连接
+                    //vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                }else{//其他异常一并处理
+                    vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
 
-                // 通知 GUI 清除连接
-                vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                    // 通知 GUI 清除连接
+                    vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
 
-                return;
+                    return;
+                }
+            } finally {
+                // 5秒后允许再次点击
+                setTimeout(() => {
+                    setRunLoading(false);
+                }, 5000);
             }
         }else if(device == "Arduino"){
-            let import_code='#include "TinkerCode.h"\nvoid app_setup(){\n  pinMode(A0 , OUTPUT);\n}\nvoid app_loop(){\ndigitalWrite(A0,HIGH);\ndelay(1000);\ndigitalWrite(A0,LOW);\ndelay(1000);\n}\n';//
+            //let import_code='#include "TinkerCode.h"\nvoid app_setup(){\n  pinMode(A0 , OUTPUT);\n}\nvoid app_loop(){\ndigitalWrite(A0,HIGH);\ndelay(1000);\ndigitalWrite(A0,LOW);\ndelay(1000);\n}\n';//
             const result = await window.EditorPreload.download_ArduinoCode(generatedCode);
             console.log(result)
         }
     };
+
 
     //运行(不持久化)
     const handleRun = async () => {
@@ -96,29 +109,36 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
         }else{
             if(device == "Microbit"){
                 const result = await window.EditorPreload.mBUsbRunCode( generatedCode);
-                console.log(result) 
+                //console.log(result) 
                 setIsRunning(true);
             }else if(device == "ESP32"){
                 if (!vm.runtime.connKey) {
                     vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
                     return;
                 }
-                const result = await run(vm.runtime.connKey, generatedCode);
-                //console.log(result)
-                // 正常
-                if (result.code === 202) {
-                    vm.runtime.ioDevices.toast.guiToast("201", "", 'success', 2000);
-                }else{//其他异常一并处理
-                    vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
+                // 正在执行，直接忽略
+                if (runLoading) return;
+                setRunLoading(true);
+                try {
+                    const result = await run(vm.runtime.connKey, generatedCode);
+                    //console.log(result)
+                    // 正常
+                    if (result.code === 202) {
+                        vm.runtime.ioDevices.toast.guiToast("201", "", 'success', 2000);
+                    }else{//其他异常一并处理
+                        vm.runtime.ioDevices.toast.guiToast("002", "请检测设备是否在线，链接码是否正确", 'error', 2000);
 
-                    // 通知 GUI 清除连接
-                    vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
-
-                    return;
+                        // 通知 GUI 清除连接
+                        vm.runtime.emit("WIFI_DEVICE_DISCONNECTED");
+                        return;
+                    }
+                } finally {
+                    // 5秒后允许再次点击
+                    setTimeout(() => {
+                        setRunLoading(false);
+                    }, 5000);
                 }
-            } 
-
-            
+            }   
         } 
     };
 
@@ -206,6 +226,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                 <button
                     className={styles.iconButton}
                     onClick={handleRun}
+                    disabled={runLoading}
                 >
                     <img 
                         src={isRunning ? stopIcon : runIcon}
@@ -218,6 +239,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                 <button
                     className={styles.iconButton}
                     onClick={handleDownload}
+                    disabled={runLoading}
                 >
                     <img 
                         src={downIcon} 

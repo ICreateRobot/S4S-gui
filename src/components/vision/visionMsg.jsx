@@ -33,6 +33,7 @@ const styles = {
         background: '#ffcc00',
         padding: '8px 12px',
         borderRadius: 6,
+        color: '#4b4a4a',
         display: 'flex',
         gap: 10,
         alignItems: 'center',

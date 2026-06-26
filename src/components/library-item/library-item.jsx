@@ -32,30 +32,6 @@ class LibraryItemComponent extends React.PureComponent {
         loading: false, // 加载状态
         isImported:false // 扩展是否已导入
     };
-
-    //远程文件获取方法
-    // fetchFileContent = async () => {
-    //     this.setState({ loading: true });
-    //     try {
-    //         const response = await fetch('http://8.130.129.159:9000/test/isUpdata.txt',{
-    //             headers: {
-    //                 'Cache-Control': 'no-cache, no-store, must-revalidate',
-    //                 'Pragma': 'no-cache',
-    //                 'Expires': '0'
-    //             }
-    //         }); // 替换为你的 IP 地址和文件路径
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! status: ${response.status}`);
-    //         }
-    //         const text = await response.text();
-    //         console.log(text)
-    //         this.setState({ fileContent: text.trim().toLowerCase() === 'true', loading: false });
-    //     } catch (error) {
-    //         console.error('Failed to fetch file:', error);
-    //         this.setState({ loading: false });
-    //     }
-    // };
-
     
     componentDidMount() {
         const isImported = this.props.loadedExts && this.props.loadedExts.includes(this.props.extensionId);

@@ -572,13 +572,13 @@ const useStore = create((set, get) => ({
         });
     },
 
-    // Screen size related methods
+    // 屏幕尺寸更新
     updateScreenSize: (size) => {
         set(state => {
             // Update screen size
             const newState = { screenSize: size };
 
-            //  Also update all Title component widths
+            //  同时更新标题的宽度
             const updatedComponents = state.components.map(comp => {
                 if (comp.type === 'title') {
                     return {
@@ -613,21 +613,27 @@ const useStore = create((set, get) => ({
 
     // 运行项目
     generatePreview: async (showCode) => {
-        try {
+        try { 
             // set({ isRunning: true });
 
             // 获取数据
             const state = get();
+
+            // 过滤掉超出屏幕区域的组件
+            const validComponents = state.components.filter(component =>
+                isComponentInScreenArea(component, state.screenSize)
+            );
+
             const projectData = {
-                components: state.components,
+                components: validComponents,
                 screenBackgroundColor: state.screenBackgroundColor,
                 screenSize: state.screenSize,
                 showScreenBorder: state.showScreenBorder
             };
+           //console.log('参与运行的组件', validComponents);
 
             const result = await runIoTProject(projectData);
-
-            console.log(result);
+            //console.log(result);
 
             if (result.success) {
                 window.vm.runtime.ioDevices.toast.guiToast( "201", "", "success", 2000 );
@@ -636,7 +642,6 @@ const useStore = create((set, get) => ({
                     set({ isRunning: true });
                     // const previewUrl = `http://192.168.20.161:3000/preview/${result.id}`;
                     // const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(previewUrl)}`;
-
                     set({
                         serverUrl: result.previewUrl,
                         qrCodeUrl: result.qrCodeUrl
@@ -650,6 +655,7 @@ const useStore = create((set, get) => ({
             set({ isRunning: false });
         }
     },
+
 
     // Stop preview
     stopPreview: () => {
@@ -874,6 +880,24 @@ const TYPE_INDEX = {
     joystick: 8
 };
 
+// 检查组件是否位于屏幕区域
+const isComponentInScreenArea = (component, screenSize) => {
+    const screenX = 30;
+    const screenY = 30;
+
+    const componentX = component.x || 0;
+    const componentY = component.y || 0;
+    const componentWidth = component.w || 0;
+    const componentHeight = component.h || 0;
+
+    return (
+        componentX >= screenX &&
+        componentY >= screenY &&
+        componentX + componentWidth <= screenX + screenSize.width &&
+        componentY + componentHeight <= screenY + screenSize.height
+    );
+};
+
  
 // 获取默认属性
 const getDefaultProps = (type) => {
@@ -887,7 +911,8 @@ const getDefaultProps = (type) => {
             backgroundColorTransparent: false,
             fontWeight: 'bold',
             textAlign: 'center',
-            index: 0
+            index: 0,
+            show: true
         },
         label: {
             text: 'Label',
@@ -898,32 +923,37 @@ const getDefaultProps = (type) => {
             colorTransparent: false,
             backgroundColorTransparent: false,
             fontWeight: 'normal',
-            index: 0
+            index: 0,
+            show: true
         },
         rectangle: {
             backgroundColor: '#3498db',
             borderColor: '#2980b9',
             backgroundColorTransparent: false,
             borderColorTransparent: false,
-            index: 0
+            index: 0,
+            show: true
         },
         circle: {
             backgroundColor: '#e74c3c',
             borderColor: '#c0392b',
             backgroundColorTransparent: false,
             borderColorTransparent: false,
-            index: 0
+            index: 0,
+            show: true
         },
         line: {
             strokeColor: '#ffffff',
             strokeWidth: 2,
             strokeColorTransparent: false,
-            index: 0
+            index: 0,
+            show: true
         },
         image: {
             src: '',
             interval:3000,
-            index: 0
+            index: 0,
+            show: true
         },
         text: {
             text: 'Text',
@@ -933,7 +963,8 @@ const getDefaultProps = (type) => {
             colorTransparent: false,
             backgroundColorTransparent: false,
             fontWeight: 'normal',
-            index: 0
+            index: 0,
+            show: true
         },
         button: {
             text: 'Button',
@@ -943,7 +974,8 @@ const getDefaultProps = (type) => {
             colorTransparent: false,
             backgroundColorTransparent: false,
             pressed: false,
-            index: 0
+            index: 0,
+            show: true
         },
         switch: {
             backgroundColor: '#95a5a6',
@@ -951,7 +983,8 @@ const getDefaultProps = (type) => {
             backgroundColorTransparent: false,
             onColorTransparent: false,
             value: false,
-            index: 0
+            index: 0,
+            show: true
         },
         slider: {
             min: 0,
@@ -959,7 +992,8 @@ const getDefaultProps = (type) => {
             value: 50,
             fillColor: '#3498db',
             fillColorTransparent: false,
-            index: 0
+            index: 0,
+            show: true
         },
         barChart: {
             data: [
@@ -1040,7 +1074,8 @@ const getDefaultProps = (type) => {
             arcWidth: 10,
             startAngle: 180,
             interval:3000,
-            endAngle: 0
+            endAngle: 0,
+            show: true
         },
         joystick: {
             // name: 'Joystick',
@@ -1054,7 +1089,8 @@ const getDefaultProps = (type) => {
             colorTransparent: false,
             index: 0,
             showValues: false,
-            returnToCenter: true
+            returnToCenter: true,
+            show: true
         }
     };
     return defaults[type] || {};
