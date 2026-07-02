@@ -27,6 +27,7 @@
     background-color: white;
     overflow-x: hidden;
     z-index: 9999;
+    border: 0;
   }
 
   *{
