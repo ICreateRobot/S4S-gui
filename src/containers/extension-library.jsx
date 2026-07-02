@@ -35,7 +35,7 @@ const LINKBOT_EXTENSIONS = [
 ];
 
 const pinned = ['MicrobitIcreate','ArduinoS4S','Esp32S4S',"UIEditor","UIIoT"]   // 永远置顶
-const deviceExts = ['LinkBot', 'LinkBotActuators','LinkBotSensors','LinkBotPower', "ICreateK210","Ultrasonic","LineFollow"  ] // 设备
+const deviceExts = ['LinkBot', 'LinkBotActuators','LinkBotSensors','LinkBotPower', "ICreateK210","Ultrasonic","LineFollow","Esp32S4SMore"  ] // 设备
 
 
 const toLibraryItem = extension => {
