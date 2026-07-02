@@ -120,7 +120,7 @@ export default [
                 id="gui.extension.espMore.description"
             />
         ),
-        tags: ["upload","TinkerTek"],
+        tags: ["upload","onlyUpload","TinkerTek","ESP32"],
         featured: true
     },
     // {//测试-iot

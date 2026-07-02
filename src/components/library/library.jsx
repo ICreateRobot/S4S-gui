@@ -284,6 +284,7 @@ class LibraryComponent extends React.Component {
         }
 
         filteredItems = this.getFilteredData_modeValue(filteredItems)
+        //filteredItems = this.extensionName(filteredItems)//根据设备
 
         //设备筛选：只显示包含设备名称标签的扩展(这样不行，后面应该改成只修改收藏与硬件相关的部分)
         // if (this.props.extensionName) {
@@ -298,16 +299,55 @@ class LibraryComponent extends React.Component {
     }
 
     // 根据模式筛选扩展
-    getFilteredData_modeValue(filteredItems){
+    getFilteredData_modeValue(filteredItems) {
         if (this.props.modeValue === 'upload') {
-            filteredItems = filteredItems.filter(dataItem => 
-                dataItem && dataItem.tags && 
-                dataItem.tags.map(tag => tag.toLowerCase())
-                    .includes('upload')
-            );
+            filteredItems = filteredItems.filter(dataItem => {
+                if (!dataItem) {
+                    return false;
+                }
+                if (!dataItem.tags) {
+                    return false;
+                }
+                const tags = dataItem.tags.map(tag => {
+                    return tag.toLowerCase();
+                });
+                if (tags.includes('upload')) {
+                    if (tags.includes('esp32')) {
+                        if(this.props.extensionName === "ESP32"){
+                            return true;
+                        }
+                        return false;
+                    }
+                    return true;
+                }
+                return false;
+            });
+
+        } else {
+            filteredItems = filteredItems.filter(dataItem => {
+                if (!dataItem) {
+                    return true;
+                }
+                if (!dataItem.tags) {
+                    return true;
+                }
+                const tags = dataItem.tags.map(tag => {
+                    return tag.toLowerCase();
+                });
+                const hasOnlyUpload = tags.includes('onlyupload');
+                if (hasOnlyUpload) {
+                    return false;
+                }
+                return true;
+            });
         }
+
         return filteredItems;
     }
+
+
+
+
     scrollToTop () {
         this.filteredDataRef.scrollTop = 0;
     }
