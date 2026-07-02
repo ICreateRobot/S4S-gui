@@ -105,6 +105,24 @@ export default [
         tags: ["upload","TinkerTek"],
         featured: true
     },
+    {//esp more
+        name: (
+            <FormattedMessage
+                defaultMessage="ESP More"
+                id="gui.extension.espMore.name"
+            />
+        ),
+        extensionId: 'Esp32S4SMore',
+        iconURL: LineFollowIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Uses 4 sensors to track lines and detect colors. Used for following line paths, staying on track, or reacting to colors."
+                id="gui.extension.espMore.description"
+            />
+        ),
+        tags: ["upload","TinkerTek"],
+        featured: true
+    },
     // {//测试-iot
     //     name: "IOT",
     //     extensionId: 'BJIoT',
