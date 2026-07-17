@@ -161,6 +161,7 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
       // 保存到全局 Redux
       dispatch(setDeviceConnection({
         mode: activeTab,
+        isSerialTool: false,
         info
       }));
 
@@ -405,7 +406,7 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
 
 // Redux 连接
 const mapStateToProps = (state) => ({
-  deviceConnection: state.scratchGui.deviceConnectionState
+  deviceConnection: state.scratchGui.deviceConnectionState.device
 });
 
 export default connect(mapStateToProps)(ConnectTabs);

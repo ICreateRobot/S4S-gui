@@ -103,10 +103,53 @@
     filter: var(--filter-icon-gray);
 }
 
-
-
 /* 锁 */
 .lockBtn {
-    margin-right: 6px;   /* 👈 和模式按钮拉开 */
+    margin-right: 6px;   /*和模式按钮拉开 */
     border-radius: calc(0.5rem / 2);
+}
+
+
+
+/* 中间的坑位与程序名称 */
+.programGroup {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 4px;
+}
+
+.programSelect,
+.projectInput {
+    height: 28px;
+    border: 1px solid var(--ui-black-transparent);
+    border-radius: 6px;
+    background: var(--ui-white);
+
+    font-size: 0.875rem;
+    color: var(--text-primary);
+
+    outline: none;
+    box-sizing: border-box;
+}
+
+.programSelect {
+    width: 50px;
+    padding: 0 8px;
+    cursor: pointer;
+}
+
+.projectInput {
+    width: 100px;
+    padding: 0 10px;
+}
+
+.programSelect:hover,
+.projectInput:hover {
+    border-color: var(--ui-black-transparent);
+}
+
+.programSelect:focus,
+.projectInput:focus {
+    border-color: var(--looks-secondary);
 }

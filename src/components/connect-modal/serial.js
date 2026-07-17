@@ -4,9 +4,9 @@
 export async function scan(deviceType) {
   try {
     //console.log("设备类型",deviceType)
-    if(deviceType=="ESP32"){
-      return [];
-    }
+    // if(deviceType=="ESP32"){
+    //   return [];
+    // }
 
     const result = await window.EditorPreload.serialScan(deviceType);
     console.log(result)
@@ -37,7 +37,7 @@ export async function connect(device,currentDevice,modeValue) {
     if(currentDevice == "ESP32" && modeValue == "interactive"){
         window.EditorPreload.enterReplModeESP();//进入repl
     }else if(currentDevice == "ESP32" && modeValue == "upload"){
-        window.EditorPreload.exitReplMode();//退出repl
+        window.EditorPreload.exitReplModeESP();//退出repl
     }
     
     return result.info || device;

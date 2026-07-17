@@ -14,9 +14,7 @@ import exportIcon from './export.svg'; // 导出图片
 
 import formatMessage  from 'format-message';
 
-
 import codeModule from '../../../../../utils/global.js'
-
 
 import fullStageIcon from '!../../lib/tw-recolor/build!./icon--full-stage.svg';
 import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg';
@@ -26,10 +24,11 @@ import { run, upload } from "../connect-modal/wifi.js"
 
 
 const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked,onToggleLock,vm,intl}) => {
-
     const [isRunning, setIsRunning] = useState(false);//运行状态
-
     const [runLoading, setRunLoading] = useState(false);//esp32运行时需要禁止重复操一会，给与开关机的时间
+
+    const [slot, setSlot] = useState(1);//坑位
+    const [projectName, setProjectName] = useState("Project");//项目
 
     //下载
     const handleDownload = async () => {
@@ -40,6 +39,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             const result = await window.EditorPreload.usbdownloadCode( generatedCode,device);
             console.log(result) 
         }else if(device == "ESP32"){
+            //console.log(slot,projectName+".py")
             if (!vm.runtime.connKey) {
                 vm.runtime.ioDevices.toast.guiToast("001", "请连接设备", 'error', 2000);
                 return;
@@ -48,7 +48,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             if (runLoading) return;
             setRunLoading(true);
             try {
-                const result = await upload(vm.runtime.connKey, generatedCode);
+                const result = await upload(vm.runtime.connKey, generatedCode);//, slot, projectName+".py"
 
                 // 正常(设备会重启，所以直接断开)
                 if (result.code === 203) {
@@ -194,29 +194,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
 
-        //showToast("导出成功:"+fileName);//突然不想加这个提示功能了，麻烦
     };
-
-
-    // 警告窗口（未来有时间统一）
-    const showToast = (msg) => {
-        const t = document.createElement("div");
-        Object.assign(t.style, {
-        position: "fixed",
-        top: "20px",
-        left: "50%",
-        transform: "translateX(-50%)",
-        backgroundColor: "#333",
-        color: "#fff",
-        padding: "8px 14px",
-        borderRadius: "6px",
-        zIndex: 9999,
-        });
-        t.textContent = msg;
-        document.body.appendChild(t);
-        setTimeout(() => t.remove(), 2500);
-    };
-    
 
     return (
         <div className={styles.toolbar}>
@@ -247,9 +225,35 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                     />
                 </button>
             )}
+
+             {/* 程序信息 坑位 */}
+            {/* {device === "ESP32" && (
+                <div className={styles.programGroup}>
+                    <select
+                        className={styles.programSelect}
+                        value={slot}
+                        onChange={e => setSlot(Number(e.target.value))}
+                    >
+                        {[1, 2, 3, 4, 5, 6].map(i => (
+                            <option key={i} value={i}>
+                                {i}
+                            </option>
+                        ))}
+                    </select>
+
+                    <input
+                        className={styles.projectInput}
+                        value={projectName}
+                        onChange={e => setProjectName(e.target.value)}
+                        placeholder={intl.formatMessage({
+                            id: 'developers.projectsTitle',
+                            defaultMessage: 'Project'
+                        })}
+                    />
+                </div>
+            )} */}
             
             <div className={styles.rightButtons}>
-
                 {/* 锁定按钮 */}
                 <button
                     className={classNames(styles.iconButton1, styles.lockBtn)}

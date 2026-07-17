@@ -213,7 +213,7 @@ const ModeToggle = ({ value, setIsLoading,device,setSelectedMode,newfile,deviceC
 // 从 Redux 获取状态
 const mapStateToProps = (state) => ({
     selectedmode: state.scratchGui.sun.selectedmode,//统一管理的模式
-    deviceConnection: state.scratchGui.deviceConnectionState
+    deviceConnection: state.scratchGui.deviceConnectionState.device
 });
 
 // 派发 Redux Action

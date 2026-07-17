@@ -303,7 +303,7 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
 
 // Redux 连接
 const mapStateToProps = (state) => ({
-    deviceConnection: state.scratchGui.deviceConnectionState
+    deviceConnection: state.scratchGui.deviceConnectionState.device
 });
 
 export default connect(mapStateToProps)(injectIntl(FirmwareModal));

@@ -27,7 +27,7 @@ const ConnectDevice = props => {
 };
 
 const mapStateToProps = state => ({
-    deviceConnection: state.scratchGui.deviceConnectionState
+    deviceConnection: state.scratchGui.deviceConnectionState.device
 });
 
 export default connect(mapStateToProps)(ConnectDevice);

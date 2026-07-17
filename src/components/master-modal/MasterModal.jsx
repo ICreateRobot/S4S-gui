@@ -20,6 +20,9 @@ import {  clearDeviceConnection } from '../../reducers/device-connection';
 import * as serial from '../connect-modal/serial.js';
 import * as bluetooth from '../connect-modal/bluetooth.js';
 
+//新增的处理串口连接
+import { setSerialToolConnection } from '../../reducers/device-connection'; 
+
 
 
 
@@ -249,6 +252,12 @@ class MasterModal extends React.Component {
       this.props.clearDeviceConnection(); // 清空全局连接状态
       vm.runtime.connKey = ""; // 通知扩展
     }
+
+    // 清空串口工具连接状态（直接清空即可）
+    dispatch(setSerialToolConnection({
+        connected:false,
+        info:null
+    }));
   }
 
   render() {
@@ -308,7 +317,7 @@ class MasterModal extends React.Component {
 // 从 Redux 获取状态
 const mapStateToProps = (state) => ({
     selectedDevice: state.scratchGui.sun.selectedDevice,//统一管理的设备
-    deviceConnection: state.scratchGui.deviceConnectionState //设备连接状态
+    deviceConnection: state.scratchGui.deviceConnectionState.device //设备连接状态
 });
 
 // 派发 Redux Action

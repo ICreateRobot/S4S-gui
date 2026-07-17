@@ -21,10 +21,12 @@ export async function run(connKey, code) {
 }
 
 //Upload（不等待）
-export async function upload(connKey, code) {
+export async function upload(connKey, code) {//,slot,projectName
     return await request("/device/upload", {
         connKey,
-        code
+        code,
+        // slot,
+        // projectName
     });
 }
 

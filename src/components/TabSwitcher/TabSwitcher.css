@@ -3,7 +3,8 @@
     border-radius: 8px;
     overflow: hidden;
     max-height: 40vh;           /* 设置最大高度 */
-    overflow-y: auto;           /* 超出时出现滚动条 */
+    /* overflow-y: auto;            */
+    /* 超出时出现滚动条 */
     box-sizing: border-box;     /* 让 padding 不额外撑高度 */
     padding-top: 10px;
     height: 40vh;
@@ -37,4 +38,10 @@
     border-radius: 0 8px 8px 8px;
     border: 1px solid var(--ui-black-transparent); 
     height: 28vh;
+     display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+    min-height:0;
 }

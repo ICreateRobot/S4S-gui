@@ -31,6 +31,7 @@ import LinkbotIconURL from './ICreate_Linkbot/Linkbot.png';
 
 import UltrasonicIconURL from './ICreate_Ultrasonic/ultrasonic.png';
 import LineFollowIconURL from './ICreate_LineFollow/linefollow.png';
+import Esp32S4SMoreIconURL from './ICreate_ESP32S4SMore/esp32s4smore.png';
 
 export default [
     {
@@ -113,10 +114,10 @@ export default [
             />
         ),
         extensionId: 'Esp32S4SMore',
-        iconURL: LineFollowIconURL,
+        iconURL: Esp32S4SMoreIconURL,
         description: (
             <FormattedMessage
-                defaultMessage="Uses 4 sensors to track lines and detect colors. Used for following line paths, staying on track, or reacting to colors."
+                defaultMessage="More ESP modules…"
                 id="gui.extension.espMore.description"
             />
         ),
