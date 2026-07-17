@@ -48,7 +48,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             if (runLoading) return;
             setRunLoading(true);
             try {
-                const result = await upload(vm.runtime.connKey, generatedCode);//, slot, projectName+".py"
+                const result = await upload(vm.runtime.connKey, generatedCode, slot, projectName+".py");//
 
                 // 正常(设备会重启，所以直接断开)
                 if (result.code === 203) {
@@ -227,7 +227,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
             )}
 
              {/* 程序信息 坑位 */}
-            {/* {device === "ESP32" && (
+            {device === "ESP32" && (
                 <div className={styles.programGroup}>
                     <select
                         className={styles.programSelect}
@@ -251,7 +251,7 @@ const UploadCodeToolbar = ({ generatedCode,device,layout,onChangeLayout,isLocked
                         })}
                     />
                 </div>
-            )} */}
+            )}
             
             <div className={styles.rightButtons}>
                 {/* 锁定按钮 */}

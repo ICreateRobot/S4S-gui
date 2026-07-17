@@ -31,12 +31,10 @@ const useStore = create((set, get) => ({
 
     // Add the following methods in the create function:
 
-    // Save project to local file
+    // 保存文件
     saveProject: () => {
         const state = get();
         const projectData = {
-            version: '1.0',
-            saveTime: new Date().toISOString(),
             components: state.components,
             screenBackgroundColor: state.screenBackgroundColor,
             screenSize: state.screenSize,
@@ -63,7 +61,7 @@ const useStore = create((set, get) => ({
         return true;
     },
 
-    // Load project from file
+    // 加载文件
     loadProject: (projectData) => {
         try {
             // Validate data format

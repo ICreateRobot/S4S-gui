@@ -15,8 +15,10 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 function Header({intl}) {
     const { 
         updateScreenSize,
-        selectedComponent, //当前选中的组件
+        selectedComponent, //当前选中的组件 
         clearComponents, //清理组件
+        saveProject, //保存文件
+        loadProject, //加载文件
 
     } = useStore();
 
@@ -175,6 +177,13 @@ function Header({intl}) {
                 <button className={styles.placeholderBtn}></button>
                 <button className={styles.placeholderBtn}></button>
                 <button className={styles.placeholderBtn}></button> */}
+
+                <button
+                    className={styles.qrBtn}
+                    onClick={() => {saveProject()} }
+                >
+                 保存
+                </button>                
 
                 <button
                     className={styles.qrBtn}
