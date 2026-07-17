@@ -25,8 +25,8 @@ export async function upload(connKey, code,slot,projectName) {//
     return await request("/device/upload", {
         connKey,
         code,
-        // slot,
-        // projectName
+        slot,
+        projectName
     });
 }
 
