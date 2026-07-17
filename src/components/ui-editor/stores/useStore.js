@@ -654,32 +654,17 @@ const useStore = create((set, get) => ({
     getStateForSave: () => {
         const state = get();
         return {
-            version: '1.0',
-            savedAt: new Date().toISOString(),
             components: state.components,
             screenBackgroundColor: state.screenBackgroundColor,
             showGrid: state.showGrid,
             showGuides: state.showGuides,
             guides: state.guides,
             allGuidesFixed: state.allGuidesFixed,
-            editorVersion: '1.0.0',
         };
     },
 
     // 加载保存的状态
     loadSavedState: (savedState) => {
-        // 检查保存状态的有效性
-        if (!savedState || !savedState.version) {
-            console.error('无效的保存文件格式');
-            alert('文件格式无效，无法加载。');
-            return;
-        }
-
-        // 检查版本兼容性
-        if (savedState.version !== '1.0') {
-            console.warn(`保存文件版本 (${savedState.version}) 与当前版本 (1.0) 不一致，尝试加载...`);
-        }
-
         try {
             // 设置新的状态
             set({

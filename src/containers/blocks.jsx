@@ -70,7 +70,7 @@ const categoryMap = {
 };
 
 //可以一直存在的扩展
-let keepList = ['MicrobitIcreate', 'ArduinoS4S', 'Esp32S4S','LinkBot','LinkBotActuators','LinkBotSensors','LinkBotPower','ICreateK210','Ultrasonic','LineFollow'];
+let keepList = ['MicrobitIcreate', 'ArduinoS4S', 'Esp32S4S','LinkBot','LinkBotActuators','LinkBotSensors','LinkBotPower','ICreateK210','Ultrasonic','LineFollow',"Esp32S4SMore"];
 
 
 // TW: Strings we add to scratch-blocks are localized here
