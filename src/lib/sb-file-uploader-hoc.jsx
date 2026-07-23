@@ -76,12 +76,12 @@ const SBFileUploaderHOC = function (WrappedComponent) {
             if (this.props.showOpenFilePicker) {
                 (async () => {
                     try {
-                        const extensions = ['.sb', '.sb2', '.sb3'];
+                        const extensions = ['.tcode'];
                         const [handle] = await this.props.showOpenFilePicker({
                             multiple: false,
                             types: [
                                 {
-                                    description: 'Scratch Project',
+                                    description: 'TinkerCode Project',
                                     accept: {
                                         // Chrome on Android seems to track the MIME type that a file has when it is
                                         // downloaded and then the file picker enforces that it must match one of
@@ -135,7 +135,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
             } else {
                 // create <input> element and add it to DOM
                 this.inputElement = document.createElement('input');
-                this.inputElement.accept = '.sb,.sb2,.sb3';
+                this.inputElement.accept = '.tcode';
                 this.inputElement.style = 'display: none;';
                 this.inputElement.type = 'file';
                 this.inputElement.onchange = this.handleChange; // connects to step 3
@@ -172,7 +172,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                     // Don't update file handle until after confirming replace.
                     const handle = thisFileInput.handle;
                     if (handle) {
-                        if (this.fileToUpload.name.endsWith('.sb3')) {
+                        if (this.fileToUpload.name.endsWith('.tcode')) {
                             this.props.onSetFileHandle(handle);
                         } else {
                             this.props.onSetFileHandle(null);
@@ -209,7 +209,9 @@ const SBFileUploaderHOC = function (WrappedComponent) {
             if (!fileInputFilename) return '';
             // only parse title with valid scratch project extensions
             // (.sb, .sb2, and .sb3)
-            const matches = fileInputFilename.match(/^(.*)\.sb[23]?$/);
+            const matches = fileInputFilename.match(
+                /^(.*)\.tcode$/
+            );
             if (!matches) return '';
             return matches[1].substring(0, 100); // truncate project title to max 100 chars
         }
@@ -222,8 +224,11 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                 let loadingSuccess = false;
                 // tw: stop when loading new project
                 this.props.vm.quit();
+                console.log(this.fileReader.result)
+                console.log(this.props.vm.loadProject)
                 this.props.vm.loadProject(this.fileReader.result)
                     .then(() => {
+                        console.log('filename111',filename)
                         if (filename) {
                             const uploadedProjectTitle = this.getProjectTitleFromFilename(filename);
                             this.props.onSetProjectTitle(uploadedProjectTitle);
@@ -233,6 +238,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                     })
                     .catch(error => {
                         log.error(error);
+                        this.props.onSetFileHandle(null);
                         this.props.onLoadingFailed(error);
                     })
                     .then(() => {

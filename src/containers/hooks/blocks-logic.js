@@ -3,7 +3,16 @@ import codeModule from '../../../../../utils/global.js';
 import { getDeletedCate,setDeletedCate,delCategro,getHiddenBlocks,setHiddenBlocks,delHiddenBlocks,getShowCodeDb,getAllLoaded,getLoadExtension} from 'scratch-gui/src/components/utils/utils.js';
 import {injectExtensionBlockTheme, injectExtensionCategoryTheme} from '../../lib/themes/blockHelpers';
 import makeToolboxXML from '../../lib/make-toolbox-xml';
-
+import useStore from '../../components/ui-editor/stores/useStore.js';
+import useStoreIot from '../../components/iot/stores/useStore.js';
+const handler = (ui) => {
+    console.log('ui编辑器', ui)
+    useStore.getState().loadSavedState(ui)
+}
+const handlerIot = (iot) => {
+    console.log('iot',iot)
+    useStoreIot.getState().loadProject(iot)
+}
 // ================== 核心逻辑 ==================
 export function createBlocksLogic(componentInstance,modeValue,deviceType) {
     const self = componentInstance
@@ -11,6 +20,43 @@ export function createBlocksLogic(componentInstance,modeValue,deviceType) {
     let downEnableCategories=['control','operators','variables','myBlocks','robot','bricks','Microbit']
     let isChangeMode = false;//记录切换模式
 
+    window.vm.runtime.on('ADD_VARIABLE_ESPMORE',(variable)=>{
+
+        console.log('新建变量',variable)
+        self.workspace.createVariable(
+            variable,
+            '',
+            undefined
+        );
+    })
+
+    // window.vm.runtime.on('saveIot', async (iot, callback) => {
+    //     console.log('保存iot项目');
+    //     const result = await useStore.getState().saveProject()
+    //     if (typeof callback === 'function') {
+    //         callback(result);
+    //     }
+    // });
+    // window.vm.runtime.on('projectUiChanged',(ui)=>{
+        
+    //     console.log('ui编辑器',ui)
+    //     useStore.getState().loadSavedState(ui)
+    // })
+    
+    
+    window.vm.runtime.off('projectUiChanged', handler)
+    window.vm.runtime.on('projectUiChanged', handler)
+
+    
+    
+    window.vm.runtime.off('projectIotChanged', handlerIot)
+    window.vm.runtime.on('projectIotChanged', handlerIot)
+    
+    // window.vm.runtime.on('projectIotChanged',(iot)=>{
+        
+    //     console.log('iot',iot)
+    //     useStoreIot.getState().loadProject(iot)
+    // })
 
     const channelLoadExtension = new BroadcastChannel('loadExtension')
     channelLoadExtension.addEventListener('message',async (event)=>{

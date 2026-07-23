@@ -10,12 +10,15 @@ import {setFileHandle} from '../reducers/tw';
 import {getIsShowingProject} from '../reducers/project-state';
 import log from '../lib/log';
 
+import useStore from '../components/ui-editor/stores/useStore.js';
+import useStoreIot from '../components/iot/stores/useStore.js';
 // from sb-file-uploader-hoc.jsx
 const getProjectTitleFromFilename = fileInputFilename => {
     if (!fileInputFilename) return '';
     // only parse title with valid scratch project extensions
     // (.sb, .sb2, and .sb3)
-    const matches = fileInputFilename.match(/^(.*)\.sb[23]?$/);
+    // const matches = fileInputFilename.match(/^(.*)\.sb[23]?$/);
+    const matches = fileInputFilename.match(/^(.*)\.(?:sb[23]?|tcode)$/);
     if (!matches) return '';
     return matches[1].substring(0, 100); // truncate project title to max 100 chars
 };
@@ -91,6 +94,12 @@ class SB3Downloader extends React.Component {
             downloadBlob(this.props.projectFilename, content);
         });
     }
+    // emitSaveIot(args) {
+    //     return new Promise((resolve) => {
+            
+    //         window.vm.runtime.emit('saveIot', args, resolve);
+    //     });
+    // }
     async saveAsNew () {//另存为
         if(this.props.modeValue == "python"){
             return
@@ -98,19 +107,27 @@ class SB3Downloader extends React.Component {
         if (!this.props.canSaveProject) {
             return;
         }
+        console.log(this.props.showSaveFilePicker);
+        console.log('filename:',this.props.projectFilename)
+        const result = await useStore.getState().getStateForSave()
+        const resultIot = await useStoreIot.getState().saveProject()
+        // await this.emitSaveIot(result)
+        window.vm.runtime.emit('saveUI', result);
+        window.vm.runtime.emit('saveIot', resultIot);
         try {
             const handle = await this.props.showSaveFilePicker({
                 suggestedName: this.props.projectFilename,
-                types: [
-                    {
-                        description: 'Scratch 3 Project',
-                        accept: {
-                            'application/octet-stream': '.sb3'
-                        }
-                    }
-                ],
+                // types: [
+                //     {
+                //         description: 'Scratch 3 Project',
+                //         accept: {
+                //             'application/octet-stream': '.tcode'
+                //         }
+                //     }
+                // ],
                 excludeAcceptAllOption: true
             });
+            console.log(handle)
             await this.saveToHandle(handle);
             this.props.onSetFileHandle(handle);
             const title = getProjectTitleFromFilename(handle.name);
@@ -126,6 +143,11 @@ class SB3Downloader extends React.Component {
             return
         }
         try {
+            const result = await useStore.getState().getStateForSave()
+            const resultIot = await useStoreIot.getState().saveProject()
+            // await this.emitSaveIot(result)
+            window.vm.runtime.emit('saveUI', result);
+            window.vm.runtime.emit('saveIot', resultIot);
             await this.saveToHandle(this.props.fileHandle);
         } catch (e) {
             this.handleSaveError(e);
@@ -284,7 +306,7 @@ const getProjectFilename = (curTitle, defaultTitle) => {
     if (!filenameTitle || filenameTitle.length === 0) {
         filenameTitle = defaultTitle;
     }
-    return `${filenameTitle.substring(0, 100)}.sb3`;
+    return `${filenameTitle.substring(0, 100)}.tcode`;
 };
 
 SB3Downloader.propTypes = {

@@ -653,7 +653,7 @@ const useStore = create((set, get) => ({
     // 获取用于保存的状态
     getStateForSave: () => {
         const state = get();
-        return {
+        const projectData = {
             components: state.components,
             screenBackgroundColor: state.screenBackgroundColor,
             showGrid: state.showGrid,
@@ -661,11 +661,17 @@ const useStore = create((set, get) => ({
             guides: state.guides,
             allGuidesFixed: state.allGuidesFixed,
         };
+        const dataStr = JSON.stringify(projectData, null, 2);
+        // const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+        return dataStr
     },
 
     // 加载保存的状态
-    loadSavedState: (savedState) => {
+    loadSavedState: async (savedState) => {
         try {
+            get().clearComponents()
+            await new Promise(resolve => setTimeout(resolve, 100));
             // 设置新的状态
             set({
                 components: Array.isArray(savedState.components) ? savedState.components : [],
@@ -680,7 +686,16 @@ const useStore = create((set, get) => ({
             });
 
             console.log('状态加载成功:', savedState);
+            // get().notifyVM_ClearUI()
+            
+            
+            for(let i=0; i<savedState.components.length;i++){
+                get().notifyVM_AddUI(savedState.components[i]);//vm通知添加组件
+            }
+            
+            get().updatePythonCode(); // 更新代码
         } catch (error) {
+            get().clearComponents()
             console.error('加载状态时出错:', error);
             alert('加载文件时发生错误，请查看控制台获取详细信息。');
         }

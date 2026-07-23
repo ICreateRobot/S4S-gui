@@ -46,19 +46,20 @@ const useStore = create((set, get) => ({
 
         // Create JSON string
         const dataStr = JSON.stringify(projectData, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        // const dataBlob = new Blob([dataStr], { type: 'application/json' });
 
-        // Create download link
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `iot_project_${new Date().getTime()}.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        return dataStr
+        // // Create download link
+        // const url = URL.createObjectURL(dataBlob);
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.download = `iot_project_${new Date().getTime()}.json`;
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
+        // URL.revokeObjectURL(url);
 
-        return true;
+        // return true;
     },
 
     // 加载文件
@@ -68,7 +69,9 @@ const useStore = create((set, get) => ({
             if (!projectData || !projectData.components || !projectData.screenSize) {
                 throw new Error('Invalid project file format');
             }
+            get().clearComponents()
 
+            // get().notifyVM_AddUI(projectData.components[0])
             // Update state
             set({
                 components: projectData.components || [],
@@ -83,9 +86,17 @@ const useStore = create((set, get) => ({
                 activeGuide: null,
                 guidePosition: null
             });
+            console.log('iot项目数据',projectData)
+            
+            for(let i=0;i<projectData.components.length;i++){
+                // get().createIoTVariable(projectData.components[i]);
+                get().notifyVM_AddUI_loadProject(projectData.components[i])
+                
+            }
 
             return true;
         } catch (error) {
+            get().clearComponents()
             console.error('Failed to load project:', error);
             throw error;
         }
@@ -683,6 +694,21 @@ const useStore = create((set, get) => ({
             setTimeout(() => {
                 get().createCallbackBlock(component);
             }, 50);
+        }
+    },
+    // 通知 VM 添加组件,
+    //仅用于项目加载时调用，删掉了createCallbackBlock函数的调用
+    //createCallbackBlock这个函数保留的话会有bug
+    notifyVM_AddUI_loadProject: (component) => { 
+        if (window.vm.extensionManager) {
+            const ext = window.vm.extensionManager._loadedExtensions.get('UIIoT');
+            if (ext) {
+                window.vm.runtime.emit('IoT_ADD_COMPONENT', {
+                    type: component.type,
+                    id: component.id,
+                    name: component.name
+                });
+            }
         }
     },
     // 通知 VM 更新组件名称
