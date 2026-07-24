@@ -178,12 +178,12 @@ function Header({intl}) {
                 <button className={styles.placeholderBtn}></button>
                 <button className={styles.placeholderBtn}></button> */}
 
-                <button
+                {/* <button
                     className={styles.qrBtn}
                     onClick={() => {saveProject()} }
                 >
                  保存
-                </button>                
+                </button>                 */}
 
                 <button
                     className={styles.qrBtn}

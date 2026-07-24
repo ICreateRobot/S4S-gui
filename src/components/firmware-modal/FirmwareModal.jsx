@@ -162,6 +162,15 @@ const FirmwareModal = ({ intl,onRequestClose, modeValue, extensionName,deviceCon
                   ⚙
                 </button>
               )}
+              
+              {/* {extensionName === 'ESP32' && (
+                <button
+                  className={styles.settingBtn}
+                  onClick={() => setShowWifiPanel(true)}
+                >
+                  ⚙
+                </button>
+              )} */}
 
               <div className={styles.deviceName}>
                   {deviceInfoMap[extensionName]?.name}
