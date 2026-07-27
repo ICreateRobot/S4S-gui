@@ -75,6 +75,7 @@
 .disconnect,
 .sendBtn{
     height:30px;
+    width: 90px;
     border:none;
     border-radius:6px;
     padding:0 14px;
