@@ -1,7 +1,7 @@
 // modes/wifi.js
 
 const BASE_URL = "http://139.129.32.56:3000";////192.168.20.161     139.129.32.56
-const Version = "0.1.1";//gui中记录软件版本的位置（不妙，但是未来有空再改吧）
+const Version = "0.1.2";//gui中记录软件版本的位置（不妙，但是未来有空再改吧）
 
 // 连接
 export async function connect(connKey) {

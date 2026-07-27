@@ -38,6 +38,11 @@ const Toast = () => {
                     id: 'gui.toast.error.002',
                     default: "Device is offline, unable to perform the operation."
                 });
+            }else if (id === '003') {//连接失败
+                text = formatMessage({
+                    id: 'gui.alert.connectFailed',
+                    default: "Connection failed"
+                });
             }else if (id === '200') {//连接成功
                 text = formatMessage({
                     id: 'gui.toast.error.200',

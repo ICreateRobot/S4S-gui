@@ -251,7 +251,7 @@ const ConnectTabs = ({ onRequestClose,modeValue,extensionName, handleConnectData
 
     } catch (err) {
       //console.log(err);
-      vm.runtime.ioDevices.toast.guiToast( "",  "连接失败", "error",  3000 );
+      vm.runtime.ioDevices.toast.guiToast( "003",  "连接失败", "error",  3000 );
       dispatch(clearDeviceConnection()); // 清空全局连接状态
       vm.runtime.connKey = ""; // 通知扩展
       setPortConnected(false);
