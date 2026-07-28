@@ -54,3 +54,13 @@ export async function disconnect() {
   }
   return true;
 }
+
+//断开连接设备--(静默断开)
+export async function disconnect_silent() {
+  const result = await window.EditorPreload.serialDisconnect_silent();
+  if (!result || !result.success) {
+    throw new Error(result?.message || result?.error || "断开失败");
+  }
+  return true;
+}
+

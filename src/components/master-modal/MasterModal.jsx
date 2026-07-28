@@ -254,10 +254,10 @@ class MasterModal extends React.Component {
     }
 
     // 清空串口工具连接状态（直接清空即可）
-    dispatch(setSerialToolConnection({
-        connected:false,
-        info:null
-    }));
+    this.props.setSerialToolConnection({   
+        connected: false,
+        info: null
+    });
   }
 
   render() {
@@ -327,7 +327,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(requestNewProject(needSave));
         dispatch(setFileHandle(null));
     },
-    clearDeviceConnection: () => dispatch(clearDeviceConnection()) // 清空连接状态
+    clearDeviceConnection: () => dispatch(clearDeviceConnection()), // 清空连接状态
+    setSerialToolConnection: (payload) => dispatch(setSerialToolConnection(payload)) //清除串口工具连接
 });
 
 export default injectIntl(

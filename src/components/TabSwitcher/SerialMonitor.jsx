@@ -185,7 +185,7 @@ const SerialMonitor = ({ device, intl , deviceConnection,serialToolConnection, d
     //断开串口
     if(connected){
         try {
-          await serial.disconnect?.();
+          await serial.disconnect_silent?.();
         } catch(err){
           console.error("串口断开失败",err);
         }
