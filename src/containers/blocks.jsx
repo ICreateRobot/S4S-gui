@@ -723,6 +723,7 @@ class Blocks extends React.Component {
 
         //工具箱刷新
         const toolboxXML = this.getToolboxXML();
+        console.log(toolboxXML)
         if (toolboxXML) {
             this.defenCatch(toolboxXML)
             this.props.updateToolboxState(toolboxXML);
@@ -742,10 +743,13 @@ class Blocks extends React.Component {
         this.workspace.removeChangeListener(this.props.vm.blockListener);
         //把 VM 发来的 XML 解析成 DOM(先去除，去除后不再加载项目)
         const dom = this.ScratchBlocks.Xml.textToDom(data.xml);
+        // this.ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(dom, this.workspace);
         try {
             //加载项目积木(先去除，去除后不再加载项目)
             this.ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(dom, this.workspace);
         } catch (error) {
+            console.log('---------------------')
+            console.log(error)
             // The workspace is likely incomplete. What did update should be
             // functional.
             //
@@ -1018,7 +1022,7 @@ class Blocks extends React.Component {
     //* 新增的 */
     //大大的有用（事件检测，生成代码相关）
     workspaceToCode (event) {
-        //console.log(event.type)
+        // console.log(event)
         const importCode = {"Microbit": "from microbit import *\nfrom s4s import *\n",
             "Arduino": "",
             "ESP32": 'from Screen import *\nfrom s4s import *\n'
