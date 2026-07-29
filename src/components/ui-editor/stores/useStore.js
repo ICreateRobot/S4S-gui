@@ -908,7 +908,12 @@ function getComponentPythonCode(component) {
         case 'image':
             const imageSrc = component.src;
             // return `Screen.Image(${x}, ${y}, ${width}, ${height}, ${index}, "${imageSrc}")`;
-            return ` Image(img_src="${imageSrc}", x=${x}, y=${y}, index=${index})`
+            if(imageSrc){
+                return ` Image(img_src="${imageSrc}", x=${x}, y=${y}, index=${index})`
+            }else{
+                return ` Image(x=${x}, y=${y}, index=${index})`
+            }
+            
 
         default:
             return `# ${component.type}组件 - 未实现`;
