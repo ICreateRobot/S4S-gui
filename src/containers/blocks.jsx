@@ -718,12 +718,12 @@ class Blocks extends React.Component {
 
     onWorkspaceUpdate (data) {
         // When we change sprites, update the toolbox to have the new sprite's blocks
-        console.log("onWorkspaceUpdate",data)
+        // console.log("onWorkspaceUpdate",data)
         //切换角色 / 扩展更新 → 重新构建工具箱
 
         //工具箱刷新
         const toolboxXML = this.getToolboxXML();
-        console.log(toolboxXML)
+        // console.log(toolboxXML)
         if (toolboxXML) {
             this.defenCatch(toolboxXML)
             this.props.updateToolboxState(toolboxXML);
