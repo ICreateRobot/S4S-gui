@@ -61,8 +61,11 @@ export function createControlsLogic(componentInstance) {
         self.stopAll.postMessage(true)
         
         await window.EditorPreload.clearCurrentCommand();
-        let data = packCommand('bot.restore_default()')
-        const result = await window.EditorPreload.serialSendCommand(data,"Arduino");
+        if(self.props.vm.runtime.currentDevice=='Arduino'){
+          let data = packCommand('sys.restore_default()')
+          const result = await window.EditorPreload.serialSendCommand(data,"Arduino");
+        }
+        
     }
 
      function packCommand(cmd) {
