@@ -59,11 +59,12 @@ export function createControlsLogic(componentInstance) {
         self.props.vm.stopAll();
         //console.log('停止')
         self.stopAll.postMessage(true)
-        
+        await new Promise(resolve => setTimeout(resolve, 200));
         await window.EditorPreload.clearCurrentCommand();
         if(self.props.vm.runtime.currentDevice=='Arduino'){
           let data = packCommand('sys.restore_default()')
           const result = await window.EditorPreload.serialSendCommand(data,"Arduino");
+          console.log('arduino停止')
         }
         
     }
