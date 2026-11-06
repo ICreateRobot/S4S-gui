@@ -23,6 +23,178 @@
         "blocks": {}
     },
     {
+        "name": "Shooter",
+        "tags": [
+            "people",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "a3befc5828e782599b8850498394269f",
+                "name": "Shooter-a",
+                "bitmapResolution": 1,
+                "md5ext": "a3befc5828e782599b8850498394269f.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            },
+            {
+                "assetId": "f90ec4db3680457154e918fe4030b697",
+                "name": "Shooter-b",
+                "bitmapResolution": 1,
+                "md5ext": "f90ec4db3680457154e918fe4030b697.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            }
+        ],
+        "size":20,
+        "sounds": [],
+        "blocks": {}
+    },
+
+    {
+        "name": "Tek_Ball",
+        "tags": [
+            "people",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "6adbd65f4debceaf9de5d35b913ee6d0",
+                "name": "Tek_Ball",
+                "bitmapResolution": 1,
+                "md5ext": "6adbd65f4debceaf9de5d35b913ee6d0.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            }
+        ],
+        "size":20,
+        "sounds": [],
+        "blocks": {}
+    },
+
+    {
+        "name": "With_Dog",
+        "tags": [
+            "people",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "51860f34c02d10077e34a08cddefce1b",
+                "name": "With_Dog",
+                "bitmapResolution": 1,
+                "md5ext": "51860f34c02d10077e34a08cddefce1b.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            }
+        ],
+        "size":20,
+        "sounds": [],
+        "blocks": {}
+    },
+    {
+        "name": "Tek_Hold",
+        "tags": [
+            "people",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "597032c2b4e821186df186a6f9eea211",
+                "name": "Tek_Hold",
+                "bitmapResolution": 1,
+                "md5ext": "597032c2b4e821186df186a6f9eea211.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            }
+        ],
+        "size":20,
+        "sounds": [],
+        "blocks": {}
+    },
+    {
+        "name": "Tek_Pizza",
+        "tags": [
+            "people",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "b731c56f601f241e76e275de4f30364c",
+                "name": "Tek_Pizza",
+                "bitmapResolution": 1,
+                "md5ext": "b731c56f601f241e76e275de4f30364c.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            }
+        ],
+        "size":20,
+        "sounds": [],
+        "blocks": {}
+    },
+    {
+        "name": "Tek_Mic",
+        "tags": [
+            "people",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "e1767b1c49e42ea796afe884357b6001",
+                "name": "Tek_Mic",
+                "bitmapResolution": 1,
+                "md5ext": "e1767b1c49e42ea796afe884357b6001.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            }
+        ],
+        "size":20,
+        "sounds": [],
+        "blocks": {}
+    },
+    {
+        "name": "Tek_Kart",
+        "tags": [
+            "people",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "ec2271aaccc24ec6b7de884f0baee884",
+                "name": "Tek_Kart",
+                "bitmapResolution": 1,
+                "md5ext": "ec2271aaccc24ec6b7de884f0baee884.svg",
+                "dataFormat": "svg",
+                "rotationCenterX": 600,
+                "rotationCenterY": 600
+            }
+        ],
+        "size":20,
+        "sounds": [],
+        "blocks": {}
+    },
+    {
         "name": "Abby",
         "tags": [
             "people",
